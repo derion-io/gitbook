@@ -4,6 +4,7 @@
 * [Trading Manual](<README (1).md>)
   * [Exposure](trading-manual/exposure.md)
   * [Swap](trading-manual/swap.md)
+* [Tokenomics](tokenomics.md)
 * [Technical Docs](technical-docs/README.md)
   * [Decentralized Derivatives Liquidity](technical-docs/readme.md)
     * [Target Value (V)](technical-docs/readme/target-value-v.md)
