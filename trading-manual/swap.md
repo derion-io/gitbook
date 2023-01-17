@@ -4,7 +4,7 @@ description: Swap one token to another.
 
 # Swap
 
-{% embed url="https://derivable.io/#/trade/swap" %}
+{% embed url="https://derivable.io/#/swap" %}
 Swap Interface
 {% endembed %}
 
