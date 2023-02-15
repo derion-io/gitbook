@@ -1,7 +1,6 @@
 # Table of contents
 
-* [Concepts](README.md)
-* [Trading Manual](<README (1).md>)
+* [Trading Manual](README.md)
   * [Exposure](trading-manual/exposure.md)
   * [Swap](trading-manual/swap.md)
 * [Tokenomics](token.md)
