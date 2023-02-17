@@ -4,8 +4,8 @@ description: For Traders/Users
 
 # Trading Manual
 
-{% embed url="https://youtu.be/wQno6mHXDzM" %}
-Demo Video
+{% embed url="https://youtu.be/hYTlMG75L9A?rel=0" %}
+Trading Guide
 {% endembed %}
 
 Holding position in Power Perpetual is holding derivative tokens. E.g. $${ETH}^4$$, $${BNB}^2$$, $${BTC}^{-8}$$
