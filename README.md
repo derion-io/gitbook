@@ -1,14 +1,14 @@
 ---
-description: For Traders/Users
+description: For Traders and Users
 ---
 
 # Trading Manual
 
-{% embed url="https://youtu.be/hYTlMG75L9A?rel=0" %}
+{% embed url="https://www.youtube.com/watch?v=0U1kCfnYalI&rel=0" %}
 Trading Guide
 {% endembed %}
 
-Holding position in Power Perpetual is holding derivative tokens. E.g. $${ETH}^4$$, $${BNB}^2$$, $${BTC}^{-8}$$
+Holding positions in Power Perpetual is holding derivative tokens. E.g. $${ETH}^4$$, $${BNB}^2$$, $${BTC}^{-8}$$
 
 Trading or changing Power Perpetual positions is swapping/converting some derivative tokens to another. E.g. swapping from $${ETH}^4$$ to $${ETH}^8$$ is increasing exposure/leverage of the same position.
 
