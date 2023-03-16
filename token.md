@@ -1,6 +1,6 @@
 # Tokenomics
 
-No ICO. No IDO. Tokens are distributed via retrospective airdrops and liquidity mining.
+Tokens are distributed via retrospective airdrops and liquidity mining.
 
 The token supply is initially capped and continuously deflated by buying back from AMMs to burn using protocol fee (real yield).
 
@@ -10,5 +10,5 @@ Token distribution:
   * Retrospective Airdrop: 30%
   * Liquidity Mining: 30%
 * Team: 20% &#x20;
-* Investors and Advisors: 20%
+* Incubators and Advisors: 20%
 
