@@ -1,10 +1,10 @@
 # Table of contents
 
-* [💱 Trading Manual](README.md)
+* [Trading Manual](README.md)
   * [Exposure](trading-manual/exposure.md)
   * [Swap](trading-manual/swap.md)
-* [💲 Tokenomics](token.md)
-* [⚙ Technical Docs](technical-docs/README.md)
+* [Tokenomics](token.md)
+* [Technical Docs](technical-docs/README.md)
   * [Decentralized Derivatives Liquidity](technical-docs/readme.md)
     * [Target Value (V)](technical-docs/readme/target-value-v.md)
     * [Derivative Token (D)](technical-docs/readme/derivative-token-d.md)
@@ -23,3 +23,6 @@
     * [Funding Rate](technical-docs/power-perpetual/funding-rate.md)
     * [Exposure Driftage](technical-docs/power-perpetual/exposure-driftage.md)
     * [Deleverage](technical-docs/power-perpetual/deleverage.md)
+  * [Asymptotic Power Curve](tech/apc/README.md)
+    * [State Transition](tech/apc/state-transition.md)
+    * [Impermanent Loss](tech/apc/impermanent-loss.md)

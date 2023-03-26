@@ -16,4 +16,4 @@ When the pool is under-collateralized, there are three choices for a Derivative 
 
 Deleveraging allows users to keep holding their Derivative tokens without the risk of bank runs, or the cost of moving funds from pool to pool. In the event of Deleverage, the pool state will be rolled back to the market state where the Derivative token's capitalization crosses the collateral reserve.
 
-<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption><p>Deleverage</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption><p>Deleverage</p></figcaption></figure>
