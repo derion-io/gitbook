@@ -24,4 +24,4 @@ Reserve Token (R): the token received when the liquidity is added to an AMM pool
 
 Liquidity Provider Token (LP): the token received when the reserve is added to a Derivable pool.
 
-Funding Rate (Exposure Fee): the value the derivative token holder must pay while holding the derivative tokens. The Funding Rate is charged constantly over time.
+Funding Rate (Exposure Fee): the value the derivative token holder must pay while holding the derivative tokens. The Funding Rate is charged constantly over time, from Long and Short tokens to LP.
