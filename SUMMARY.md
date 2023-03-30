@@ -1,6 +1,6 @@
 # Table of contents
 
-* [Trading Manual](README.md)
+* [User Manual](README.md)
   * [Exposure](trading-manual/exposure.md)
   * [Swap](trading-manual/swap.md)
 * [Tokenomics](token.md)
@@ -26,3 +26,4 @@
   * [Asymptotic Power Curve](tech/apc/README.md)
     * [State Transition](tech/apc/state-transition.md)
     * [Impermanent Loss](tech/apc/impermanent-loss.md)
+    * [Integration](tech/apc/integration.md)

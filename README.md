@@ -1,8 +1,8 @@
 ---
-description: For Traders and Users
+description: For Traders and Hodlers
 ---
 
-# Trading Manual
+# User Manual
 
 {% embed url="https://www.youtube.com/watch?v=0U1kCfnYalI&rel=0" %}
 Trading Guide
