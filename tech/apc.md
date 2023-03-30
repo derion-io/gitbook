@@ -1,12 +1,12 @@
 ---
-description: Everlasting leveraged fungible derivatives
+description: Self-leverageing derivatives
 ---
 
 # Asymptotic Power Curve
 
 Perpetual and Futures exchanges (both CEX and DEX) have been struggling with the calculation of premium and funding rates as they depend on many different factors, including market price, time, and market balance. Derivable introduces a novel power curve that deleverages itself as it approaches the reserve limit. This curve allows the creation of AMM for leveraged perpetual and future derivatives of any index value without the risks of liquidation or under-collateralization.
 
-<figure><img src="../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
 
 Derivative pools using this curve have the following properties:
 

@@ -1,3 +1,0 @@
-# Derivative Token (D)
-
-Derivative Token (D) is a fungible token that tracks a target value V and is over-collateralized by on-chain assets. While the implementation of token D is open entirely to the community, in order to use the DDL protocol, its contract must define a function to calculate the conversion rate between each of its tokens, including collateral, liquidity share, and derivatives. The DDL protocol enforces the token flows, collateral ratio, liquidation, and deleveraging. DDL also ensures all conversions can be done by anyone, keeping it true to the decentralized nature of the protocol.
