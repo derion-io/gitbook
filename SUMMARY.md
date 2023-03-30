@@ -11,4 +11,5 @@
     * [Reserve Token](tech/integration/reserve-token.md)
   * [Impermanent Loss](tech/impermanent-loss.md)
   * [Funding Rate](tech/funding-rate.md)
+* [Whitepaper](whitepaper.md)
 * [Tokenomics](token.md)
