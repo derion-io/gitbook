@@ -16,4 +16,4 @@ Opening a position (or increasing a position value) is swapping from non-derivat
 
 Closing a position (or decreasing a position value) is swapping from derivative tokens to non-derivative tokens.
 
-<figure><img src=".gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (1) (4).png" alt=""><figcaption></figcaption></figure>
