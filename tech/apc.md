@@ -1,5 +1,5 @@
 ---
-description: Self-leverageing derivatives
+description: Self-deleveraging derivatives
 ---
 
 # Asymptotic Power Curve
