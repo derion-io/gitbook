@@ -8,7 +8,7 @@ Token distribution:
 
 * Community: 60%
   * Retrospective Airdrop: 30%
-  * Liquidity Mining: 30%
+  * Liquidity Incentive: 30%
 * Team: 20% &#x20;
 * Incubators and Advisors: 20%
 
