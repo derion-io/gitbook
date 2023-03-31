@@ -4,7 +4,7 @@ Uniswap v3 Oracle is chosen for its availability and composability. Any token pa
 
 <figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption><p>Uniswap V3 TWAP Oracle</p></figcaption></figure>
 
-Uniswap Oracle provides both TWAP and SPOT prices. The double price system is utilized only for token conversion since the price prediction is crucial so any market latency can be manipulated. Unlike in an AMM, arbitrageurs are not necessary nor desired in Derivable.
+Uniswap Oracle provides both TWAP and SPOT prices. Derivable's double price system is another novel mechanism for derivative pricing as the price prediction is crucial and any market latency can be exploited.
 
 <figure><img src="https://lh3.googleusercontent.com/FbZZKg0A9DrkP2o5AL-K_8_bmHRzQm1BnR2tnir6iASEyvYT9dGf9y0l6PIzUoAi3Y7pi8BtYzn1-L2EhIbbUEVLSvWCHh4KdJQBzo7BSfJHSp3OwI69HFtAxDDW4IwILSb_C50WQhKdo-BXKreS0Z_yfCMRKZTieLU65WrVGN_FiLVNGb5q4b9b8rmUpw" alt=""><figcaption><p>Double Prices System</p></figcaption></figure>
 

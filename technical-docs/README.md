@@ -14,14 +14,14 @@ Token Price (P) is the market price of one token (base) to another (quote). P is
 
 Power Perpetual (PP): Derivatives that track an asset price in the form of $${P\over M}^k$$where $$P$$ is a Token Price and M is a Mark Price.
 
-Mark Price (M) in Derivable is initialized with the first value of P being fetched, and will not follow the market price after that. Mark Price will be changed by internal mechanisms of the Power Perpetual protocol in a deterministic way.
+Mark Price (M) in Derivable is initialized with the first value of P being fetched, and will not follow the market price after that. Mark Price will be changed by internal mechanisms of the Derivable protocol in a deterministic way.
 
 E.g. A Power Perpetual token $${ETH\over USDC}^4$$ has its M initialized with 1500, when the market price of ETH/USDC changes to 1600, the price of the token will be $${1600\over 1500}^4 = 1.294538272$$.
 
 Exposure (or Compound Leverage): how many times the derivative token value will be changed if the underlining price changes a fixed reference rate of price (+1%). In the example above, the exposure of the derivative token is $$e = ({1616\over 1500}^4-{1600\over 1500}^4)  ≈ 5.26\%$$.
 
-Reserve Token (R): the token received when the liquidity is added to an AMM pool.
+Reserve Token (R): the token is locked in the Derivable pool for all Long, Short, and LP sides of it.
 
 Liquidity Provider Token (LP): the token received when the reserve is added to a Derivable pool.
 
-Funding Rate (Exposure Fee): the value the derivative token holder must pay while holding the derivative tokens. The Funding Rate is charged constantly over time, from Long and Short tokens to LP.
+Funding Rate (Exposure Fee): the rate the derivative token holder must pay while holding the Long or Short tokens. It is charged constantly over time from Long and Short tokens and paid to LP.

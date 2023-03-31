@@ -1,6 +1,6 @@
 # Tokenomics
 
-Tokens are distributed via retrospective airdrops and liquidity mining.
+Tokens are distributed via retrospective airdrops and liquidity incentives.
 
 The token supply is initially capped and continuously deflated by buying back from AMMs to burn using protocol fee (real yield).
 

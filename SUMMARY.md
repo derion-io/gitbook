@@ -9,7 +9,7 @@
   * [Integration](tech/integration/README.md)
     * [Price Oracle](tech/integration/liquidation.md)
     * [Reserve Token](tech/integration/reserve-token.md)
-  * [Impermanent Loss](tech/impermanent-loss.md)
+  * [Impermanent Loss & Gain](tech/impermanent-loss-and-gain.md)
   * [Funding Rate](tech/funding-rate.md)
 * [Whitepaper](whitepaper.md)
 * [Tokenomics](token.md)
