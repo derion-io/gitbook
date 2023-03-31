@@ -7,8 +7,8 @@ The token supply is initially capped and continuously deflated by buying back fr
 Token distribution:
 
 * Community: 60%
-  * Retrospective Airdrop: 30%
-  * Liquidity Incentive: 30%
+  * Retrospective Airdrops: 30%
+  * Liquidity Incentives: 30%
 * Team: 20% &#x20;
 * Incubators and Advisors: 20%
 
