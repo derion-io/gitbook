@@ -3,7 +3,7 @@
 * [User Manual](README.md)
   * [Exposure](trading-manual/exposure.md)
   * [Swap](trading-manual/swap.md)
-* [Technical Docs](technical-docs/README.md)
+* [Litepaper](technical-docs/README.md)
   * [Asymptotic Power Curve](tech/apc.md)
   * [State Transition](tech/state-transition.md)
   * [Integration](tech/integration/README.md)
