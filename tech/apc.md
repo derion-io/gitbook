@@ -17,4 +17,4 @@ Derivative pools using this curve have the following properties:
 * All sides can never go to zero, i.e. no liquidation risk and no under-collateralization risk.
 * Derivative pools for any token pair can be created by anyone, as long as they have an Uniswap pool (v2 or v3).
 
-The final formula for the curve will be published along with our Whitepaper in the [IEEE](https://www.ieee.org).
+The detailed mathematics and proofs of the curve will be published along with our Whitepaper in the [IEEE](https://www.ieee.org).
