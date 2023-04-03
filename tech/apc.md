@@ -4,7 +4,7 @@ description: Self-deleveraging derivatives
 
 # Asymptotic Power Curve
 
-Perpetual and Futures exchanges (both CEXs and DEXs) have been struggling with the calculation of premium and funding rates as they depend on many different factors, including market price, funding time, and market balance. Derivable introduces a novel power curve that deleverages itself as it approaches the reserve limit. This curve allows the creation of AMM for leveraged perpetual and future derivatives of any index value without the risks of liquidation or under-collateralization.
+Perpetual and futures exchanges (CEXs and DEXs) have been struggling with liquidity and position liquidation problems, along with the complication of premium and funding rates pricing as they depend on many independent factors, including market price, funding time, and market balance. Derivable introduces a novel asymptotic power curve that deleverages itself as it approaches the reserve limit. This curve allows the creation of an AMM for leveraged perpetual and future derivatives of any index value without the risks of liquidation or under-collateralization.
 
 <figure><img src="../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
 
