@@ -1,9 +1,14 @@
----
-description: Exposure Fee
----
-
 # Funding Rate
 
-Unlike position-based perpetual exchanges, where the funding rate is used for LONG and SHORT to compensate each other, the funding rate in Derivable is used for both LONG and SHORT to compensate the LP. The balancing force between LONG and SHORT naturally happens when the curve deleverages itself as they reach the reserve limit.
+There are two components to the Funding Rate: the LP Interest Rate and the Protocol Fee Rate.
 
-<figure><img src="https://lh6.googleusercontent.com/CIzncBxyq3sVD2BBBBYd2nLyukXkSJGD0fs4eqlF1wrEoMa4-pzqnJ3xxZIANoHKgvup3P7Z0R6Kwk5JnT4Lyk5YbV1TCWEeB53SvP3YLuYfccTpyuuxQMZvpNCo3QFzbcmippmXm_woXH1Ly9hvYk1JBA5pgdNQBc-3P7eWjt-fb4m-yXdypvU4QfOdcQ" alt=""><figcaption></figcaption></figure>
+The LP Interest Rate is constantly charged from both the Long and Short sides to the LP side. This rate is configured by each pool as a fixed daily percentage and also decreases as the curve is deleveraged. That means the LP interest rate is proportional to the effective leverage of its side in a pool.
+
+<figure><img src="../.gitbook/assets/funding-rate.gif" alt=""><figcaption><p>LP Interest Rate</p></figcaption></figure>
+
+The Protocol Fee Rate is constantly charged from all sides of the pool, and this rate is fixed as 1/8 of the pool's configured LP Interest Rate.
+
+For example, a pool initialized with an LP Interest Rate of 0.04% daily:
+
+* Every day, 0.04% of the LONG reserve and 0.04% of the SHORT reserve will be paid to the LP reserve as the interest rate.
+* Every day, 0.005% of the total pool reserve will be paid to the Derivable Labs as the protocol fee.
