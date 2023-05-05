@@ -4,7 +4,7 @@ There are two components to the Funding Rate: the LP Interest Rate and the Proto
 
 The LP Interest Rate is constantly charged from both the Long and Short sides to the LP side. This rate is configured by each pool as a fixed daily percentage and also decreases as the curve is deleveraged. That means the LP interest rate is proportional to the effective leverage of its side in a pool.
 
-<figure><img src="../.gitbook/assets/funding-rate.gif" alt=""><figcaption><p>LP Interest Rate</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/fee-rate.gif" alt=""><figcaption><p>LP Interest and Protocol Fee</p></figcaption></figure>
 
 The Protocol Fee Rate is constantly charged from all sides of the pool, and this rate is fixed as 1/8 of the pool's configured LP Interest Rate.
 
