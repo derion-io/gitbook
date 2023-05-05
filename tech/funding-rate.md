@@ -6,9 +6,9 @@ The LP Interest Rate is constantly charged from both the Long and Short sides to
 
 <figure><img src="../.gitbook/assets/fee-rate.gif" alt=""><figcaption><p>LP Interest and Protocol Fee</p></figcaption></figure>
 
-The Protocol Fee Rate is constantly charged from all sides of the pool, and this rate is fixed as 1/8 of the pool's configured LP Interest Rate.
+The Protocol Fee Rate is constantly charged from all sides of the pool, and this rate is fixed as 1/12 of the pool's configured LP Interest Rate.
 
-For example, a pool initialized with an LP Interest Rate of 0.04% daily:
+For example, a pool initialized with a daily LP Interest Rate of 0.06%:
 
-* Every day, 0.04% of the LONG reserve and 0.04% of the SHORT reserve will be paid to the LP reserve as the interest rate.
+* Every day, 0.06% of the LONG reserve and 0.06% of the SHORT reserve will be paid to the LP as the interest rate.
 * Every day, 0.005% of the total pool reserve will be paid to the Derivable Labs as the protocol fee.
