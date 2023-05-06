@@ -6,7 +6,7 @@ The LP Interest Rate is constantly charged from both the Long and Short sides to
 
 <figure><img src="../.gitbook/assets/time (1).gif" alt=""><figcaption><p>LP Interest and Protocol Fee</p></figcaption></figure>
 
-The Protocol Fee Rate is constantly charged from all sides of the pool, and this rate is fixed as 1/12 of the pool's configured LP Interest Rate.
+The Protocol Fee is constantly charged from all sides of the pool, and this rate is fixed as 1/12 of the pool's LP Interest Rate.
 
 For example, a pool initialized with a daily LP Interest Rate of 0.06%:
 
