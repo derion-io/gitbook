@@ -1,8 +1,8 @@
 # Table of contents
 
-* [User Manual](README.md)
-  * [Exposure](trading-manual/exposure.md)
-  * [Swap](trading-manual/swap.md)
+* [Introduction](README.md)
+  * [Exposure](intro/exposure.md)
+  * [Swap](intro/swap.md)
 * [Protocol](protocol/README.md)
   * [Asymptotic Power Curve](protocol/apc.md)
   * [State Transition](protocol/state-transition.md)
