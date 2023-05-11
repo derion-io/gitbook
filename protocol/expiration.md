@@ -8,6 +8,6 @@ DiscountRate (0 ≤ DiscountRate ≤ 1) allows each LONG and SHORT token to be m
 
 $$InterestFreeTime = (Expiration - MinExpiration) \times DiscountRate$$
 
-For example, a pool with a DiscountRate of 75% and a MinExpiration of 1 day. If a LONG (or SHORT) token amount is minted with an expiration of 5 days, it will be locked for 5 days, and the first 3 days will have no interest rate.
+For example, a pool with a DiscountRate of 75% and a MinExpiration of 1 day. If an amount of LONG (or SHORT) token is minted with an expiration of 5 days, it will be locked for 5 days, and the first 3 days will have no interest rate.
 
 Token expiration has a dissolving effect, as minting a new token amount to an unexpired token balance will have the weighted average expiration of the two.
