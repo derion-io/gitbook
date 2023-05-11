@@ -4,7 +4,7 @@ Derivable LONG and SHORT tokens are perpetual by nature, but future tokens can b
 
 MinExpiration enforces all LONG and SHORT tokens to be locked for at least a specified number of seconds before they can be transferred or closed. This config is especially useful for markets with low liquidity to prevent price manipulation attacks.
 
-DiscountRate allows each LONG and SHORT position to be opened with an expiration time and benefit from the Funding Rate discount. (0 ≤ DiscountRate ≤ 1)
+DiscountRate allows each LONG and SHORT position to be opened with an expiration time and benefit from the Interest Rate discount. (0 ≤ DiscountRate ≤ 1)
 
 $$InterestFreeTime = (Expiration - MinExpiration) \times DiscountRate$$
 
