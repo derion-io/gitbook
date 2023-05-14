@@ -1,3 +1,7 @@
+---
+description: (Subject to change)
+---
+
 # Tokenomics
 
 Tokens are distributed via retrospective airdrops and liquidity incentives.
