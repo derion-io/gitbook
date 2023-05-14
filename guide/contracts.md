@@ -1,4 +1,4 @@
-# Contract Addresses
+# Contracts
 
 ### Derivable Token (ERC-1155)
 

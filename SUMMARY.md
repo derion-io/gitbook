@@ -4,7 +4,7 @@
   * [Exposure](intro/exposure.md)
   * [Swap](intro/swap.md)
 * [Guide](guide/README.md)
-  * [Contract Addresses](guide/contract-addresses.md)
+  * [Contracts](guide/contracts.md)
   * [Pool Creation](guide/pool-creation.md)
   * [Pool Group](guide/pool-group.md)
   * [Providing Liquidity](guide/providing-liquidity.md)
