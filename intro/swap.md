@@ -8,7 +8,7 @@ description: Swap one token to another.
 Swap Interface
 {% endembed %}
 
-![](<../../.gitbook/assets/image (1) (2) (1).png>)
+![](<../.gitbook/assets/image (1) (2) (1).png>)
 
 Tokens:
 
