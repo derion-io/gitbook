@@ -1,13 +1,16 @@
 # Table of contents
 
 * [Introduction](README.md)
-  * [Exposure](intro/exposure.md)
-  * [Swap](intro/swap.md)
+  * [Perpetual Leverage](intro/perpetual-leverage.md)
+  * [Compound Finance](intro/compound-finance.md)
 * [Guide](guide/README.md)
   * [Contracts](guide/contracts.md)
   * [Pool Creation](guide/pool-creation.md)
   * [Pool Group](guide/pool-group.md)
   * [Providing Liquidity](guide/providing-liquidity.md)
+  * [Trade](guide/trade/README.md)
+    * [Swap](guide/trade/swap.md)
+    * [Exposure](guide/trade/exposure.md)
 * [Protocol](protocol/README.md)
   * [Pricing Curve](protocol/apc.md)
   * [State Transition](protocol/state-transition.md)
