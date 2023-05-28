@@ -6,7 +6,7 @@ Alice has $10.
 
 On Monday, if she buys ETH, then after the ETH price increases by 5%, she will profit $0.5.
 
-On Monday, if she opens a Long x10 position in a perpetual exchange. Under the hood, the exchange lends her $90 and buys $100 worth of ETH.
+On Monday, if she opens a Long x10 position in a perpetual exchange, the exchange lends her $90 and buys $100 worth of ETH for her.
 
 On Tuesday, the ETH price increased by 5%, and Alice's position will now be worth $105. Her balance is now worth $105-$90 = $15; if she closes the position now, she will profit $5, which is 10 times more than $0.5. This is why her position is said to have a leverage of 10.
 
