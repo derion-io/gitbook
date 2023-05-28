@@ -4,7 +4,7 @@
 
 Alice has $10.
 
-On Monday, if she buys ETH, then on Tuesday, after the ETH price increases by 5%, she will profit $0.5.
+On Monday, if she buys ETH, then after the ETH price increases by 5%, she will profit $0.5.
 
 On Monday, if she opens a Long x10 position in a perpetual exchange. Under the hood, the exchange lends her $90 and buys $100 worth of ETH.
 
