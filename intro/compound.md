@@ -1,11 +1,11 @@
-# Compound Finance
+# Compound
 
 <figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption><p>Continuous Compounding</p></figcaption></figure>
 
-Non-compounding financial instruments simply cannot last.
+Non-compounding financial instruments don't last.
 
 * If you deposit some money in a bank, the bank pays you an interest rate of 5% annually; would you keep that money there for more than 2 years?
 * You want to maximize your capital efficiency and open a perpetual position to Long an asset with the maximum allowed leverage; if that asset price keeps increasing, would you keep that position even after your position value gets doubled?
-* As an exchange liquidity provider, you are lending your money to the users...
+* As an exchange liquidity provider, you are lending your money to a trader; when the trader's balance is halved, would you still want to lend him the same loan?
 
 Non-compounding financial instruments were invented in historical times when technology was limited. Balances, debits, credits, and interests have to be done on paper, cross-checked daily, and manually re-compound periodically. With the computing technology of today, there's no reason we should use any of the non-compounding finance systems anymore.

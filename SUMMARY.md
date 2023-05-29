@@ -1,8 +1,9 @@
 # Table of contents
 
 * [Introduction](README.md)
-  * [Perpetual Leverage](intro/perpetual-leverage.md)
-  * [Compound Finance](intro/compound-finance.md)
+  * [Leverage](intro/leverage.md)
+  * [Compound](intro/compound.md)
+  * [Power Leverage](intro/power-leverage.md)
 * [Guide](guide/README.md)
   * [Contracts](guide/contracts.md)
   * [Pool Creation](guide/pool-creation.md)
