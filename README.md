@@ -1,5 +1,5 @@
 ---
-description: Down the Rabbit-Hole of Perpetual Finance.
+description: Down the Rabbit-Hole of Perpetual Finance to the first Perpetual AMM
 ---
 
 # Introduction
