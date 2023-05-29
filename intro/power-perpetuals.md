@@ -10,4 +10,4 @@ Constantly closing and re-opening positions is impractical even with today's com
 
 {% embed url="https://www.paradigm.xyz/2021/08/power-perpetuals" %}
 
-Power Perpetuals are financial derivatives that track index values in the form of $$ETH^P$$; they are are exactly what Alice will have if she constanly closing and re-opening her position (i.e. compounding a position).
+Power Perpetuals are financial derivatives that track index values in the form of $$ETH^P$$; they are exactly what Alice will have if she constantly closes and re-opens her positions (i.e., compounding positions).
