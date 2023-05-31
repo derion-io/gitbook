@@ -1,5 +1,7 @@
 ---
-description: Down the Rabbit-Hole of Perpetual Finance to the first Perpetual AMM Protocol
+description: >-
+  Down the Rabbit-Hole of financial derivatives to the first Perpetuals AMM
+  Protocol
 ---
 
 # Introduction
