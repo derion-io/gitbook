@@ -2,7 +2,7 @@
 
 <figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption><p>Continuous Compounding</p></figcaption></figure>
 
-Non-compounding financial instruments don't last.
+A financial instrument is either compounding or not lasting.
 
 * If you deposit some money in a bank, the bank pays you a flat (non-compounding) interest rate of 10% annually; would you keep that money there for more than 2 years?
 * You want to maximize your capital efficiency and open a perpetual position to Long an asset with the maximum allowed leverage; if that asset price keeps increasing, would you keep that position even after your position value gets doubled?
