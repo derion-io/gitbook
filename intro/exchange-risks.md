@@ -10,7 +10,7 @@ Derivative exchanges have to deal with many types of risks, and each type of ris
 Challenges in addressing these risks:
 
 * The Auto-Deleveraging (ADL) mechanism is designed to counter the under-collateralization risk, which introduces much more complexity to the application design.
-* Liquating many user positions requires high throughput, high peak capacity, and predictable systems. This solution is extremely expensive in blockchain as the technology is not (yet) designed for high-performance applications like this.
+* Liquidating many user positions requires high throughput, high peak capacity, and predictable systems. This solution is extremely expensive in blockchain as the technology is not (yet) designed for high-performance applications like this.
 * Imbalance exposure is controlled by adding the premium fee to the funding rate, which further complicates the funding rate calculation.
 * Price manipulation risks require exchanges to fetch and compose index prices from multiple sources. The index prices are also restricted to only high-cap, low-volatility markets.
 

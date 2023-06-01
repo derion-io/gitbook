@@ -9,5 +9,7 @@ In Alice's situation ([leverage.md](leverage.md "mention")), theoretically, if s
 Constantly closing and re-opening positions is impractical even with today's computing power. Any gap between re-investing circles will definitely generate systematic risks. Fortunately, there's already a practical solution that has been put to the test by Opyn Squeeth: [Power Perpetuals](https://www.paradigm.xyz/2021/08/power-perpetuals)
 
 {% embed url="https://www.paradigm.xyz/2021/08/power-perpetuals" %}
+Power Perptuals
+{% endembed %}
 
 Power Perpetuals are financial derivatives that track index values in the form of $$ETH^P$$; they are exactly what Alice will have if she constantly closes and re-opens her positions (i.e., compounding positions).
