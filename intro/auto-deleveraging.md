@@ -4,6 +4,6 @@ Thanks to Opyn Squeeth, we can see the Power Perpetual derivative $$ETH^2$$ in a
 
 One of the most important differences between a synthetic asset and a derivative is the Auto-Deleveraging (ADL) mechanism. Unlike synthetics, derivatives are designed for high-leverage, high-volatility indexes, so a risk-managing mechanism like ADL is essential for any viable derivatives system.
 
-In synthetic protocols, it's generally not acceptable for a synth to lose its peg; however, for a derivatives market to survive any extreme market conditions, losing leverage (or deleveraging) must be a part of the contract between derivatives traders and providers.
+In synthetic protocols, it's generally unacceptable for a synth to lose its peg; however, for a derivative to survive any extreme market conditions, losing leverage (or deleveraging) must be a part of the contract between derivatives traders and providers.
 
-Deleveraging is not "losing"; it's "capped profit". Essentially, in a derivative market, your profit is capped by your counterparty loss.
+Deleveraging is not "losing"; it is "capped profit". Essentially, in a derivative market, your profit is capped by your counterparty loss.
