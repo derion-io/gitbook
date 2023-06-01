@@ -4,7 +4,7 @@
 
 Non-compounding financial instruments don't last.
 
-* If you deposit some money in a bank, the bank pays you an interest rate of 5% annually; would you keep that money there for more than 2 years?
+* If you deposit some money in a bank, the bank pays you a flat (non-compounding) interest rate of 10% annually; would you keep that money there for more than 2 years?
 * You want to maximize your capital efficiency and open a perpetual position to Long an asset with the maximum allowed leverage; if that asset price keeps increasing, would you keep that position even after your position value gets doubled?
 * As an exchange liquidity provider, you are lending your money to a trader; when the trader's balance is halved, would you still want to lend him the same loan?
 
