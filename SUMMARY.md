@@ -7,6 +7,7 @@
   * [Auto-Deleveraging](intro/auto-deleveraging.md)
   * [Trader Risks](intro/trader-risks.md)
   * [Exchange Risks](intro/exchange-risks.md)
+  * [Perpetuals AMM](intro/perpetuals-amm.md)
 * [Guide](guide/README.md)
   * [Contracts](guide/contracts.md)
   * [Pool Creation](guide/pool-creation.md)
