@@ -14,7 +14,7 @@ The premium for buying the LONG token is calculated as follows:
 * if `RiskFactory ≤ PremiumRate`, there's no Premium Fee for buying LONG
 * if `RiskFactory > PremiumRate`, the LONG token price will be $$RiskFactor \over PremiumRate$$ times higher. This rate will also decrease proportionally as the curve deleverages.
 
-<figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption><p>Premium</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (5) (2).png" alt=""><figcaption><p>Premium</p></figcaption></figure>
 
 The premium for buying the SHORT token is calculated as follows:
 

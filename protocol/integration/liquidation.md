@@ -2,7 +2,7 @@
 
 Uniswap v3 Oracle is chosen for its availability and composability. Any token pair on the network is ready for its Asymptotic Power Perpetual pools.
 
-<figure><img src="../../.gitbook/assets/image (5) (2).png" alt=""><figcaption><p>Uniswap V3 TWAP Oracle</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (5) (2) (1).png" alt=""><figcaption><p>Uniswap V3 TWAP Oracle</p></figcaption></figure>
 
 Uniswap Oracle provides both TWAP and SPOT prices. Derivable's double price system is another novel mechanism for derivative pricing as the price prediction is crucial and any market latency can be exploited.
 
