@@ -10,7 +10,7 @@ On Monday, if she opens a Long x10 position in a perpetual exchange, the exchang
 
 On Tuesday, the ETH price increased by 5%, and Alice's position will now be worth $105. Her balance is now worth $105-$90 = $15; if she closes the position now, she will profit $5, which is 10 times more than $0.5. This is why her position is said to have a leverage of 10.
 
-This leverage, however, is not compounded as the current balance of Alice is not taken into calculation.
+This leverage, however, is **not compounded** as the current balance of Alice is not taken into calculation.
 
 On Tuesday, Alice's balance is $15, but her loan is still $90, effectively generating the leverage of only 7 times ($105/$15). This leverage is lower than the x10 leverage she expects, resulting in lower capital efficiency for Alice and lower interest income for the lender (i.e., perpetual exchange).
 
