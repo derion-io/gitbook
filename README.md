@@ -1,6 +1,6 @@
 ---
 description: >-
-  Down the Rabbit-Hole of financial derivatives to the first Perpetuals AMM
+  Through the realm of financial derivatives to the first Perpetuals AMM
   Protocol
 ---
 
