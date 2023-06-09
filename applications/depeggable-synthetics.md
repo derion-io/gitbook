@@ -1,2 +1,0 @@
-# Depeggable Synthetics
-

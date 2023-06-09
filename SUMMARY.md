@@ -28,7 +28,7 @@
   * [Universal Token Router](design/universal-token-router.md)
   * [Derivative Tokens](design/derivative-tokens.md)
 * [Applications](applications/README.md)
-  * [Depeggable Synthetics](applications/depeggable-synthetics.md)
+  * [Soft Peg Synthetics](applications/soft-peg-synthetics.md)
   * [Initial Future Offering](applications/initial-future-offering.md)
 * [License](license.md)
 * [Whitepaper](whitepaper.md)
