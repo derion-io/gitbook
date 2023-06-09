@@ -1,2 +1,0 @@
-# Soft Peg Synthetics
-
