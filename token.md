@@ -6,7 +6,7 @@ description: (Subject to change)
 
 Tokens are distributed via retrospective airdrops and liquidity incentives.
 
-The token supply is initially capped and continuously deflated using buyback-and-burn with protocol fee (real yield).
+The token supply is initially capped and continuously deflated using buyback-and-burn with [protocol fee](protocol/interest-and-fee.md) (real yield).
 
 Distribution:
 

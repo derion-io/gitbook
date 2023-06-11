@@ -4,4 +4,4 @@ LP token is often less exposed to the index value compared to LONG and SHORT. Un
 
 <figure><img src="../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
 
-To compensate for the counter-party risks, LP earns the price spread and interest rate from LONG and SHORT.
+To compensate for counter-party risks, the LP earns interest rates, price spreads, opening fees, and premiums from both LONG and SHORT positions.
