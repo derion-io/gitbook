@@ -23,7 +23,7 @@
   * [Liquidity Provider](protocol/lp-exposure.md)
   * [Funding Rate](protocol/funding-rate.md)
   * [Premium](protocol/premium.md)
-  * [Future Expiration](protocol/expiration.md)
+  * [Maturity](protocol/maturity.md)
 * [Technical Design](design/README.md)
   * [Universal Token Router](design/universal-token-router.md)
   * [Derivative Tokens](design/derivative-tokens.md)

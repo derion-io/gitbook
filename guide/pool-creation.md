@@ -24,4 +24,4 @@ Init Time: should be as recent as possible and can be the block timestamp of the
 
 Min Expiration: LONG and SHORT tokens will be locked for at least this expiration time after minting.
 
-Discount Rate: locktime interest rate discount. (See [expiration.md](../protocol/expiration.md "mention"))
+Discount Rate: locktime interest rate discount. (See [maturity.md](../protocol/maturity.md "mention"))
