@@ -1,15 +1,24 @@
 # Maturity
 
-Derivable positions can have an optional maturity date, before which the position cannot be closed or transferred.
+<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption><p>Position Maturity</p></figcaption></figure>
 
-If configured by the pool, all positions must have a minimum maturity duration of no less than `MinMaturity`. This feature is designed to protect markets with low-cap, high-volatility indexes from price manipulation attacks.
+All Derivable positions have a maturity period during which the position's payoff is lower than its actual value. The maturity duration can be configured by the pool, which creates a soft-lock effect for newly opened positions and protects markets with low-cap, high-volatility indexes from price manipulation attacks.
 
-Users can add additional maturity duration on top of `MinMaturity` when opening a Derivative position in order to benefit from the maturity `DiscountRate` (if configured by the pool).
+Once the maturity time has elapsed, the position becomes fully matured and fully fungible. However, until that time, the position is only partly fungible and subject to the following rules:
 
-DiscountRate (0 ≤ DiscountRate ≤ 1) allows each LONG and SHORT token to be minted with an expiration time and benefit from the Interest Rate discount. No interest is charged for the first `InterestFeeTime` seconds after the position is opened.&#x20;
+* A maturing position can be divided into smaller positions with the same maturity time.
+* A maturing position cannot be transferred or merged into a less matured position.
+* Merging two positions will result in a position with a later maturity time.
 
-$$InterestFreeTime = (Maturity - MinMaturity) \times DiscountRate$$
+Closing a maturing position will result in a payoff of zero or less than the position's value, which is calculated as follows:
 
-For example, consider a pool with a DiscountRate of 75% and a MinMaturity of 1 day. If a LONG (or SHORT) position is opened with a maturity of 5 days, it will be locked for 5 days, and the first 3 days will have no interest rate.
+$$
+v\times(1-256^{({{T-t}\over M}-1)})
+$$
 
-Position maturity has a diluting effect, as adding more value to an unmatured position will result in the weighted average maturity of the two positions.
+Where:
+
+* $$v$$ = the position's value when fully matured
+* $$T$$ = the maturity time of the position
+* $$M$$= the maturity duration configuration of the pool
+* $$t$$ = the current `block.timestamp`
