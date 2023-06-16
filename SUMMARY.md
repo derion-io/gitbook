@@ -20,7 +20,7 @@
 * [Protocol](protocol/README.md)
   * [Pricing Curve](protocol/pricing.md)
   * [State Transition](protocol/state-transition.md)
-  * [Price Oracle](protocol/integration/liquidation.md)
+  * [Price Oracle](protocol/oracle.md)
   * [Liquidity Provider](protocol/lp-exposure.md)
   * [Interest and Fee](protocol/interest-and-fee.md)
   * [Premium](protocol/premium.md)
