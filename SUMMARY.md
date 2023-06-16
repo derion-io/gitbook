@@ -18,7 +18,7 @@
     * [Swap](intro/swap.md)
     * [Exposure](intro/exposure.md)
 * [Protocol](protocol/README.md)
-  * [Pricing Curve](protocol/apc.md)
+  * [Pricing Curve](protocol/pricing.md)
   * [State Transition](protocol/state-transition.md)
   * [Price Oracle](protocol/integration/liquidation.md)
   * [Liquidity Provider](protocol/lp-exposure.md)

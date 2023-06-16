@@ -8,7 +8,7 @@ description: Manage Wallet Exposure and Value
 Exposure Interface
 {% endembed %}
 
-![](<../.gitbook/assets/image (3) (1) (1).png>)
+![](<../.gitbook/assets/image (3) (1).png>)
 
 Information:
 
