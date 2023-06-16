@@ -1,6 +1,6 @@
 # Compound
 
-<figure><img src="../.gitbook/assets/image (3) (2).png" alt=""><figcaption><p>Continuous Compounding</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (3) (1).png" alt=""><figcaption><p>Continuous Compounding</p></figcaption></figure>
 
 A financial instrument is either compounding or not lasting.
 
