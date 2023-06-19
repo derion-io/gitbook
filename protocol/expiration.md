@@ -13,8 +13,10 @@ Once the maturity time has elapsed, the position becomes fully matured and fully
 Closing a maturing position will result in a payoff of zero or less than the position's value, which is calculated as follows:
 
 $$
-v\times(1-256^{({{T-t}\over M}-1)})
+v\times θ\times(1-2^{ε({{T-t}\over M}-1)})
 $$
+
+
 
 Where:
 
@@ -22,3 +24,8 @@ Where:
 * $$T$$ = the maturity time of the position
 * $$M$$= the maturity duration configuration of the pool
 * $$t$$ = the current `block.timestamp`
+
+Configurations:
+
+* θ = the coefficient configuration
+* ε = the exponential configuration
