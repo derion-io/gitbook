@@ -22,10 +22,10 @@ Where:
 
 * $$v$$ = the position's value when fully matured
 * $$T$$ = the maturity time of the position
-* $$M$$= the maturity duration configuration of the pool
 * $$t$$ = the current `block.timestamp`
 
 Configurations:
 
+* $$M$$= the maturity duration configuration of the pool
 * θ = the coefficient configuration
 * ε = the exponential configuration
