@@ -6,4 +6,4 @@ $$InterestFreeDuration = Locktime \times DiscountRate$$
 
 <figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
-For example, consider a pool with a `DiscountRate` of 75%; if a LONG (or SHORT) position is opened with an additional locktime of 4 days, the first 3 days will have no interest rate.
+For example, suppose a pool has a Discount Rate of 75%. If a user opens a LONG or SHORT position with an additional locktime of 4 days, no interest rate will be applied during the first 3 days of the locktime.

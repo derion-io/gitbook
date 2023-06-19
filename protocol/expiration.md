@@ -1,8 +1,8 @@
 # Maturity
 
-<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption><p>Position Maturity</p></figcaption></figure>
-
 All Derivable positions have a maturity period during which the position's payoff is lower than its actual value. The maturity duration can be configured by the pool, which creates a soft-lock effect for newly opened positions and protects markets with low-cap, high-volatility indexes from price manipulation attacks.
+
+<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption><p>Position Maturity</p></figcaption></figure>
 
 Once the maturity time has elapsed, the position becomes fully matured and fully fungible. However, until that time, the position is only partly fungible and subject to the following rules:
 
@@ -29,3 +29,5 @@ Configurations:
 * $$M$$= the maturity duration configuration of the pool
 * θ = the coefficient configuration
 * ε = the exponential configuration
+
+The Maturity Payoff design offers greater financial flexibility for derivative users compared to the Locktime design. With Maturity Payoff, users have the option to sacrifice a portion of their position value in exchange for capital freedom, while still maintaining the system's resistance to manipulation.
