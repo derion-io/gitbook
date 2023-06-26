@@ -25,6 +25,7 @@
   * [Interest and Fee](protocol/interest-and-fee.md)
   * [Premium](protocol/premium.md)
   * [Maturity](protocol/expiration.md)
+  * [Opening Fee](protocol/opening-fee.md)
   * [Future Position](protocol/future-position.md)
 * [Technical Design](design/README.md)
   * [Universal Token Router](design/universal-token-router.md)

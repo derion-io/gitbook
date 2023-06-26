@@ -1,6 +1,6 @@
 # Auto-Deleveraging
 
-<figure><img src="../.gitbook/assets/image (5) (2).png" alt=""><figcaption><p>Auto Deleveraging</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption><p>Auto Deleveraging</p></figcaption></figure>
 
 Thanks to Opyn Squeeth, we can see the Power Perpetual derivative $$ETH^2$$ in action; however, Squeeth is constructed as a mere synthetic asset with an ultra-volatile index. (Think of MakerDAO with DAI token pegged to $$ETH^2$$ instead of USD). The synthetic nature carries all its risks and limitations that prevent it from being open to more derivatives like higher leverages, short positions, and low-cap, high-volatility indexes.
 

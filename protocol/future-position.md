@@ -1,4 +1,10 @@
+---
+description: (EXPERIMENTAL)
+---
+
 # Future Position
+
+<mark style="color:yellow;">Experimental Feature Notice:</mark> Future Position is in an experimental state and not recommended for public use. As for now, the Derivable front-end will not show any pool with Future Discount Rate. This feature can only be used directly from the smart contract, and the user takes full responsibility for their own risk.
 
 Users can add extra locktime to the maturity duration when opening a position, effectively converting it into a futures position. Futures position benefit from the `DiscountRate`, as the LP interest will not be charged for a portion of the locktime.
 
