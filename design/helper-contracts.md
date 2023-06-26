@@ -8,4 +8,4 @@ With the [universal-token-router.md](universal-token-router.md "mention") taking
 
 **FeeReceiver** takes and manages the protocol fee (in [interest-and-fee.md](../protocol/interest-and-fee.md "mention")).
 
-Those helper contracts are not part of the Derivable protocol, and Derivable core contracts are designed to work correctly with any malfunctioned or malicious helper contracts specified by the application front-end or users.
+Those helper contracts are not part of the Derivable protocol, and Derivable core contracts are designed to work properly with any malfunctioned or malicious helper contracts specified by the application front-end and its users.
