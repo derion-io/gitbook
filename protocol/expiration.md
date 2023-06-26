@@ -1,33 +1,19 @@
 # Maturity
 
-All Derivable positions have a maturity period during which the position's payoff is lower than its actual value. The maturity duration can be configured by the pool, which creates a soft-lock effect for newly opened positions and protects markets with low-cap, high-volatility indexes from price manipulation attacks.
+All Derivable positions have a maturity period during which the position's payoff is lower than its face value. The maturity duration can be configured by the pool, which creates a soft-lock effect for newly opened positions and protects markets with low-cap, high-volatility indexes from price manipulation attacks.
 
-<figure><img src="../.gitbook/assets/image (3).png" alt=""><figcaption><p>Position Maturity</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 
 Once the maturity time has elapsed, the position becomes fully matured and fully fungible. However, until that time, the position is only partly fungible and subject to the following rules:
 
 * A maturing position can be divided into smaller positions with the same maturity time.
-* A maturing position cannot be transferred or merged into a more matured position.
+* A maturing position cannot be transferred or merged into a more mature position.
 * Merging two positions will result in a position with a later maturity time.
 
-Closing a maturing position will result in a payoff of zero or less than the position's value, which is calculated as follows:
+Closing a maturing position will result in a payoff of zero or less than the position's face value, which is calculated using the following configurations:
 
-$$
-v\times θ\times(1-2^{ε({{T-t}\over M}-1)})
-$$
+* `MATURITY` the full maturity duration, after which the position payoff will be its full face value.
+* `MATURITY_RATE` the maximum payoff rate for premature position closing.
+* `MATURITY_VEST` the vesting period from the opening time, where the payoff is linearly increased from zero to `MATURITY_RATE` of the face value.
 
-
-
-Where:
-
-* $$v$$ = the position's value when fully matured
-* $$T$$ = the maturity time of the position
-* $$t$$ = the current `block.timestamp`
-
-Configurations:
-
-* $$M$$= the maturity duration configuration of the pool
-* θ = the coefficient configuration
-* ε = the exponential configuration
-
-The Maturity Payoff design offers greater financial flexibility for derivative users compared to the Locktime design. With Maturity Payoff, users have the option to sacrifice a portion of their position value in exchange for capital freedom, while still maintaining the system's resistance to manipulation.
+The Maturity design offers derivative users greater financial flexibility than the Locktime design. With Maturity, users have the option to sacrifice a portion of their position value in exchange for capital freedom while still maintaining the system's resistance to manipulation.

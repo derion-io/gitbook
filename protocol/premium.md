@@ -12,11 +12,9 @@ Consider that the pool is configured with a PremiumRate > 0 and that we have the
 The premium for opening a LONG position is calculated as follows:
 
 * if `RiskFactory ≤ PremiumRate`, there's no Premium Fee for opening LONG
-* if `RiskFactory > PremiumRate`, the LONG position price will be $$RiskFactor \over PremiumRate$$ times higher. This rate will also decrease proportionally as the curve deleverages.
-
-<figure><img src="../.gitbook/assets/image (5) (2).png" alt=""><figcaption><p>Premium</p></figcaption></figure>
+* if `RiskFactory > PremiumRate`, the LONG position price will be $$RiskFactor \over PremiumRate$$ times higher.
 
 The premium for opening the SHORT position is calculated as follows:
 
 * if `RiskFactory ≥ -PremiumRate`, there's no Premium Fee for opening SHORT
-* if `RiskFactory < -PremiumRate`, the SHORT position price will be $$|{RiskFactor \over PremiumRate}|$$ times higher. This rate will also decrease proportionally as the curve deleverages.
+* if `RiskFactory < -PremiumRate`, the SHORT position price will be $$|{RiskFactor \over PremiumRate}|$$ times higher.
