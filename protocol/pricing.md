@@ -6,4 +6,4 @@ description: Self-deleveraging derivatives
 
 The detailed mathematics and proofs of the curve will be published along with our Whitepaper.
 
-<figure><img src="../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (9) (1).png" alt="" width="563"><figcaption></figcaption></figure>
