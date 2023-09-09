@@ -1,19 +1,20 @@
 # Leverage
 
-<figure><img src="../.gitbook/assets/image (11).png" alt=""><figcaption><p>Financial Leverage</p></figcaption></figure>
+Leverage is one of the most useful tools in finance, especially in derivatives trading. When used wisely, leverage can enhance profitability, accelerate wealth growth, maximize opportunities, and optimize capital allocation. However, it is a double-edged sword that is incredibly hard to control. This is mainly because leverage traders are exposed to “liquidation risks”.
 
-Alice has $10.
+<figure><img src="../.gitbook/assets/image.png" alt="" width="563"><figcaption><p>Linear Leverage</p></figcaption></figure>
 
-On Monday, if she buys ETH, then after the ETH price increases by 5%, she will profit $0.5.
+Compared to holding $10 of ETH, borrowing $20 and opening a $30 Long 3x position will have 3 times more exposure to the ETH price but also to the liquidation risk. As the ETH price decreases, the balance decreases 3 times faster toward $0 while the loan is still $20, increasing the debt-to-balance rate to infinity, which is when the liquidation happens.
 
-On Monday, if she opens a Long x10 position in a perpetual exchange, the exchange (theoretically) lends her $90 and buys $100 worth of ETH for her.
+For example, Alice has $10. She uses the $10 as collateral to open an ETH Long 10x position in a perpetual exchange. Now, she has $100 worth of ETH after borrowing $90 (leverage) from the exchange. Now, 2 cases can possibly happen:
 
-On Tuesday, the ETH price increased by 5%, and Alice's position will now be worth $105. Her balance is now worth $105-$90 = $15; if she closes the position now, she will profit $5, which is 10 times more than $0.5. This is why her position is said to have a leverage of 10.
+* Case 1: ETH price decreased by 5%. Alice's position will now be worth $95. Her balance is now worth $5 ($95  - $90). However, you can realize that the leverage of Alice’s position has now changed to 19x ($95 / $5). This leverage is much higher than the 10x she expected, which will continue to rise to infinity as her balance drops to $0. The infinity leverage exposes the lender to systematic risks and is the real reason Alice's position gets liquidated.
+* Case 2: ETH price increased by 5%. Alice's position will now be worth $105. Her balance is now worth $15 ($105 - $90). The leverage of Alice’s position has now changed to 7x ($105 / $15). This leverage is lower than the 10x leverage she expected, resulting in a lower capital efficiency for Alice and a lower interest income for the lender (i.e., perpetual exchange). Alice should increase her leverage (risk level) when the market gets risk-on, not reversely.
 
-This leverage, however, is **not compounded** as the current balance of Alice is not taken into calculation.
+The problem with liquidation will be solved easily if leverage positions can be rebalanced, i.e., closed and reopened, constantly and consistently. On the downside, rebalancing a position will help leverage traders reduce their risk level/losses and constantly doing so will ultimately make liquidation impossible to happen. Constantly rebalancing a leverage position also benefits the upside because traders can effectively increase their leverage level (risk exposure) as the market gets more bullish and risk-on.
 
-On Tuesday, Alice's balance is $15, but her loan is still $90, effectively generating the leverage of only 7 times ($105/$15). This leverage is lower than the x10 leverage she expects, resulting in lower capital efficiency for Alice and lower interest income for the lender (i.e., perpetual exchange).
+<figure><img src="../.gitbook/assets/image (2).png" alt="" width="563"><figcaption><p>Compounding Leverage</p></figcaption></figure>
 
-In another timeline, on Tuesday, the ETH price decreased by 5%, and Alice's position will now be worth $95. Her balance is now $95-$90 = $5, but her loan is still $90, effectively generating the leverage of 19 times ($95/$5). This leverage is much higher than the x10 leverage she expects and continues to rise to infinity as her balance drops to $0. The infinity leverage exposes the lender to a systematic risk and is the real reason Alice's position gets liquidated. This erratic leverage behavior is the consequence of non-compounding financial mathematics inherited from the legacy of paper's future contracts.
+It is evident that “rebalancing” is an incredibly powerful tool when combined with leverage, which gives leverage everything it needs: no liquidation, more potential upside, and less downside.
 
-Non-compounding leverage exposes both lenders and borrowers to financial risks, hence complicating the derivative pricing.
+This technique is called “compound”.\

@@ -1,9 +1,16 @@
 ---
-description: Self-deleveraging derivatives
+description: Asymptotic Power Curves
 ---
 
 # Pricing Curve
 
-The detailed mathematics and proofs of the curve will be published along with our Whitepaper.
+<figure><img src="../.gitbook/assets/image (13).png" alt="" width="563"><figcaption></figcaption></figure>
 
-<figure><img src="../.gitbook/assets/image (9) (1).png" alt="" width="563"><figcaption></figcaption></figure>
+Asymptotic Power Curves is our innovative Pricing Curve design that makes the vision of Derivable feasible in the first place. Thanks to the Asymptotic Power Curves, Derivable is able to achieve:
+
+* NO liquidation at all;
+* Everlasting perpetual future market for all market circumstances;
+* Infinite liquidity, even without liquidity providers;
+* Liquidity elasticity: Impermanent loss and gain, with asymptotic behavior at infinity;
+* Leverage elasticity: Leverage is automatically and continuously capped upon market state transitions and price volatility.
+* Continuous interest rate: to compensate LPs and help them reduce the risk of impermanent loss

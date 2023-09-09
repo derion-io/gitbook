@@ -1,27 +1,21 @@
 # Pool Creation
 
-Perpetual pools for any token pair can be created using the Derivable application front-end or interact directly with the Derivable smart contract. Each Derivable pool has the following configs:
+<mark style="color:yellow;">(Under Construction)</mark>
 
-Reserve Token: the settlement token of the pool.
+As Derivable is an open-market protocol, anyone can create their own liquidity pool for any asset. From the main interface, change to the “Create” tab.
 
-Price Oracle: the index price of the derivatives (currently, only Uniswap V3 is supported):
+<figure><img src="https://lh3.googleusercontent.com/NdySfq3hH0zZ0Qp5GPiGm0ZoDwwiIuiYA1hN5cgQq6is19enIMc146qTMO8btlBdCJ0OpS2TXvi88-SlWWCVk-Jfe5zAL7ZTSwVMSuEsriUek3XNOpqWxzc2HK0J6mzNW2j55TS5wfOwd6ngXvyKnWU" alt=""><figcaption></figcaption></figure>
 
-* Pool Address: Uniswap V3 pool address.
-* Window: the number of seconds to consult the TWAP price. The longer the window, the more resistance to market price manipulation but with more price spread potential in volatile markets.
-* Quote Token Index (0 or 1): the index of the quote token of the Uniswap pool.
+Each Derivable pool has the following configs:
 
-Mark Price: the square rooted value of the Mark price; it should be as close to the market price as possible and is recommended to be shared with multiple pools of the same Price Oracle.
-
-K: twice the power leverage of the 2 derivative tokens of the pool.
-
-a: initial coefficient of the LONG side.
-
-b: initial coefficient of the SHORT side.
-
-LP Interest Rate: the daily compound interest rate that the LONG and SHORT sides have to pay to the LP.
-
-Init Time: should be as recent as possible and can be the block timestamp of the pool creation transaction.
-
-Min Expiration: LONG and SHORT tokens will be locked for at least this expiration time after minting.
-
-Discount Rate: locktime interest rate discount. (See [expiration.md](../protocol/expiration.md "mention"))
+* Reserve Token: the settlement token of the pool.
+* Price Oracle: the index price of the derivatives (currently, only Uniswap V3 is supported):
+  * Pool Address: Uniswap V3 pool address.
+  * Window: the number of seconds to consult the TWAP price. The longer the window, the more resistance to market price manipulation but with more price spread potential in volatile markets.
+  * Quote Token Index (0 or 1): the index of the quote token of the Uniswap pool.
+* Mark Price: the square rooted value of the Mark price; it should be as close to the market price as possible and is recommended to be shared with multiple pools of the same Price Oracle.
+* Leverage: the compounding leverage of the 2 derivative tokens of the pool.
+* Daily Funding Rate
+* Maturity
+* Premium Rate
+* Opening Rate
