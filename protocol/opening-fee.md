@@ -1,6 +1,6 @@
 # Opening Fee
 
-<mark style="color:yellow;">\[Unrecommended Feature]</mark>
+(<mark style="color:yellow;">Unrecommended Feature)</mark>
 
 If configured by the pool, an opening fee may be applied when users open LONG or SHORT positions to further protect the pool from MEV front-running bots.
 

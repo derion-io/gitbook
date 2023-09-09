@@ -2,7 +2,7 @@
 
 <mark style="color:yellow;">(Under Construction)</mark>
 
-In conventional perpetual DEXes with server-based ADL mechanisms, the liquidity-to-position rate often has to be highly abundant to protect the exchange from unpredictable market volatility. With smooth deleveraging curves hardcoded into the payoff function, Derivable provides a much safer and more efficient liquidity provision environment.
+In conventional perpetual DEXes with server-based ADL mechanisms, the liquidity-to-position rate often has to be highly abundant to protect the exchange from unpredictable market volatility. With smooth deleveraging curves built into the payoff function, Derivable provides a much safer and more efficient liquidity provision environment.
 
 <figure><img src="../.gitbook/assets/image (50).png" alt="" width="563"><figcaption></figcaption></figure>
 
