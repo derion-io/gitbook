@@ -37,4 +37,5 @@
   * [Initial Future Offering](applications/initial-future-offering.md)
   * [Depeggable Synthetics](applications/depeggable-synthetics.md)
 * [License](license.md)
+* [Security Audits](security-audits.md)
 * [Whitepaper](whitepaper.md)
