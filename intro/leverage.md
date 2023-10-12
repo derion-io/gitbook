@@ -2,7 +2,7 @@
 
 Leverage is one of the most useful tools in finance, especially in derivatives trading. When used wisely, leverage can enhance profitability, accelerate wealth growth, maximize opportunities, and optimize capital allocation. However, it is a double-edged sword that is incredibly hard to control. This is mainly because leverage traders are exposed to “liquidation risks”.
 
-<figure><img src="../.gitbook/assets/image.png" alt="" width="563"><figcaption><p>Linear Leverage</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1).png" alt="" width="563"><figcaption><p>Linear Leverage</p></figcaption></figure>
 
 Compared to holding $10 of ETH, borrowing $20 and opening a $30 Long 3x position will have 3 times more exposure to the ETH price but also to the liquidation risk. As the ETH price decreases, the balance decreases 3 times faster toward $0 while the loan is still $20, increasing the debt-to-balance rate to infinity, which is when the liquidation happens.
 
