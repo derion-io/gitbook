@@ -4,6 +4,8 @@ description: A better IDO system.
 
 # Initial Future Offering
 
+{% file src="../.gitbook/assets/Derivable Launchpad IFO (1).pdf" %}
+
 IDO was created as an improvement over ICO to provide liquidity for the issuing token as soon as it is offered to the public. However, it has been swamped by bad actors who constantly attempt to scam uninformed investors.
 
 <figure><img src="../.gitbook/assets/image (53).png" alt=""><figcaption></figcaption></figure>
@@ -20,4 +22,4 @@ A typical IFO process is as follows:
 
 The result is a (much) better IDO system that filters out the bad actors and attracts market confidence.
 
-<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
