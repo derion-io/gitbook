@@ -10,5 +10,5 @@ Referrer share calculation from pool fee, after deducting the partner's share (f
 * referrer receives \~$7k for the first $10k pool revenue
 * referrer receives \~$9k for the first $15k pool revenue
 
-Formula: $$10k \times ln({revenue \over 10k} + 1)$$
+Formula: $$10000 \times ln({revenue \over 10000} + 1)$$
 
