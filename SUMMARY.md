@@ -37,6 +37,6 @@
   * [Initial Future Offering](apps/ifo.md)
   * [Depeggable Synthetics](apps/depeggable-synthetics.md)
 * [Partner Incentives](partner/README.md)
-  * [Launchpad Integration](partner/launchpad.md)
+  * [Launchpad](partner/launchpad.md)
 * [Security Audits](audits.md)
 * [Whitepaper](whitepaper.md)
