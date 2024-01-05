@@ -8,9 +8,9 @@ In the first phase of the protocol, due to the limitation of token bridging betw
 
 Token Distribution:
 
-* Community: 60%
-  * Liquidity Mining: 30%
-  * Referrer Commission: 15%
-  * Trading Incentive: 15%
-* Partnership and Growth: 30%
-* Founding Team: 10%
+* Community: 63%
+  * Liquidity Mining: 28%
+  * Trading Incentive: 14%
+  * Referrer Commission: 21%
+* Partnership and Growth: 28%
+* Core Team: 9%
