@@ -8,4 +8,4 @@ Power Perptuals
 
 Power Perpetuals are financial derivatives that track index values in the form of xⁿ. After conducting mathematical calculations (refer to our [Whitepaper](../whitepaper.md)), we found out that Power Perpetuals can replicate exactly the result of compounding a leverage position.
 
-With the benefits that compounding offers, we believe that using Power Perpetuals to replicate compounding in our protocol will provide a better leverage and risk system for the users & trading pools, further allowing Derivable to work more seamlessly and effectively as a Perpetuals AMM DEX.\
+With the benefits that compounding offers, we believe that using Power Perpetuals to replicate compounding in our protocol will provide a better leverage and risk system for the users & trading pools, further allowing Derion to work more seamlessly and effectively as a Perpetuals AMM DEX.\
