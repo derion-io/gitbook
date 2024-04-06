@@ -4,7 +4,7 @@ Thanks to Opyn Squeeth, we can see the Power Perpetuals derivative ETH² in acti
 
 In synthetic protocols, it's generally unacceptable for a synth to lose its peg; however, for a derivative to survive any extreme market conditions, losing leverage (or deleveraging) must be a part of the contract between derivatives traders and providers.
 
-<figure><img src="../.gitbook/assets/image (16).png" alt="" width="563"><figcaption><p>Auto-Deleverage</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (61).png" alt="" width="563"><figcaption><p>Auto-Deleverage</p></figcaption></figure>
 
 Let’s use LUNA as an example. The downfall of Terra last year resulted in the death spiral run of LUNA's price - from $80 to nearly $0. At that time, anyone could short LUNA and gain massive profits. However, the situation was obviously too extreme for users to try to long LUNA. The question here is, how could short traders earn profits when no other was losing?
 
