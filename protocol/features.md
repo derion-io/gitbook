@@ -1,6 +1,6 @@
 # Features
 
-After recognizing the existing pain points that Derivatives DEXes are currently having, Derivable has developed multiple innovative technologies in an attempt to tackle those shortcomings.
+After recognizing the existing pain points that Derivatives DEXes are currently having, Derion has developed multiple innovative technologies in an attempt to tackle those shortcomings.
 
 * Power (compounding) Leverage instead of Linear Leverage: More potential upside with less downside, no liquidation risk.
 * Asymptotic Power Curve as Pricing Curve (see below): Enable infinite liquidity with no liquidation. Congested liquidation events are eliminated because there simply won’t be any liquidation!

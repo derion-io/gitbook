@@ -9,7 +9,7 @@
   * [Trader Risks](existing-challenges/trader-risks.md)
   * [Exchange Risks](existing-challenges/exchange-risks.md)
   * [Perpetuals AMM](existing-challenges/perpetuals-amm.md)
-* [Why Derivable?](why/README.md)
+* [Why Derion?](why/README.md)
   * [Game Theory](why/game-theory.md)
   * [Trading Experience](why/trading-experience.md)
   * [Liquidity Efficiency](why/liquidity-efficiency.md)

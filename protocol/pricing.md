@@ -6,7 +6,7 @@ description: Asymptotic Power Curves
 
 <figure><img src="../.gitbook/assets/image (13).png" alt="" width="563"><figcaption></figcaption></figure>
 
-Asymptotic Power Curves is our innovative Pricing Curve design that makes the vision of Derivable feasible in the first place. Thanks to the Asymptotic Power Curves, Derivable is able to achieve:
+Asymptotic Power Curves is our innovative Pricing Curve design that makes the vision of Derion feasible in the first place. Thanks to the Asymptotic Power Curves, Derion is able to achieve:
 
 * NO liquidation at all;
 * Everlasting perpetual future market for all market circumstances;

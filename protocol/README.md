@@ -1,8 +1,8 @@
-# Protocol
+# Protocol Design
 
-Derivable Protocol is a set of smart contracts designed for the creation of leverage perpetual pools for any index value, with any leverage, and reserved with any ERC-20 token.
+Derion Protocol is a set of smart contracts designed for the creation of leverage perpetual pools for any index value, with any leverage, and reserved with any ERC-20 token.
 
-Derivable pools have the following properties:
+Derion pools have the following properties:
 
 * 3 sides: LONG, SHORT, and LIQUIDITY (LP) as 3 fungible tokens.
 * LONG and SHORT trace an index value from an external oracle (on-chain or off-chain).
