@@ -14,7 +14,6 @@
   * [Trading Experience](why/trading-experience.md)
   * [Composability](why/composability.md)
   * [Liquidity Efficiency](why/liquidity-efficiency.md)
-  * [Risk Management](why/risk-management.md)
 * [Protocol Design](protocol/README.md)
   * [Features](protocol/features.md)
   * [Pricing Curve](protocol/pricing.md)
