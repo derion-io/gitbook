@@ -36,6 +36,7 @@
   * [Helper Contracts](design/helper-contracts.md)
   * [LP Management](design/lp-management.md)
 * [Applications](apps/README.md)
+  * [AMM-LP IL Hedge](apps/amm-lp-il-hedge.md)
   * [Initial Future Offering](apps/ifo.md)
   * [Depeggable Synthetics](apps/depeggable-synthetics.md)
 * [Tokenomics](tokenomics/README.md)
