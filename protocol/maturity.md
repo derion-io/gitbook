@@ -1,6 +1,6 @@
 # Maturity
 
-All Derivable positions have a maturity period. Before the final maturity date is reached (the maturity duration expires), the position's payoff is lower than its face value. The position’s payoff will be gradually increased towards the face value until the maturity duration ends, at which the position’s payoff = face value.
+All Derion positions have a maturity period. Before the final maturity date is reached (the maturity duration expires), the position's payoff is lower than its face value. The position’s payoff will be gradually increased towards the face value until the maturity duration ends, at which the position’s payoff = face value.
 
 <figure><img src="../.gitbook/assets/image (40).png" alt=""><figcaption></figcaption></figure>
 

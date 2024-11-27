@@ -2,11 +2,11 @@
 
 <mark style="color:yellow;">(Under Construction)</mark>
 
-As Derivable is an open-market protocol, anyone can create their own liquidity pool for any asset. From the main interface, change to the “Create” tab.
+As Derion is an open-market protocol, anyone can create their own liquidity pool for any asset. From the main interface, change to the “Create” tab.
 
 <figure><img src="https://lh3.googleusercontent.com/NdySfq3hH0zZ0Qp5GPiGm0ZoDwwiIuiYA1hN5cgQq6is19enIMc146qTMO8btlBdCJ0OpS2TXvi88-SlWWCVk-Jfe5zAL7ZTSwVMSuEsriUek3XNOpqWxzc2HK0J6mzNW2j55TS5wfOwd6ngXvyKnWU" alt=""><figcaption></figcaption></figure>
 
-Each Derivable pool has the following configs:
+Each Derion pool has the following configs:
 
 * Reserve Token: the settlement token of the pool.
 * Price Oracle: the index price of the derivatives (currently, only Uniswap V3 is supported):

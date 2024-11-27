@@ -4,7 +4,7 @@ description: Open Long and Short positions
 
 # Long/Short
 
-To open a long/short position on Derivable, first, choose the asset pair you wish to trade. The trading pair can be selected at the top left of the screen.
+To open a long/short position on Derion, first, choose the asset pair you wish to trade. The trading pair can be selected at the top left of the screen.
 
 <figure><img src="https://lh6.googleusercontent.com/CaBrGPHsP0z9y2OgljQz__O8lrjT4xj055TYsfZMRZ1JIE38BhOHVIuGSDCqxbLxE5YpIVpuEaz9qlImD3BtHTbcKIn1c8LadQbEMm95DZwoNCHb1ASyAa3ZfXnzybF-tMvUphhxeY8vEJKXfmM-WwM" alt=""><figcaption><p>Long/Short</p></figcaption></figure>
 
@@ -12,7 +12,7 @@ Afterward, you can choose to either long or short on the right panel. You can se
 
 * Net Value: The value of your position without applying leverage (net).
 * Size: The total value of your position after applying leverage.
-* Maturity: The maturity duration, after which you can receive the full payoff (see [Maturity](https://docs.google.com/document/d/1YXQInjODz16fAvQaSxkoQdiwUgqrXK\_ChF22ktXeUW8/edit#heading=h.718x1tqf6404) for more details).
+* Maturity: The maturity duration, after which you can receive the full payoff (see [Maturity](https://docs.google.com/document/d/1YXQInjODz16fAvQaSxkoQdiwUgqrXK_ChF22ktXeUW8/edit#heading=h.718x1tqf6404) for more details).
 * Daily Interest Rate: The fees you must pay daily to maintain your position.
 * Deleverage Risk: The risk of your position being auto-deleveraged. The larger the position, the higher the risk.
 * Premium Rate: the premium rate you have to pay in imbalance pools.&#x20;
