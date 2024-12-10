@@ -2,16 +2,31 @@
 
 There are two components to the Funding Rate: the Interest Rate and the Premium Rate.
 
-The Interest Rate is continuously charged from both the Long and Short sides to the LP side with a constant decay rate initialized by the pool.
+Unlike conventional perpetual exchanges, where the funding rate is manually charged and updated periodically, Derion's funding rate is autonomous and continuously applied on every block of the underlying smart contract platform.
 
 <figure><img src="../.gitbook/assets/fee.gif" alt=""><figcaption><p>Interest and Protocol Fee</p></figcaption></figure>
 
-The Premium Rate is charged to the larger side of Long and Short and is paid to the other two sides proportionally, offering them the chance of negative funding rates as an incentive to balance the market.
+## Interest Rate
 
-* If the pool has equal reserves for Long and Short, no premium is charged whatsoever.
-* If the pool has close to 0% of Short positions, Long positions will have to pay the Maximum Premium Rate, and this premium will be split between Short and LP positions pro-rata.
-* If the pool has a 40% reserve for Short, 30% for Long, and the rest for LP, Short positions will have to pay (40% - 30%) ÷ 40% = 25% of the Maximum Premium Rate, and this premium will be split between Long and LP positions pro-rata.
+The Interest Rate is continuously charged from both the Long and Short sides to the LP side with a constant decay rate initialized by the pool.
 
-Unlike conventional perpetual exchanges, where the funding rate is manually charged and updated periodically, Derivable's funding rate is autonomous and continuously applied on every block of the underlying smart contract platform.
+A total of 1/5 of the interest tokens paid to LP is collected as the protocol fee.
 
-A total of 1/5 of the interest and premium tokens paid to LP is collected as the protocol fee.
+## Premium Rate
+
+The Premium is paid by the larger to the smaller side of Long and Short, offering them the chance of negative funding rates as an incentive to balance the market.
+
+With:
+
+* rLong: long reserve
+* rShort: short reserve
+* rLP: LP reserve
+* $$PR_{max}$$: the constant maximum premium rate for a single Derion pool
+
+Long Premium Rate:
+
+$$PR_{long} = PR_{max} \times \dfrac{rLong^2 - rShort^2}{R \times rLong}$$
+
+Short Premium Rate:
+
+$$PR_{short} = PR_{max} \times \dfrac{rShort^2 - rLong^2}{R \times rShort}$$

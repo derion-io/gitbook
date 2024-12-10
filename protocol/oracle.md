@@ -9,3 +9,5 @@ Uniswap Oracle provides both TWAP and SPOT prices. Derivable's double price syst
 <figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1) (1).png" alt=""><figcaption><p>Double Price System</p></figcaption></figure>
 
 The double price system enforces the conversion rate to use the less beneficial result of the 2 prices. This system serves 2 purposes: (A) preventing price manipulation by arbitrageurs and (B) taking volatility fees for the Liquidity Provider in their unfavorable market.
+
+The Liquidity Provider is always prioritized, ensuring the price is selected in their favor.
