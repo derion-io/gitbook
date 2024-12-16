@@ -24,7 +24,7 @@ struct Payment {
 
 ## Sides
 
-There's 3 sides in a pool:
+There are 3 sides in a pool:
 
 * SIDE\_LONG = 0x10
 * SIDE\_SHORT = 0x20
