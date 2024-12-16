@@ -1,6 +1,6 @@
-# Contract API
+# API
 
-A state transaction on a Derion pool is done by calling the `swap` function on the pool contract. The same function can also be statically called to perform input and output estimation.
+A state transition on a Derion pool is done by calling the `swap` function on the pool contract. The same function can also be statically called to perform input and output estimation.
 
 ```solidity
 function swap(
@@ -22,20 +22,20 @@ struct Payment {
 }
 ```
 
-### Sides
+## Sides
 
 There's 3 sides in a pool:
 
-* SIDE\_LONG: 0x10
-* SIDE\_SHORT: 0x20
-* SIDE\_LP: 0x30
+* SIDE\_LONG = 0x10
+* SIDE\_SHORT = 0x20
+* SIDE\_LP = 0x30
 
-sideIn and sideOut represent the state transistion types:
+`sideIn` and `sideOut` represent the state transistion types:
 
-* opening Long/Short/LP position will have sideIn = 0
-* closing Long/Short/LP position will have sideOut = 0
+* opening Long/Short/LP position will have `sideIn` = 0
+* closing Long/Short/LP position will have `sideOut` = 0
 
-### Helper
+## Helper
 
 * helper: Helper contract address
 * payload: data will be passed to `Helper.swapToState` contract call internally by the `swap` function.
@@ -48,21 +48,21 @@ bytes memory payload = abi.encode(sideIn, sideOut, amountIn);
 (sideIn, sideOut, amountIn) = abi.decode(payload, (uint256, uint256, uint256));
 ```
 
-Note: sideIn and sideOut must be passed twice: first in the Param's fields, and another time packed in Helper's payload.
+Note: `sideIn` and `sideOut` must be passed twice: first in the `Param`, and another time packed in Helper's `payload`.
 
-### Payment
+## Payment
 
 `recipient` is the target account that the token output will be transfered to.
 
-There are 3 methods of payments:
+There are 2 methods of payments:
 
-#### Direct approve
+### Direct Token Approval
 
-If `payer` is an empty bytes, the `utr` param will be ignored, and `swap` require a direct approval from `msg.sender` to transfer the tokenIn in. This mode is recommended for inter-contract interaction only.
+If `payer` is an empty bytes, the `utr` param will be ignored, and `swap` require a direct approval from `msg.sender` to transfer the `sideIn` token in. This mode is recommended for inter-contract interaction only.
 
-#### ERC-6120
+### ERC-6120
 
-If `payer` is the 20 bytes address of the paying account, the `swap` call is expected to be invoked over an ERC-6120's execution by that `payer` account.
+If `payer` is the 20 bytes address of the paying account, the `swap` call is expected to be invoked over an `ERC-6120`'s execution by that `payer` account.
 
 The `utr` is the address of the ERC-6120 contract that invoke this call.
 
