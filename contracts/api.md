@@ -54,6 +54,8 @@ Note: `sideIn` and `sideOut` must be passed twice: first in the `Param`, and ano
 
 `recipient` is the target account that the token output will be transfered to.
 
+See [derivative-tokens.md](../design/derivative-tokens.md "mention") for ERC-1155 position token and id specification.
+
 There are 2 methods of payments:
 
 ### Direct Token Approval
@@ -64,7 +66,7 @@ If `payer` is an empty bytes, the `utr` param will be ignored, and `swap` requir
 
 If `payer` is the 20 bytes address of the paying account, the `swap` call is expected to be invoked over an `ERC-6120`'s execution by that `payer` account.
 
-The `utr` is the address of the ERC-6120 contract that invoke this call.
+The `utr` is the address of the [ERC-6120](../design/universal-token-router.md) contract that invoke this call.
 
 ```javascript
 utr.exec([
