@@ -1,6 +1,6 @@
 # Contract API
 
-A state transaction on a Derion pool is done by calling the `swap` function on the pool contract.
+A state transaction on a Derion pool is done by calling the `swap` function on the pool contract. The same function can also be statically called to perform input and output estimation.
 
 ```solidity
 function swap(
