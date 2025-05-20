@@ -42,7 +42,7 @@ It's been shown that compounding leveraged trading closely approximates power pe
 
 <figure><img src="../.gitbook/assets/image.png" alt="" width="563"><figcaption></figcaption></figure>
 
-Each position can be trustlessly "repositioned" onto the curve by anyone while retaining its full value and properties, allowing the market maker to control the deviation from the exact open interest as precisely as desired, limited only by the on-chain transaction frequency and cost.
+Along with market traders' natural position actions (open and close), each position can be trustlessly "repositioned" onto the curve by anyone while retaining its full value and properties. This allows the market maker to control the deviation from the exact open interest as precisely as desired, limited only by the on-chain transaction frequency and cost..
 
 <figure><img src="../.gitbook/assets/image (1).png" alt="" width="563"><figcaption><p>Position Repositioning</p></figcaption></figure>
 
