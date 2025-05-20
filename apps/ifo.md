@@ -22,4 +22,4 @@ A typical IFO process is as follows:
 
 The result is a (much) better IDO system that filters out the bad actors and attracts market confidence.
 
-<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (2) (1).png" alt=""><figcaption></figcaption></figure>

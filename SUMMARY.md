@@ -39,6 +39,7 @@
   * [Addresses](contracts/addresses.md)
   * [API](contracts/api.md)
 * [Applications](apps/README.md)
+  * [Perp DEX Backstop](apps/perp-dex-backstop.md)
   * [AMM-LP IL Hedge](apps/amm-lp-il-hedge.md)
   * [Initial Future Offering](apps/ifo.md)
   * [Depeggable Synthetics](apps/depeggable-synthetics.md)
