@@ -1,9 +1,9 @@
 ---
-description: For both AMM and LOB
+description: For both AMM and LOB Perpetuals
 icon: shield-check
 ---
 
-# Perp DEX Backstop
+# Derivative Backstop Mechanism
 
 LOB perp DEXs with backstop liquidation, like HyperLiquid, faced two "HyperLiquid 2025 exploits." One involved manipulating an illiquid asset's price to force a large, unprofitable short onto the backstop (HLP). The other saw a large ETH long strategically exploit liquidation mechanics after withdrawing collateral, again shifting millions in losses to the HLP.
 
@@ -61,3 +61,5 @@ The LOB slippage can be adjusted in real-time by dynamically adding or removing 
 ### Summary
 
 While the Derion itself functions as a compounding perpetuals AMM—a concept that might be novel to many traders and market makers—its double-curve pool design offers a powerful application. It can effectively serve as a financial security layer underpinning a familiar, unique position perp DEX, significantly enhancing protection against market manipulation and exploits, especially in on-chain DEX environments where complex calculations are limited and expensive.
+
+With Derion as the derivative backstop mechanism, attacks like those seen on HyperLiquid would be significantly mitigated, if not entirely prevented. This is because a large, exploitative position would instantly incur a massive premium due to Derion's real-time open interest approximation and slippage adjustment. Furthermore, the dynamic LOB slippage mechanism would prevent almost all collateral from being withdrawn in a manner that puts the backstop liquidator at a loss, effectively curbing the attack vectors previously exploited.
