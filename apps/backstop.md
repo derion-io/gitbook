@@ -28,7 +28,7 @@ Where:
 
 <div data-full-width="false"><figure><img src="../.gitbook/assets/image (5).png" alt="" width="563"><figcaption><p>Perpetual Positions</p></figcaption></figure></div>
 
-Each position with leverage $$L\le K$$ can be positioned on the $$x^K$$ curve with a coefficent m
+Each position with leverage $$L\le K$$ can be positioned on the $$x^K$$ curve with a coefficient:
 
 $$
 m=\dfrac{L}K\dfrac{C}{x_0^K}
