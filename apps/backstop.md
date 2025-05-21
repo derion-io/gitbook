@@ -49,7 +49,7 @@ It's been shown that compounding leveraged trading closely approximates power pe
 While deviations can occur when large positions remain untouched for extended periods (especially during price swings), the positive gamma exposure inherent in power perpetuals ensures that any such deviation from the exact open interest is always non-negative. This makes it a safer estimation for liquidity providers and market makers, favoring their position.
 
 $$
-\Delta{V}(x)=CL\left[\dfrac{1}K\left(\dfrac{x^K}{x_0^K}-1\right)-\left(\dfrac{x_0}x-1\right)\right]
+\Delta{V}(x)=CL\left[\dfrac{1}K\left(\dfrac{x^K}{x_0^K}-1\right)-\left(\dfrac{x}{x_0}-1\right)\right]
 $$
 
 Along with market traders' natural position actions (open and close), each position can be trustlessly "repositioned" onto the curve by anyone while retaining its full value and properties. This allows the market maker to control the deviation from the exact open interest as precisely as desired, limited only by the on-chain transaction frequency and cost.
