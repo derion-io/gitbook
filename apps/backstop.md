@@ -16,7 +16,7 @@ Derion (Derivable) curves can serve as an exchange's backstop, providing a real-
 Value of perpetual positions:
 
 $$
-V=C+C\cdot L \cdot \dfrac{\Delta{p}}{p_0}
+V=C+C\cdot L \cdot \dfrac{p-p_0}{p_0}
 $$
 
 Where:
@@ -24,17 +24,21 @@ Where:
 * C: entry colateral
 * L: leverage
 * $$p_0$$: entry price
-* $$\Delta p$$: price deviation from $$p_0$$
+* $$p$$: current price
 
-<div data-full-width="false"><figure><img src="../.gitbook/assets/image (5).png" alt="" width="563"><figcaption><p>Open Interest</p></figcaption></figure></div>
+<div data-full-width="false"><figure><img src="../.gitbook/assets/image (5).png" alt="" width="563"><figcaption><p>Perpetual Positions</p></figcaption></figure></div>
 
-Long open interest is the sum of all Position value:
+Each position with leverage $$L\le M$$ can be positioned on the $$p^M$$ curve with a coefficent m
 
 $$
-OI=\displaystyle\sum_{i=0}^n V_i
+m=\dfrac{L}{M}\dfrac{C}{p_0^M}
 $$
 
-Each position with leverage L < $$L_{max}$$ can be presented using the same $$L_{max}$$ with a coefficent $$c=\dfrac{L}{L_{max}}$$.
+The value of the position is calculated using V<sup>\*</sup> instead of V. Both have the same value and first derivative at $$p=p_0$$:
+
+$$
+V^*=C(1-{L\over M})+mp^M
+$$
 
 <figure><img src="../.gitbook/assets/image (6).png" alt="" width="563"><figcaption><p>Long Open Interest</p></figcaption></figure>
 
