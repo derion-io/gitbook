@@ -16,37 +16,43 @@ Derion (Derivable) curves can serve as an exchange's backstop, providing a real-
 Value of perpetual positions:
 
 $$
-V=C+C\cdot L \cdot \dfrac{p-p_0}{p_0}
+V=C+C\cdot L \cdot \dfrac{x-x_0}{x_0}
 $$
 
 Where:
 
 * C: entry colateral
 * L: leverage
-* $$p_0$$: entry price
-* $$p$$: current price
+* $$x_0$$: entry price
+* $$x$$: current price
 
 <div data-full-width="false"><figure><img src="../.gitbook/assets/image (5).png" alt="" width="563"><figcaption><p>Perpetual Positions</p></figcaption></figure></div>
 
-Each position with leverage $$L\le M$$ can be positioned on the $$p^M$$ curve with a coefficent m
+Each position with leverage $$L\le K$$ can be positioned on the $$x^K$$ curve with a coefficent m
 
 $$
-m=\dfrac{L}{M}\dfrac{C}{p_0^M}
+m=\dfrac{L}K\dfrac{C}{x_0^K}
 $$
 
-The value of the position is calculated using V<sup>\*</sup> instead of V. Both have the same value and first derivative at $$p=p_0$$:
+The value of the position is calculated using V<sup>\*</sup> instead of V. Both have the same value and first derivative at $$x=x_0$$:
 
 $$
-V^*=C(1-{L\over M})+mp^M
+V^*=C(1-{L\over K})+mx^K
 $$
 
 <figure><img src="../.gitbook/assets/image (6).png" alt="" width="563"><figcaption><p>Long Open Interest</p></figcaption></figure>
 
-It's been shown that compounding leveraged trading closely approximates power perpetuals. Given the continuous opening and closing of positions in a perpetual market, open interest can be safely approximated using power perpetual curves. While deviations can occur when large positions remain untouched for extended periods (especially during price swings), the positive gamma exposure inherent in power perpetuals ensures that any such deviation from the exact open interest is always non-negative. This makes it a safer estimation for liquidity providers and market makers, favoring their position.
+It's been shown that compounding leveraged trading closely approximates power perpetuals. Given the continuous opening and closing of positions in a perpetual market, open interest can be safely approximated using power perpetual curves.
 
 <figure><img src="../.gitbook/assets/image.png" alt="" width="563"><figcaption></figcaption></figure>
 
-Along with market traders' natural position actions (open and close), each position can be trustlessly "repositioned" onto the curve by anyone while retaining its full value and properties. This allows the market maker to control the deviation from the exact open interest as precisely as desired, limited only by the on-chain transaction frequency and cost..
+While deviations can occur when large positions remain untouched for extended periods (especially during price swings), the positive gamma exposure inherent in power perpetuals ensures that any such deviation from the exact open interest is always non-negative. This makes it a safer estimation for liquidity providers and market makers, favoring their position.
+
+$$
+\Delta{V}(x)=CL\left[\dfrac{1}K\left(\dfrac{x^K}{x_0^K}-1\right)-\left(\dfrac{x_0}x-1\right)\right]
+$$
+
+Along with market traders' natural position actions (open and close), each position can be trustlessly "repositioned" onto the curve by anyone while retaining its full value and properties. This allows the market maker to control the deviation from the exact open interest as precisely as desired, limited only by the on-chain transaction frequency and cost.
 
 <figure><img src="../.gitbook/assets/image (1).png" alt="" width="563"><figcaption><p>Position Repositioning</p></figcaption></figure>
 
