@@ -1,6 +1,6 @@
 # LP Management
 
-As briefly introduced in [liquidity-efficiency.md](../why/liquidity-efficiency.md "mention"), LP Management (LPM) contracts are used for liquidity providers to safely automate LP risk control and rebalancing between multiple pools of the same class.
+As briefly introduced in [Broken link](broken-reference "mention"), LP Management (LPM) contracts are used for liquidity providers to safely automate LP risk control and rebalancing between multiple pools of the same class.
 
 The movement of the liquidity token is automated by a trustless backend service, where the token constraints are programmed in the LP Management contract code. Funds can only move between the LPM contract and its allowed Derion pool addresses, with additional restrictions to prevent griefing attacks.
 

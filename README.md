@@ -1,17 +1,32 @@
 # Introduction
 
-Derion is the first Perpetual Automated Market Maker (AMM) Protocol, enabling _compound leverage_ trading of any price index with no liquidation and smooth deleveraging curves.
+Derion is a novel Decentralized Speculation Market that enables speculation on any value available via smart contract, including Uniswap pool prices or external oracle feeds.
 
-<figure><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/The_White_Rabbit_(Tenniel)_-_The_Nursery_Alice_(1890)_-_BL.jpg/800px-The_White_Rabbit_(Tenniel)_-_The_Nursery_Alice_(1890)_-_BL.jpg" alt="" width="375"><figcaption><p>The White Rabbit</p></figcaption></figure>
+### Decentralized Market
 
-Uniswap has pioneered the development of AMM DEX, innovating a completely new spot trading mechanism and market-making system based on the blockchain technology. Different from the traditional spot trading models based on order-book, AMM DEX allows users to trade assets seamlessly with automated market making, infinite liquidity, all in a permissionless and decentralized manner. Since the emergence of Uniswap, myriads of cryptocurrency markets have been formed atop, generating a Decentralized Finance (DeFi) ecosystem more vibrant than ever.
+Anyone can initialize a speculation market for any value feed, allowing others to participate alongside or as counterparties, **with no privileged roles.**
 
-Regardless of how incredible Uniswap was, the innovation stops at spot trading. While most AMM DEXes continue to follow and develop the Uniswap’s approach of spot trading, there has been no similar product (AMM DEX) for derivatives trading.
+<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
-{% embed url="https://ethresear.ch/t/token-sales-and-shorting/376" %}
+The market features three distinct participant roles:
 
-For DeFi to keep thriving, additional financial products have been brought onto the scene alongside AMM DEX. It can be easily witnessed that one of the most popular DeFi products nowadays is derivatives (options, futures, perpetuals,..). While derivatives play an important role in the DeFi ecosystem, most DeFi derivatives products follow the traditional approach of unique-position and counterparty market-making. Even though we understand that it is highly challenging to construct the original model on-chain while still maintaining efficiency as well as decentralization, the model itself is neither appropriate nor optimal for DeFi usages, to even start with in the first place
+* **Long or Short:** Participants with positive gamma exposure, who pay a convex fee.
+* **Liquidity:** Providers with negative gamma exposure, who earn a convex fee.
 
-Inspired by Uniswap’s groundbreaking invention, we introduce the Derion protocol, which follows a first-principle approach to disrupt conventional models of derivatives trading and market making based on unique position and order-book exchanges. With the innovation of Asymptomatic Power Curves and compound leverage, Derivable can change the DeFi derivatives trading market, similar to how Uniswap innovated the spot trading scene.
+The market is designed to function effectively even with minimal or no liquidity. In the absence of counter-party liquidity, your position will incur no delta exposure and pay no funding fee. When a counter-party is present but significantly smaller than your market side, a corresponding fee rate will apply to a **partial** delta exposure.
 
-The part below will give you an introduction to how Derion works and our solutions to the existing pain points of current DeFi derivatives products.
+### Compounding Leverage
+
+Unlike Perpetual and Futures markets, Derion's Long/Short speculation positions utilize compound leverage, which generates the positive gamma exposure characteristic of its power curve, ensuring that **positions cannot be liquidated**. This is a desirable trait for traders, as it means they benefit more from favorable volatility and are less penalized by unfavorable movements; consequently, they pay a funding fee for the delta and gamma exposure to the Liquidity side.
+
+<figure><img src=".gitbook/assets/image (5).png" alt="" width="563"><figcaption></figcaption></figure>
+
+Liquidity Providers (LPs) represent the passive side of the market. They assume the counter-party risks associated with value movements and, in return, earn the funding fee from both Long and Short.
+
+### Full On-chain
+
+Derion markets are fully automated on a smart contract, utilizing dual asymptotic power curves. This design eliminates any dependence on backend services for risk management or position liquidation. The entire speculation market can be deployed on any smart-contract platform, and works completely decentralized without any privileged roles or backend services.
+
+<figure><img src=".gitbook/assets/image (2).png" alt="" width="563"><figcaption></figcaption></figure>
+
+Derion speculation pools are mathematically functional in any market condition, operating for unlimited periods of time with or without user interaction. No position is at risk of liquidation, nor can the market itself be bankrupted.

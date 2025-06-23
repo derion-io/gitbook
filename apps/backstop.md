@@ -26,7 +26,7 @@ Where:
 * $$x_0$$: entry price
 * $$x$$: current price
 
-<div data-full-width="false"><figure><img src="../.gitbook/assets/image (5).png" alt="" width="563"><figcaption><p>Perpetual Positions</p></figcaption></figure></div>
+<div data-full-width="false"><figure><img src="../.gitbook/assets/image (5) (1).png" alt="" width="563"><figcaption><p>Perpetual Positions</p></figcaption></figure></div>
 
 Each position with leverage $$L\le K$$ can be positioned on the $$x^K$$ curve with a coefficient:
 
@@ -40,11 +40,11 @@ $$
 V^*=C(1-{L\over K})+mx^K
 $$
 
-<figure><img src="../.gitbook/assets/image (6).png" alt="" width="563"><figcaption><p>Long Open Interest</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (6) (1).png" alt="" width="563"><figcaption><p>Long Open Interest</p></figcaption></figure>
 
 It's been shown that compounding leveraged trading closely approximates power perpetuals. Given the continuous opening and closing of positions in a perpetual market, open interest can be safely approximated using power perpetual curves.
 
-<figure><img src="../.gitbook/assets/image.png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (6).png" alt="" width="563"><figcaption></figcaption></figure>
 
 While deviations can occur when large positions remain untouched for extended periods (especially during price swings), the positive gamma exposure inherent in power perpetuals ensures that any such deviation from the exact open interest is always non-negative. This makes it a safer estimation for liquidity providers and market makers, favoring their position.
 
@@ -54,7 +54,7 @@ $$
 
 Along with market traders' natural position actions (open and close), each position can be trustlessly "repositioned" onto the curve by anyone while retaining its full value and properties. This allows the market maker to control the deviation from the exact open interest as precisely as desired, limited only by the on-chain transaction frequency and cost.
 
-<figure><img src="../.gitbook/assets/image (1).png" alt="" width="563"><figcaption><p>Position Repositioning</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1).png" alt="" width="563"><figcaption><p>Position Repositioning</p></figcaption></figure>
 
 With a real-time, safe approximation of open interest, perp DEXs can constantly adjust their reflective premium rate at every moment, effectively eliminating any premium rate gaps ripe for exploitation.
 
@@ -62,11 +62,11 @@ With a real-time, safe approximation of open interest, perp DEXs can constantly 
 
 In Limit Order Book (LOB) markets, closing a large position typically incurs significant slippage, and neglecting this factor can lead to substantial losses for market makers. The "deleverage curve" can provide feedback on the LOB's depth when one side of the market becomes dominant.
 
-<figure><img src="../.gitbook/assets/image (3).png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (3) (1).png" alt="" width="563"><figcaption></figcaption></figure>
 
 The LOB slippage can be adjusted in real-time by dynamically adding or removing pool liquidity to accurately reflect the market's true LOB depth.
 
-<figure><img src="../.gitbook/assets/image (4).png" alt="" width="345"><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (4) (1).png" alt="" width="345"><figcaption></figcaption></figure>
 
 ### Summary
 
