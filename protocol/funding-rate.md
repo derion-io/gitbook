@@ -8,7 +8,7 @@ Unlike conventional perpetual exchanges, where the funding rate is manually char
 
 ## Interest Rate
 
-The Interest Rate is continuously charged from both the Long and Short sides to the LP side with a constant decay rate initialized by the pool.
+The Interest Rate is continuously charged from both the Long and Short sides to the LP side with a decay rate initialized by the pool, that scales with the effective leverage (or delta) of each side.
 
 A total of 1/5 of the interest tokens paid to LP is collected as the protocol fee.
 

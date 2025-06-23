@@ -8,7 +8,7 @@ To open a long/short position on Derion, first, choose the asset pair you wish t
 
 <figure><img src="https://lh6.googleusercontent.com/CaBrGPHsP0z9y2OgljQz__O8lrjT4xj055TYsfZMRZ1JIE38BhOHVIuGSDCqxbLxE5YpIVpuEaz9qlImD3BtHTbcKIn1c8LadQbEMm95DZwoNCHb1ASyAa3ZfXnzybF-tMvUphhxeY8vEJKXfmM-WwM" alt=""><figcaption><p>Long/Short</p></figcaption></figure>
 
-Afterward, you can choose to either long or short on the right panel. You can select between several leverage levels (see [Liquidity Concentration](../../protocol/liquidity-concentration.md)). After choosing the leverage and entering the amount you want to trade, you should consider a number of factors before opening the positions:
+Afterward, you can choose to either long or short on the right panel. You can select between several leverage levels (see [Liquidity Concentration](broken-reference)). After choosing the leverage and entering the amount you want to trade, you should consider a number of factors before opening the positions:
 
 * Net Value: The value of your position without applying leverage (net).
 * Size: The total value of your position after applying leverage.
