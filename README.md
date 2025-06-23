@@ -1,6 +1,6 @@
 # Introduction
 
-Derion is a novel Decentralized Speculation Market that enables speculation on any value available via smart contract, including Uniswap pool prices or external oracle feeds.
+Derion is a novel Decentralized Speculation Market that enables speculation on any value available via smart contract, including on-chain DEX prices or off-chain Oracle feeds.
 
 ### Decentralized Market
 
