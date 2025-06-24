@@ -17,3 +17,5 @@ The Liquidity Provider is always prioritized, ensuring the price is selected in 
 ### Chainlink Feed
 
 Derion leverages Chainlink oracle feeds for their **decentralized, reliable, and tamper-proof price data**. Chainlink's robust network of independent nodes aggregates data from numerous sources, eliminating single points of failure and ensuring high data integrity. This makes Chainlink the ideal choice for Derion's decentralized speculation markets, as it provides the **secure and accurate real-time price feeds** essential for fair and transparent market operations, aligning with Derion's core principle of eliminating privileged roles and backend dependencies.
+
+With Chainlink Functions, Derion can create speculation markets for any real-world value or event, whether it's an election outcome or sports results.
