@@ -10,8 +10,8 @@ Anyone can initialize a speculation market for any value feed, allowing others t
 
 The market features three distinct participant roles:
 
-* **Long or Short:** Participants with positive gamma exposure, who pay a convex fee.
-* **Liquidity:** Providers with negative gamma exposure, who earn a convex fee.
+* **Long or Short:** Participants with positive gamma exposure, who pay an interest rate.
+* **Liquidity:** Providers with negative gamma exposure, who earn the funding rate.
 
 The market is designed to function effectively even with minimal or no liquidity. In the absence of counter-party liquidity, your position will incur no delta exposure and pay no funding fee. When a counter-party is present but significantly smaller than your market side, a corresponding fee rate will apply to a **partial** delta exposure.
 
