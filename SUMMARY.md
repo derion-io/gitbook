@@ -19,7 +19,6 @@
   * [Universal Token Router](design/universal-token-router.md)
   * [Derivative Tokens](design/derivative-tokens.md)
   * [Helper Contracts](design/helper-contracts.md)
-  * [LP Management](design/lp-management.md)
 * [Contracts](contracts/README.md)
   * [Addresses](contracts/addresses.md)
   * [API](contracts/api.md)

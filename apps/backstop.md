@@ -54,7 +54,7 @@ $$
 
 Along with market traders' natural position actions (open and close), each position can be trustlessly "repositioned" onto the curve by anyone while retaining its full value and properties. This allows the market maker to control the deviation from the exact open interest as precisely as desired, limited only by the on-chain transaction frequency and cost.
 
-<figure><img src="../.gitbook/assets/image (1) (1).png" alt="" width="563"><figcaption><p>Position Repositioning</p></figcaption></figure>
+<figure><img src="../.gitbook/assets/image (1) (1) (1).png" alt="" width="563"><figcaption><p>Position Repositioning</p></figcaption></figure>
 
 With a real-time, safe approximation of open interest, perp DEXs can constantly adjust their reflective premium rate at every moment, effectively eliminating any premium rate gaps ripe for exploitation.
 

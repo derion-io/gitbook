@@ -6,7 +6,7 @@ Derion is a novel Decentralized Speculation Market that enables speculation on a
 
 Anyone can initialize a speculation market for any value feed, allowing others to participate alongside or as counterparties, **with no privileged roles.**
 
-<figure><img src=".gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 The market features three distinct participant roles:
 
@@ -27,6 +27,6 @@ Liquidity Providers (LPs) represent the passive side of the market. They assume 
 
 Derion markets are fully automated on a smart contract, utilizing dual asymptotic power curves. This design eliminates any dependence on backend services for risk management or position liquidation. The entire speculation market can be deployed on any smart-contract platform, and works completely decentralized without any privileged roles or backend services.
 
-<figure><img src=".gitbook/assets/image (2).png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/image (2) (1).png" alt="" width="563"><figcaption></figcaption></figure>
 
 Derion speculation pools are mathematically functional in any market condition, operating for unlimited periods of time with or without user interaction. No position is at risk of liquidation, nor can the market itself be bankrupted.
