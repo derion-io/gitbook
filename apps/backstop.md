@@ -1,6 +1,5 @@
 ---
 description: For both AMM and LOB Perpetuals
-icon: shield-check
 ---
 
 # Derivative Backstop Mechanism
