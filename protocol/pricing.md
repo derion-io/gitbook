@@ -7,13 +7,13 @@ description: Asymptotic Power Curves
 The Long pay-off value:
 
 $$
-\Phi(k,x)=\begin{cases} \begin{align*} \alpha x^k\quad &\text{if }x\le\sqrt[k]\frac{R}{2\alpha} \\R-\frac{R^2}{4\alpha x^k}\quad&\text{overwise} \end{align*} \end{cases}
+\Phi(k,x)=\begin{cases} \begin{align*} \alpha x^k\quad &\text{if }x\le\sqrt[k]\frac{R}{2\alpha} \\R-\frac{R^2}{4\alpha x^k}\quad&\text{otherwise} \end{align*} \end{cases}
 $$
 
 The Short pay-off value:
 
 $$
-\Psi(k,x)=\begin{cases} \begin{align*} \beta x^{-k}\quad &\text{if }x\ge\sqrt[k]\frac{2\beta}{R} \\R-\frac{R^2 x^k}{4\beta}\quad&\text{overwise} \end{align*} \end{cases}
+\Psi(k,x)=\begin{cases} \begin{align*} \beta x^{-k}\quad &\text{if }x\ge\sqrt[k]\frac{2\beta}{R} \\R-\frac{R^2 x^k}{4\beta}\quad&\text{otherwise} \end{align*} \end{cases}
 $$
 
 The Liquidity pay-off value:

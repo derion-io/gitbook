@@ -17,7 +17,7 @@ The market is designed to function effectively even with minimal or no liquidity
 
 ### Compounding Leverage
 
-Unlike Perpetual and Futures markets, Derion's Long/Short speculation positions utilize compound leverage, which generates the positive gamma exposure characteristic of its power curve, ensuring that **positions cannot be liquidated**. This is a desirable trait for traders, as it means they benefit more from favorable volatility and are less penalized by unfavorable movements; consequently, they pay a funding fee for the delta and gamma exposure to the Liquidity side.
+Unlike Perpetual and Futures markets, Derion's Long/Short speculation positions utilize compound leverage, which generates the positive gamma exposure characteristic of its power curve, ensuring that **positions cannot be liquidated**. This is a desirable trait for traders and speculators, as it means they benefit more from favorable volatility and are less penalized by unfavorable movements; consequently, they pay a funding fee for the delta and gamma exposure to the Liquidity side.
 
 <figure><img src=".gitbook/assets/image (5).png" alt="" width="563"><figcaption></figcaption></figure>
 
