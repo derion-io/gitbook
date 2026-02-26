@@ -16,10 +16,10 @@ A total of 1/5 of the interest tokens paid to LP is collected as the protocol fe
 
 Due to Derion's power perpetual curves, positions can be in two regimes:
 
-* **Power regime** (leveraged): Position has full leverage $K$
+* **Power regime** (leveraged): Position has full leverage $$K$$
 * **Asymptotic regime** (deleveraged): Position leverage decreases as price moves further
 
-The **effective leverage** of each side ($k\_L$ for Long, $k\_S$ for Short) is calculated based on the current price position on the curve:
+The **effective leverage** of each side ($$k_L$$ for Long, $$k_S$$ for Short) is calculated based on the current price position on the curve:
 
 <p align="center"><span class="math">k_L = \min(K, k(x))</span></p>
 
