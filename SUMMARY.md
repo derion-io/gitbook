@@ -9,6 +9,7 @@
   * [Funding Rate](protocol/funding-rate.md)
   * [Opening Fee](protocol/opening-fee.md)
   * [Maturity](protocol/maturity.md)
+  * [Dynamic LP](protocol/dynamic-lp.md)
 * [Guide](guide/README.md)
   * [Trade](guide/trade/README.md)
     * [Long/Short](guide/trade/open.md)

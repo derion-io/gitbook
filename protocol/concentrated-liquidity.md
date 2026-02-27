@@ -1,2 +1,0 @@
-# Concentrated Liquidity
-
