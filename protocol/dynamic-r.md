@@ -14,6 +14,9 @@ description: Log-Symmetric Ratchet Rule for Linear-k Leverage
 | R | Total reserve | [Pay-off Curve](pricing.md) |
 | rA, rB | Long and short reserve values: rA = Φ(x), rB = Ψ(x) | [Pay-off Curve](pricing.md) |
 | w | Virtual power-branch value: α·xᵏ | This page |
+| T₀ | Base doubling time (pool parameter) | This page |
+| T_d | Effective doubling time: k · T₀ | This page |
+| R_eff | Effective R after time-decay ramping | This page |
 | Φ, Ψ | Long and short payoff functions | [Pay-off Curve](pricing.md) |
 
 ---
@@ -159,7 +162,7 @@ rA ≤ R_new/2   and   rB ≤ R_new/2
 →  4αβ ≤ R_new²  ✅
 ```
 
-For the upward rule, `R_new = 4v²/R_old > R_old`, so R only grows — validity is trivially preserved. The floor on the downward rule does the same work in the contracting direction.
+For the upward rule, `R_new = 4w²/R_old > R_old`, so R only grows — validity is trivially preserved. The floor on the downward rule does the same work in the contracting direction.
 
 ---
 
@@ -182,6 +185,115 @@ Each swap adjusts the [dormant buffer](liquidity-provision.md):
 - **Upward** (`w > R_old/2`): `R_new = 4w²/R_old > R_old` — buffer consumed, LP deploys capital to extend linear-k runway
 - **Downward** (`w < R_old/2`): `R_new = 2w < R_old` — buffer reclaimed, LP recovers capital as dominant side retreats
 - **Floor** `max(2·rA, 2·rB)` limits downward reclaim — a minimum R always covers both sides' current inflection points
+
+---
+
+## Rate-Limited Ramping
+
+The ratchet formula computes an ideal `R_target` assuming honest price discovery. Without rate-limiting, two classes of adversaries can exploit instant R adjustment:
+
+1. **Market manipulation.** An attacker spikes the price in a single block to inflate R, then dumps — extracting value from the dormant buffer before the market corrects.
+
+2. **Insider trading.** An informed trader who knows a large price move is imminent opens a position just before the move. With instant R adjustment, the ratchet immediately expands R to accommodate the move, granting the insider full linear-k payoff on the entire swing. The LP bears the cost — the dormant buffer is consumed to fund the insider's amplified gain.
+
+By rate-limiting R, the insider's edge is capped: even if they time the entry perfectly, R_eff only ramps slowly toward R_target. The insider's position spends most of the price move in the asymptotic regime (sub-linear-k payoff), limiting their profit to what an uninformed trader would have earned over the same ramp period. The LP's dormant buffer is consumed gradually rather than all at once.
+
+To defend against both, R does not jump to its target instantly. Instead, R_eff moves toward R_target at a **maximum rate proportional to its own value** — a constant velocity in log space.
+
+### Notation
+
+| Symbol | Meaning |
+|---|---|
+| R_target | Ratchet-formula output (the ideal R) |
+| R_eff | Effective R used by the pool |
+| Δt | Time elapsed since last R update |
+| T_d | Doubling time — time for R_eff to double (or halve) at max rate |
+
+### Mechanism
+
+The rate is derived from the doubling time: `μ = ln(2) / T_d`.
+
+On each swap, after computing `R_target` from the [ratchet rule](#ratchet-trigger):
+
+```
+log_step = ln(R_target) − ln(R_eff)
+max_step = ln(2) / T_d · Δt
+
+if |log_step| ≤ max_step:
+    R_eff = R_target                                    // within budget → apply fully
+
+else:
+    R_eff = R_eff · exp(sign(log_step) · max_step)      // clamp to max rate
+```
+
+The pool always uses `R_eff` — never `R_target` directly — for all payoff calculations, reserve splits, and validity checks.
+
+### Example
+
+With `T_d = 7 hours` (R can at most double in 7 hours):
+
+If the ratchet formula wants R to double but only 1 hour has passed:
+
+```
+max_step = ln(2) / 7 · 1 ≈ 0.099      // ~10% in log space per hour
+R_eff moves from R to R · e^0.099 ≈ R · 1.104
+```
+
+R_eff grows by ~10.4% per hour, reaching R_target after exactly `T_d = 7 hours`.
+
+### Why Constant Rate In Log Space
+
+**Predictable convergence time.** The time to reach any R_target is `|ln(R_target/R_eff)| · T_d / ln(2)` — deterministic and proportional to the log-distance. A 2× change always takes exactly T_d.
+
+**Scale-invariant.** The rate cap is proportional to R_eff itself, so small and large pools have equivalent protection.
+
+**Log-space consistency.** Operating in log-R space is consistent with the ratchet rule's log-price symmetry — a 2× increase and a 2× decrease in R require the same ramp time.
+
+**Linear convergence.** Unlike exponential decay (which slows as it approaches the target), constant-rate ramping closes the gap at a steady pace. R_eff reaches R_target in finite time and stays there — no asymptotic tail.
+
+### Properties
+
+**Flash-loan resistance.** A single-block manipulation (Δt ≈ 2s, T_d = 7hr) can move R_eff by at most `ln(2)·2/25200 ≈ 0.005%` — negligible regardless of how extreme the price spike is.
+
+**Organic moves pass through.** A sustained price trend accumulates ramp budget linearly with time. Real market moves reach R_target within T_d while single-block attacks are throttled by a factor of >10,000×.
+
+**No queuing or state bloat.** The mechanism only stores `R_eff` and `t_last` — no target queue, no ramp schedules. Each swap simply computes how far R_eff is allowed to move given elapsed time.
+
+**Preserves ratchet correctness.** Once R_eff reaches R_target (which it does in finite time for any sustained price level), all ratchet properties — log-symmetry, linear-k payoff, validity constraints — hold exactly as derived above.
+
+### Scaling With K
+
+Attacker profit from an R change scales linearly with k: a small price manipulation δ yields position gain proportional to `k · δ`. To keep the attacker's profit rate constant across leverage levels, the doubling time must scale linearly with k:
+
+```
+T_d = k · T₀
+```
+
+where T₀ is a **base doubling time** — a single pool parameter.
+
+This scaling is also consistent from the recovery side: a price doubling requires R to grow by `2^(2k)`, taking time `2k · T_d` to fully accommodate. Recovery time scales linearly with k in both directions.
+
+### Calibrating T₀
+
+With `T_d = k · T₀`, the effective protection for a k=5 pool:
+
+| T₀ | T_d (k=5) | 1-block attack (2s) | 1-min attack | 1-hr insider edge |
+|---|---|---|---|---|
+| 15 min | 1.25 hr | ~0.03% | ~1.8% | ~56% |
+| 1 hr | 5 hr | ~0.008% | ~0.5% | ~15% |
+| 7 hr | 35 hr | ~0.001% | ~0.07% | ~2% |
+
+Adaptation time for a price doubling (`2k · T_d`):
+
+| T₀ | k=2 | k=5 | k=10 |
+|---|---|---|---|
+| 1 hr | 4 hr | 10 hr | 20 hr |
+
+A practical default: **T₀ = 1 hour**, giving:
+
+- k=2: T_d = 2 hr — R doubles in 2 hr, adapts to 2× price in ~8 hr
+- k=5: T_d = 5 hr — R doubles in 5 hr, adapts to 2× price in ~20 hr
+- k=10: T_d = 10 hr — R doubles in 10 hr, adapts to 2× price in ~40 hr
 
 ---
 
@@ -226,6 +338,7 @@ The ratchet formula `R_new = 4w²/R_old` is the unique rule that:
 4. Remains self-consistent for any swap frequency — liquid or illiquid pools
 5. Never violates pool validity constraints
 6. Uses asymmetric rules for R adjustment — log-symmetric `4w²/R_old` on the way up (curvature correction required), simple `2w` on the way down (power regime, direct tracking is exact)
+7. Rate-limits R changes via [rate-limited ramping](#rate-limited-ramping) — R_eff moves toward R_target with doubling time `T_d = k · T₀`, scaling protection with leverage while letting sustained price moves converge in finite time
 
 {% hint style="info" %}
 **See also:** [Dynamic LP Strategy](dynamic-lp.md) derives the break-even interest rate for an LP that implements this ratchet rule, and compares it against CEX perpetual funding rates.
