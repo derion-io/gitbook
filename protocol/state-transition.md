@@ -6,47 +6,53 @@ All trades go through a single state-changing entry point: `transition()`. The p
 
 Every quantity is signed, from the transactor's perspective: positive means they receive, negative means they give.
 
-```solidity
-struct Param {          // the transactor's request
-    int256 dAMin;       // floor on the change of their LONG balance
-    int256 dBMin;       // floor on the change of their SHORT balance
-    int256 dRMin;       // floor on the reserve they receive
-    address helper;     // untrusted solver
-    bytes payload;      // trade intent (sides, magnitude) for the Helper
-    bool unwrapETH;     // deliver received reserve as native ETH
-}
+The transactor's request carries only their protection and their intent:
 
-struct Proposal {       // the Helper's answer — every field untrusted
-    uint256 a;          // LONG coefficient after the trade
-    int256 dA;          // δ transactor's LONG
-    int256 dB;          // δ transactor's SHORT
-    int256 dR;          // reserve received (pool δR = −dR)
-}
-```
+$$
+\langle\, \Delta A_{\min},\ \Delta B_{\min},\ \Delta R_{\min} \,\rangle
+$$
 
-The post-trade engine reserve is never proposed — it is fixed by settlement, `R₁ = R − dR`, since the engine moves in lockstep with the tokens. The Helper proposes only the coefficient and the signed deltas.
+— floors on the change of their Long balance, their Short balance, and the reserve they receive — together with the Helper's address and an opaque intent payload for it.
+
+The Helper answers with the proposed transition, every part of it untrusted:
+
+$$
+\langle\, \alpha_1,\ \Delta A,\ \Delta B,\ \Delta R \,\rangle
+$$
+
+— the Long coefficient after the trade and the three signed deltas. The post-trade engine reserve is never proposed; it is fixed by settlement,
+
+$$
+R_1 = R - \Delta R
+$$
+
+since the engine moves in lockstep with the tokens. (The exact call signatures live in the [API reference](../contracts/api.md).)
 
 ### The flow
 
-```
-1. snapshot the side supplies sA, sB
-2. select the price bound from the declared floors         (Price Oracle)
-3. accrue funding at that price                            (Funding)
-4. Helper.solve(...) → Proposal                            untrusted
-5. re-evaluate rA₁, rB₁ from (a, R − dR) at the real price
-6. re-check the price bound against the realized exposure  (Price Oracle)
-7. check the transactor's own slippage floors
-8. verify the value invariant                              (Value Invariant)
-9. commit (R, a) and settle the deltas
-```
+1. Snapshot the side supplies $$s_A, s_B$$.
+2. Select the price bound from the signs of the declared floors ([Price Oracle](oracle.md)).
+3. Accrue [funding](funding-rate.md) at that price.
+4. The Helper solves the trade and returns $$\langle \alpha_1, \Delta A, \Delta B, \Delta R \rangle$$ — untrusted.
+5. Re-evaluate the post-trade reserves at the pool's own selected price: $$r_{A,1} = \rho(\alpha_1 x^k,\, R_1)$$ and $$r_{B,1} = R_1 - r_{A,1}$$.
+6. Re-check the price bound against the realized net exposure ([Price Oracle](oracle.md)).
+7. Check the transactor's own slippage floors.
+8. Verify the [value invariant](value-invariant.md).
+9. Commit $$\langle R_1, \alpha_1 \rangle$$ and settle the deltas.
 
 The Helper is a convenience, never a trust assumption: step 5 re-evaluates the curve at the pool's own selected price, so a lying proposal can never be priced against faked reserves, and any other dishonesty is caught by one of the three gates (6, 7, 8). All the trade math a pool used to carry internally — open, close, flip, sizing — now lives in the [Helper](../design/helper-contracts.md).
 
 ### Slippage and settlement
 
-`dX ≥ dXMin` for each of A, B, R bounds the transactor's *own* loss — their spread and fees. Everyone else is protected by the [value invariant](value-invariant.md), not by the floors. A receiver floors what they get (`dXMin > 0`); a giver caps what they give (`dXMin < 0`); `type(int256).min` means no floor.
+The floors
 
-Settlement is by sign: each side with `δ > 0` is minted to the recipient and each side with `δ < 0` is burned from the payer; reserve owed is pulled in ([direct allowance or Permit2](../design/payments.md)) and reserve received is paid out, optionally unwrapped to native ETH. A position can also be closed by simply transferring it into the pool — the transfer callback burns it and pays out the reserve.
+$$
+\Delta X \ge \Delta X_{\min} \qquad \text{for } X \in \{A,\, B,\, R\}
+$$
+
+bound the transactor's *own* loss — their spread and fees. Everyone else is protected by the [value invariant](value-invariant.md), not by the floors. A receiver floors what they get ($$\Delta X_{\min} > 0$$); a giver caps what they give ($$\Delta X_{\min} < 0$$); the minimum integer value stands for $$-\infty$$, no floor at all.
+
+Settlement is by sign: each side with $$\Delta > 0$$ is minted to the recipient and each side with $$\Delta < 0$$ is burned from the payer; reserve owed ($$\Delta R < 0$$) is pulled in ([direct allowance or Permit2](../design/payments.md)) and reserve received ($$\Delta R > 0$$) is paid out, optionally unwrapped to native ETH. A position can also be closed by simply transferring it into the pool — the transfer callback burns it and pays out the reserve.
 
 ### Multi-direction trades
 

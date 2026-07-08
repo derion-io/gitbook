@@ -32,14 +32,19 @@ Both charges use exponential decay because it is the unique live basis that comp
 
 ## The outbox and the flush
 
-Funding releases reserve but transfers nothing on the trading path — the released reserve accumulates in the pool balance as the **outbox** (`balance − R`), keeping swap gas deterministic and free of extra token transfers. It physically leaves the pool only on a poke:
+Funding releases reserve but transfers nothing on the trading path: on every touch, $$R$$ shrinks by the accrued interest and premium while the pool balance stays put, so the released value accumulates in the **outbox**,
 
-```
-every touch:    R shrinks by (interest + premium); the outbox grows by the same amount
-sync():         pending = balance − R
-                fee     = pending / FEE_RATE     → FEE_TO      (protocol cut)
-                payout  = pending − fee          → PROVIDER    (the LP yield)
-```
+$$
+\text{outbox} = \text{balance} - R
+$$
+
+keeping swap gas deterministic and free of extra token transfers. The outbox physically leaves the pool only on a poke, which splits it between the protocol and the liquidity provider:
+
+$$
+\text{fee} = \frac{\text{outbox}}{\text{FEE\_RATE}} \;\longrightarrow\; \text{FEE\_TO}
+\qquad\qquad
+\text{outbox} - \text{fee} \;\longrightarrow\; \text{PROVIDER}
+$$
 
 `sync()` is permissionless: it accrues funding at the manipulation-resistant TWAP (no trade follows, so there is no adverse bound to pick), persists the state, and flushes the outbox. Anyone can poke; the [Vault](../vault/depth-provision.md) exposes batch pokes over every pool it serves.
 
