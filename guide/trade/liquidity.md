@@ -1,11 +1,12 @@
 # Providing Liquidity
 
-You can also provide liquidity to our pools to gain high yields. Start by changing to the “LP” tab on the right panel.
+Liquidity on Derion is provided through the [Vault](../../vault/README.md), not into individual pools. Depositing reserve tokens mints **VaultLP** — an ERC-20 share of the Vault's balance sheet — and can be undone at any time by withdrawing.
 
-<figure><img src="https://lh3.googleusercontent.com/XdS2j7p45IMI3cnCUe9fR03mhwMdu0jKY7YDujvSehsNRDj1nh1RTBJ8VJXrJ0O5BUsO7U9TfqYp2YRGNXiOZLniluNFAws33Zgr3JxzEPuFBzxfQOT4-uCu-mIPHJ5_-43O6EMvA-KoGuMllr3mlAE" alt=""><figcaption></figcaption></figure>
+What your deposit does: the Vault deploys capital as real Long/Short positions across the pools its active strategy covers, keeping each market's dominant side at full leverage. In exchange, every served pool streams its [funding](../../protocol/funding-rate.md) — interest and premium paid by traders — to the Vault.
 
-Here, you can select the asset as well as the leverage pool to provide liquidity to. After entering the amount you want to provide as liquidity, click on “Add Liquidity”.
+What you earn and carry:
 
-<figure><img src="https://lh4.googleusercontent.com/JPzArfuhuHI4OnH5QE7tpoYiFHWSSzuYqdWGA7AI_i0JOKigMrhV13kHiwX2aMAJiH-p-k-C7DpbWXPspY6n7sVO8ue3MPZme_uNaVboqUrC5XzP-4TK7EZP8mn4jE23-Mni_6T7iKkvMO90o8G33lk" alt="" width="375"><figcaption></figcaption></figure>
+* **Income**: the funding flushed from every served pool, net of the protocol fee.
+* **Risk**: the counterparty P\&L of the Vault's book — you are effectively short volatility against the traders' net position — plus the policy risk of the active strategy. See [LP Economics](../../vault/lp-economics.md) for when this position is profitable.
 
-\
+Deposits and withdrawals are priced at NAV with a protective directional spread, so entering or leaving cannot dilute the other depositors — details in [Deposit & Withdraw](../../vault/deposit-withdraw.md).

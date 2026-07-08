@@ -1,5 +1,9 @@
 # Contract Addresses
 
+{% hint style="warning" %}
+The addresses below are **legacy (v3) deployments**. Addresses for the current protocol version will be published here once deployed.
+{% endhint %}
+
 ## Arbitrum (42161)
 
 UTR (ERC-6120): 0x8Bd6072372189A12A2889a56b6ec982fD02b0B87\
@@ -13,4 +17,3 @@ UTR (ERC-6120): 0xAe68B2DcCd3aD80a5adD5E7e566d243F64fF8BA9\
 Helper: 0x7C867A856a13DC1b5A22Cb37b0699D37846Dd49D\
 Token (ERC-1155): 0x3E72Fa9C575A28cc311dCb817dD9E7b5E2E6462d\
 PoolDeployer: 0x129e17D002022620e583eB17e68dD3A91d8fF398
-

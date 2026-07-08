@@ -1,34 +1,50 @@
 ---
-description: Asymptotic Power Curves
+description: The asymptotic power curve
 ---
 
 # Pay-off Curve
 
-The Long pay-off value:
+Everything in a Derion pool is priced by a single **asymptotic deleverage curve**. For a claim of ideal value $$q$$ against an engine reserve $$R$$:
 
 $$
-\Phi(k,x)=\begin{cases} \begin{align*} \alpha x^k\quad &\text{if }x\le\sqrt[k]\frac{R}{2\alpha} \\R-\frac{R^2}{4\alpha x^k}\quad&\text{otherwise} \end{align*} \end{cases}
+\rho(q,R)=\begin{cases} \begin{align*} q\quad &\text{if }q\le\frac{R}{2} \\ R-\frac{R^2}{4q}\quad&\text{if }q\ge\frac{R}{2} \end{align*} \end{cases}
 $$
 
-The Short pay-off value:
+Below the inflection point $$q = R/2$$ the claim is paid in full — the **power branch**, where leverage compounds at the full power $$k$$. Above it, the pay-off bends onto the **asymptotic branch** and approaches $$R$$ without ever reaching it. The two branches meet smoothly at the inflection point, with slope 1 on both sides.
+
+With the normalized index price $$x = p\,/\,\text{mark}$$, the Long side's reserve is
 
 $$
-\Psi(k,x)=\begin{cases} \begin{align*} \beta x^{-k}\quad &\text{if }x\ge\sqrt[k]\frac{2\beta}{R} \\R-\frac{R^2 x^k}{4\beta}\quad&\text{otherwise} \end{align*} \end{cases}
+r_A=\rho(\alpha x^k,\,R)
 $$
 
-The Liquidity pay-off value:
+and the Short side is simply the remainder:
 
 $$
-\Omega(k,x)=R-\Phi(k,x)-\Psi(k,x)
+r_B=R-r_A
 $$
 
-<figure><img src="../.gitbook/assets/image (13).png" alt="" width="563"><figcaption></figcaption></figure>
+The complement is not a bookkeeping shortcut — it is itself an asymptotic short pay-off. Algebraically, $$R-\rho(\alpha x^k,R)=\rho(\beta x^{-k},R)$$ with the implied short coefficient $$\beta = R^2/4\alpha$$, so the two sides are exact mirror images around the inflection point: whenever one side is on its power branch, the other is on its asymptotic branch.
 
-Asymptotic Power Curves is our innovative Pay-off Curve design that makes the vision of Derion feasible in the first place. Thanks to the Asymptotic Power Curves, Derion is able to achieve:
+Three properties of $$\rho$$ carry the whole protocol:
 
-* NO liquidation at all;
-* Everlasting perpetual future market for all market circumstances;
-* Infinite liquidity, even without liquidity providers;
-* Liquidity elasticity: Impermanent loss and gain, with asymptotic behavior at infinity;
-* Leverage elasticity: Leverage is automatically and continuously capped upon market state transitions and price volatility.
-* Continuous interest rate: to compensate LPs and help them reduce the risk of impermanent loss
+* **No liquidation, ever.** $$\rho \to R$$ asymptotically, so the winning side can never claim the entire reserve and the losing side only approaches zero. $$0 \le r_A, r_B < R$$ holds at every price, unconditionally — even in a pool untouched for a year.
+* **Leverage elasticity.** As a side saturates, its effective leverage compresses continuously toward zero instead of hitting a margin call. Deleveraging replaces liquidation.
+* **Scale-free.** $$\rho(f q,\,f R) = f\,\rho(q,R)$$ — the identity that lets [funding](funding-rate.md) be applied as a single multiplication on $$R$$.
+
+### What a trader experiences
+
+A Long ×4 opened with 1.0 reserve: if the index rises 10%, it closes at ≈ 1.4641 (+46.41%); if the index falls 10%, ≈ 0.6561 (−34.39%); if the index crashes toward zero, a small residual remains — never zero, never liquidated. A Short is the mirror image. Compounding cuts both ways: larger gains on the right side, softened losses on the wrong side, no margin call in either direction.
+
+### Why a power curve, not a linear pay-off
+
+"Constant leverage" and "linear pay-off" sound like synonyms; they are opposites. Leverage as a trader experiences it is elasticity — $$d\ln V / d\ln p$$. Demanding that it stay constant at $$k$$ forces $$V \propto p^k$$: a one-line differential equation with a unique solution, and that solution is a power curve.
+
+A pay-off linear *in price*, $$V = V_0(1 + \lambda(p/p_0 - 1))$$, only has leverage $$\lambda$$ at its entry price. It decays toward 1× as the position wins, blows up toward infinity as it loses, and crosses zero at a finite price — and that zero crossing *is* a liquidation price. Every system built on linear pay-offs pays one of two taxes:
+
+* **Liquidation** (margin perps): the pay-off crosses zero, so solvency depends on keepers closing positions in time — bad debt, insurance funds, auto-deleveraging, oracle-latency risk. Solvency becomes an operational process instead of a property of the math.
+* **Re-anchoring** (leveraged-ETF style tokens): reset the pay-off every epoch — path-dependent volatility drift, and value stops being a function of the current price alone.
+
+Both also destroy fungibility. $$p^k$$ is a pure function of the current price and composes multiplicatively, so every holder of a side owns shares of one common pay-off — no entry price, no per-account margin, no per-position funding bookkeeping. A linear pay-off cannot be stateless: its value depends on where it was anchored.
+
+The two branches of $$\rho$$ then split the work cleanly. The power branch is the product — constant compounding leverage. The asymptotic branch is not about leverage at all — it is the solvency clamp that replaces liquidating the counterparty. The cost of the curve is equally explicit: its convexity has to be paid for — that is what [funding](funding-rate.md) is, the same reason power perps pay theta — and a saturated side's leverage dilutes until [depth](../vault/depth-provision.md) arrives. What that buys is unconditional full collateralization and stateless, fungible positions — a combination no linear pay-off can produce at any level of added machinery.

@@ -1,19 +1,22 @@
 # Derivative Tokens
 
-All derivatives (LONG and SHORT) and Liquidity tokens are different IDs of a single [ERC-1155](https://eips.ethereum.org/EIPS/eip-1155) token. Token ID is encoded in the following format:
+All Derion positions are ids of one shared [ERC-1155](https://eips.ethereum.org/EIPS/eip-1155) token contract (with supply tracking), serving every pool. A token id encodes its pool and side:
 
 `ID = 0x##a...a`
 
-Where `0xa...a` is its pool address, and `0x##` is the side code of the token in the pool:
+where `0xa...a` is the pool address and `0x##` is the side code:
 
-* `0x10`: LONG side
-* `0x20`: SHORT side
-* `0x30`: Liquidity Provider side
+* `0x10`: LONG
+* `0x20`: SHORT
 
-Each token ID can only be minted and burnt by its pool.
+(`0x00` and `0x01` are reserved to denote the reserve-token and native-ETH settlement legs, and `0x30` is reserved for LP sides where a pool issues one — used by the [Vault's governance escrow](../vault/governance.md).)
 
-The ERC-1155 token standard is deployed with 2 extensions: Timelock and Shadow.
+### The open mint/burn rule
 
-[Maturity](https://github.com/derivable-labs/erc1155-maturity): an implementation of [ERC-1155](https://eips.ethereum.org/EIPS/eip-1155) that tracks a maturity time after an amount of token is minted. (See [maturity.md](../protocol/maturity.md "mention") for more details)
+Instead of a registry of authorized pools, the token uses one open rule: **any address may mint and burn every id that ends in its own address.** A pool therefore controls exactly its own sides — and only those — with no permission, no allow-list, and nothing to administer. The same rule lets any future contract issue its own 1155 sides on the shared token.
 
-[Shadow](https://github.com/derivable-labs/shadow-token): an extension of [ERC-1155](https://eips.ethereum.org/EIPS/eip-1155) that allows any of its IDs to deploy a Shadow [ERC-20](https://eips.ethereum.org/EIPS/eip-20) token with its contract address for DeFi composability. Each Shadow contract can be deployed by anyone, anytime, and it shares the same balance and transfer behavior with the original token ID after being deployed.
+A pool never holds its own tokens: positions transferred into a pool are burned as part of the transfer-and-call close path, paying the reserve out to their owner.
+
+### Metadata
+
+Names, symbols, and display metadata come from a swappable, view-only **descriptor** contract. The descriptor setter is the only permissioned role in the protocol; it can change how positions render in wallets and nothing else.

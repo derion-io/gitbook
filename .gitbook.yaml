@@ -1,0 +1,12 @@
+root: ./
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md
+
+redirects:
+  protocol/liquidity-provision: vault/README.md
+  protocol/dynamic-r: vault/depth-provision.md
+  protocol/dynamic-lp: vault/lp-economics.md
+  protocol/maturity: protocol/README.md
+  design/universal-token-router: design/payments.md

@@ -1,111 +1,50 @@
-# Funding Rate
+# Funding
 
-There are two components to the Funding Rate: the Interest Rate and the Premium Rate.
+Funding is what traders pay for their exposure, and what the liquidity provider earns for absorbing it. Unlike conventional perpetual exchanges with periodic funding epochs, Derion's funding is autonomous and continuous: it accrues on every pool touch from the time elapsed since the last one, computed purely from the pool state — no keeper, no schedule, no per-position bookkeeping.
 
-Unlike conventional perpetual exchanges, where the funding rate is manually charged and updated periodically, Derion's funding rate is autonomous and continuously applied on every block of the underlying smart contract platform.
+There are two components, each configured as a half-life.
 
-<figure><img src="../.gitbook/assets/fee.gif" alt=""><figcaption><p>Interest and Protocol Fee</p></figcaption></figure>
+## Interest
 
-## Interest Rate
+Interest decays the engine reserve:
 
-The Interest Rate is continuously charged from both the Long and Short sides to the LP side. Each pool is configured with a base interest rate I (expressed as an annual compounding rate).
+$$
+R \leftarrow R \cdot 2^{-\text{elapsed}\,/\,\text{INTEREST\_HL}}
+$$
 
-A total of 1/5 of the interest tokens paid to LP is collected as the protocol fee.
+The coefficient $$\alpha$$ — every position's price-tracking identity — is left untouched, and the side reserves are re-derived from the [curve](pricing.md). Decaying $$R$$ rather than the positions makes interest *rent on reserve occupancy*: a saturated (dominant) side, whose reserve scales with $$R$$, pays the bulk of it; a small side deep on its power branch pays almost nothing until the shrinking inflection point reaches it; a matched Long+Short pair pays in full. `INTEREST_HL = 0` disables interest.
 
-#### Effective Leverage
+## Premium
 
-Due to Derion's power perpetual curves, positions can be in two regimes:
+Premium charges the crowded side. The gap between the **trader-held** reserves of the two sides decays toward zero:
 
-* **Power regime** (leveraged): Position has full leverage $$K$$
-* **Asymptotic regime** (deleveraged): Position leverage decreases as price moves further
+$$
+\text{gap} = |t_A - t_B|,\qquad \text{paid} = \text{gap}\cdot\left(1 - 2^{-\text{elapsed}\,/\,\text{PREMIUM\_HL}}\right)
+$$
 
-The **effective leverage** of each side ($$k_L$$ for Long, $$k_S$$ for Short) is calculated based on the current price position on the curve:
+The dominant trader side shrinks by that amount (and $$R$$ with it, keeping $$r_A + r_B = R$$ exact); the smaller side is untouched. This is imbalance funding accrued to the liquidity side — the model of pool-based perp DEXs — not the CEX model where longs pay shorts: the side creating the counterparty risk pays the party absorbing it.
 
-<p align="center"><span class="math">k_L = \min(K, k(x))</span></p>
+"Trader-held" means the [Vault](../vault/README.md)'s own position is excluded from the gap. The premium must track the liquidity provider's actual net counterparty risk, not the depth the Vault itself provides — otherwise the Vault's own depth would damp the charge, or even misdirect it onto the provider's own side. `PREMIUM_HL = 0` disables the premium.
 
-<p align="center"><span class="math">k_S = \min(K, k(x))</span></p>
+{% hint style="info" %}
+Both charges use exponential decay because it is the unique live basis that composes exactly across touches: a pool poked twice reaches the same state as one poked once for the combined duration (at the same price). A linear rate would drift with poke frequency. Left completely untouched, the premium self-balances the pool toward $$t_A = t_B$$.
+{% endhint %}
 
-Where `k(x)` is the instantaneous leverage at current price `x`. In the power regime, $$k = K$$. In the asymptotic regime, $$k < K$$ and decreases toward 0 as the position deleverages.
+## The outbox and the flush
 
-#### Compounding Interest Rate
+Funding releases reserve but transfers nothing on the trading path — the released reserve accumulates in the pool balance as the **outbox** (`balance − R`), keeping swap gas deterministic and free of extra token transfers. It physically leaves the pool only on a poke:
 
-The actual interest rate paid by each side scales with their effective leverage:
+```
+every touch:    R shrinks by (interest + premium); the outbox grows by the same amount
+sync():         pending = balance − R
+                fee     = pending / FEE_RATE     → FEE_TO      (protocol cut)
+                payout  = pending − fee          → PROVIDER    (the LP yield)
+```
 
-**Long Interest Rate:**
+`sync()` is permissionless: it accrues funding at the manipulation-resistant TWAP (no trade follows, so there is no adverse bound to pick), persists the state, and flushes the outbox. Anyone can poke; the [Vault](../vault/depth-provision.md) exposes batch pokes over every pool it serves.
 
-<p align="center"><span class="math">i_L = I \times \frac{k_L}{K}</span></p>
+* `FEE_TO` and `FEE_RATE` are immutables on the shared pool logic, set once at deployment — currently 1/5 of the flushed funding.
+* `PROVIDER` is a per-pool config payee, never a permission. With `PROVIDER = 0`, the LP yield routes to `FEE_TO`.
+* Donations to a pool land in the outbox and flush with it.
 
-**Short Interest Rate:**
-
-<p align="center"><span class="math">i_S = I \times \frac{k_S}{K}</span></p>
-
-This means:
-
-* At full leverage ($$k=K$$): Pay the full base interest rate
-* When deleveraged ($$k<K$$): Pay **less** interest, proportional to effective leverage
-
-This makes economic sense: deleveraged positions have less market exposure (delta), so they pay less for that reduced exposure to LP.
-
-**LP Interest Rate (received):**
-
-<p align="center"><span class="math">i_{LP} = \frac{(r_A + r_B) \times I}{r_C}</span></p>
-
-A total of 1/5 of the interest paid to LP is collected as the protocol fee.
-
-## Premium Rate
-
-The Premium is paid by the larger side directly to the smaller side of Long and Short, offering them the chance of negative funding rates as an incentive to balance the market. **Note: LP does not receive premium — it flows only between Long and Short.**
-
-Each pool is configured with a maximum premium rate P (expressed as an annual compounding rate).
-
-#### Compounding Premium Rate
-
-The premium rate scales with the market imbalance between Long and Short:
-
-**Long Premium Rate:**
-
-<p align="center"><span class="math">p_L = P \times \frac{(r_A - r_B) \times (r_A + r_B)}{R \times r_A}</span></p>
-
-**Short Premium Rate:**
-
-<p align="center"><span class="math">p_S = P \times \frac{(r_B - r_A) \times (r_A + r_B)}{R \times r_B}</span></p>
-
-Where:
-
-* $$r_A$$: Long reserve
-* $$r_B$$: Short reserve
-* $$R$$: Total pool reserve
-* Positive rate means paying premium
-* Negative rate means receiving premium
-
-This design ensures:
-
-* When $$r_A > r_B$$: Long pays premium, Short receives premium
-* When $$r_B > r_A$$: Short pays premium, Long receives premium
-* When $$r_A = r_B$$: No premium is exchanged
-
-The premium rate is **not affected by deleveraging** — it depends only on the reserve imbalance regardless of the curve regime.
-
-### Total Funding Rate
-
-The total funding rate for each side is the sum of interest and premium:
-
-<p align="center"><span class="math">f_L = i_L + p_L</span></p>
-
-<p align="center"><span class="math">f_S = i_S + p_S</span></p>
-
-<p align="center"><span class="math">f_{LP} = -i_{LP}</span></p>
-
-(LP receives interest, hence negative funding)
-
-### Protocol Fee
-
-The protocol fee is calculated from the increase in LP reserves (from interest) and transferred to the fee receiver:
-
-<p align="center"><span class="math">fee = \frac{r_C' - r_C}{5}</span></p>
-
-Where $$r_C' = R - r_A' - r_B'$$ is the new LP reserve after interest and premium are applied, and $$r_C$$ is the original LP reserve before any fees.
-
-This fee produces an actual token transfer and reduces the total pool reserve:
-
-<p align="center"><span class="math">R' = R - fee</span></p>
+The off-chain `View` contract mirrors both charges exactly, so quotes track the pool byte-for-byte between pokes.
