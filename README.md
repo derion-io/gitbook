@@ -1,6 +1,6 @@
 # Introduction
 
-Derion is a permissionless AMM for compound-leverage perpetuals. Anyone can deploy a market for any index value — a Uniswap v3 pair by default, or any custom oracle feed — and trade leveraged Long/Short exposure on it with no liquidation price, no order book, and no operator.
+Derion is a permissionless AMM for compound-leverage perpetuals. Anyone can deploy a market for any index value (a Uniswap v3 pair, a Chainlink feed, a tokenized stock, or any custom oracle) and trade leveraged Long/Short exposure on it with no liquidation price, no order book, and no operator.
 
 ### Decentralized Market
 
@@ -8,20 +8,20 @@ Anyone can create a market for any value feed and participate alongside or again
 
 <figure><img src=".gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
-A Derion market is split cleanly in two:
+A Derion market is one pool with three share classes, all issued as fungible tokens:
 
-* **The pool is a pure trader engine.** Two sides, Long and Short, backed by a single reserve token. The pool holds the funds, enforces the pay-off curve, and verifies every state change. No liquidity provider lives inside it.
-* **Liquidity is an external Vault.** An ownerless contract provides market depth by opening real Long and Short positions through the same public path every trader uses, and collects the funding paid by traders in return.
+* **Long** and **Short**, each a true power pay-off of the index price. Traders hold these.
+* **The LP class**, the reserve the two pay-offs leave over. It is the counterparty to both sides, the depth that keeps them at full leverage, and the recipient of every fee and funding stream. Anyone can hold it, directly or through the shared [Liquidity Vault](liquidity/vault.md).
 
-A pool works with or without the Vault. Absent liquidity, it is a pure trader-vs-trader market: positions deleverage instead of failing, and nothing ever freezes.
+The pool holds the funds, enforces the pay-off curves, and verifies every state change against both of its oracle's prices. No address is special to it: providing liquidity is a trade through the same path as every other trade, and the pool works with an empty LP class just as it works with a deep one.
 
 ### Compounding Leverage
 
-Unlike conventional perpetual and futures markets, Derion positions carry compound leverage: a position's value follows a power curve of the index price rather than a straight line. This is what removes the liquidation price — the losing side asymptotically approaches zero but never crosses it, so there is no margin call and no keeper racing to close positions in time. Traders benefit more from favorable moves and are penalized less by unfavorable ones, and they pay a continuous funding fee to the liquidity side for that exposure.
+Unlike conventional perpetual and futures markets, Derion positions carry compound leverage: a position's value follows a power curve of the index price rather than a straight line. This is what removes the liquidation price. The losing side approaches zero asymptotically but never crosses it, so there is no margin call and no keeper racing to close positions in time. Traders gain more from favorable moves and lose less on unfavorable ones, and they pay a continuous funding fee to the LP class for that exposure.
 
 <figure><img src=".gitbook/assets/image (5).png" alt="" width="563"><figcaption></figcaption></figure>
 
-The Vault and its depositors form the passive side of the market. They absorb the trader imbalance as counterparty and, in return, earn the funding paid by both Long and Short.
+The LP class is the passive side of the market. It absorbs the trader imbalance as counterparty and, in return, collects the funding paid by both Long and Short, the opening fees, and the spread between the oracle's two prices.
 
 ### Fully On-chain
 

@@ -1,63 +1,69 @@
 # State Transition
 
-All trades go through a single state-changing entry point: `transition()`. The pool does not solve anything itself — it snapshots its state, lets an untrusted **Helper** chosen by the caller propose the complete transition, then re-prices, verifies, and settles it. A dishonest Helper can only hurt its own caller.
+All trades go through a single state-changing entry point: `transition()`. The pool does not solve anything itself. It snapshots its state, lets an untrusted **Helper** chosen by the caller propose the complete transition, then re-prices, verifies at both oracle bases, and settles. A dishonest Helper can only hurt its own caller.
 
 ### The delta basis
 
-Every quantity is signed, from the transactor's perspective: positive means they receive, negative means they give.
+Every quantity is signed from the transactor's perspective: positive means they receive, negative means they give.
 
-The transactor's request carries only their protection and their intent:
+The transactor's request carries their protection and their intent:
 
 $$
-\langle\, \Delta A_{\min},\ \Delta B_{\min},\ \Delta R_{\min} \,\rangle
+\langle\, \Delta A_{\min},\ \Delta B_{\min},\ \Delta C_{\min},\ \Delta R_{\min} \,\rangle
 $$
 
-— floors on the change of their Long balance, their Short balance, and the reserve they receive — together with the Helper's address and an opaque intent payload for it.
+floors on the change of their Long, Short, and LP balances and on the reserve they receive, together with the Helper's address, an opaque intent payload for it, and an optional oracle update for the pool's fetcher.
 
 The Helper answers with the proposed transition, every part of it untrusted:
 
 $$
-\langle\, \alpha_1,\ \Delta A,\ \Delta B,\ \Delta R \,\rangle
+\langle\, \alpha_1,\ \beta_1,\ \Delta A,\ \Delta B,\ \Delta C,\ \Delta R \,\rangle
 $$
 
-— the Long coefficient after the trade and the three signed deltas. The post-trade engine reserve is never proposed; it is fixed by settlement,
+the two coefficients after the trade and the four signed deltas. The post-trade engine reserve is never proposed. It is fixed by settlement,
 
 $$
 R_1 = R - \Delta R
 $$
 
-since the engine moves in lockstep with the tokens. (The exact call signatures live in the [API reference](../contracts/api.md).)
+so the engine moves exactly with the tokens and nothing is routed anywhere else. (Call signatures are in the [Pool API](../contracts/api.md).)
 
 ### The flow
 
-1. Snapshot the side supplies $$s_A, s_B$$.
-2. Select the price bound from the signs of the declared floors ([Price Oracle](oracle.md)).
-3. Accrue [funding](funding-rate.md) at that price.
-4. The Helper solves the trade and returns $$\langle \alpha_1, \Delta A, \Delta B, \Delta R \rangle$$ — untrusted.
-5. Re-evaluate the post-trade reserves at the pool's own selected price: $$r_{A,1} = \rho(\alpha_1 x^k,\, R_1)$$ and $$r_{B,1} = R_1 - r_{A,1}$$.
-6. Re-check the price bound against the realized net exposure ([Price Oracle](oracle.md)).
-7. Check the transactor's own slippage floors.
-8. Verify the [value invariant](value-invariant.md).
-9. Commit $$\langle R_1, \alpha_1 \rangle$$ and settle the deltas.
+1. Snapshot the three supplies $$s_A, s_B, s_C$$.
+2. Fetch both oracle bases, TWAP and spot, forwarding any caller-supplied oracle data ([Price Oracle](oracle/README.md)).
+3. Accrue [funding](funding-rate.md) at the TWAP. This yields the pre-trade side reserves at the TWAP basis; the reserves at the spot basis follow from the same coefficients, and the LP residual at each basis is $$R - r_A - r_B$$.
+4. The Helper solves the trade against this snapshot and returns $$\langle \alpha_1, \beta_1, \Delta A, \Delta B, \Delta C, \Delta R \rangle$$.
+5. Check the transactor's own slippage floors.
+6. Fix $$R_1 = R - \Delta R$$.
+7. At each basis, re-evaluate the post-trade curves $$r_{A,1} = \rho(\alpha_1 x^k, R_1)$$ and $$r_{B,1} = \rho(\beta_1 x^{-k}, R_1)$$, take the residual $$r_{C,1}$$, and run the [value gates](value-invariant.md): the charge and the three per-share floors. The spot pass is skipped when the oracle did not diverge.
+8. Commit $$\langle R_1, \alpha_1, \beta_1 \rangle$$ and settle the deltas.
 
-The Helper is a convenience, never a trust assumption: step 5 re-evaluates the curve at the pool's own selected price, so a lying proposal can never be priced against faked reserves, and any other dishonesty is caught by one of the three gates (6, 7, 8). All the trade math a pool used to carry internally — open, close, flip, sizing — now lives in the [Helper](../design/helper-contracts.md).
+The Helper is a convenience, never a trust assumption. Step 7 re-evaluates the curves from the proposed coefficients at the pool's own prices, so a proposal cannot be priced against faked reserves, and any other dishonesty fails one of the gates. Because pricing is at a point rather than along a curve, every leg is pro-rata at the snapshot reserves and the solve is closed-form for every operation.
 
 ### Slippage and settlement
 
-The floors
+The floors $$\Delta X \ge \Delta X_{\min}$$ for $$X \in \{A, B, C, R\}$$ bound the transactor's own loss, their spread and fees. Everyone else is protected by the value gates. A receiver floors what they get, a giver caps what they give, and the minimum integer stands for no floor at all.
 
-$$
-\Delta X \ge \Delta X_{\min} \qquad \text{for } X \in \{A,\, B,\, R\}
-$$
+Settlement is by sign. Each class with $$\Delta > 0$$ is minted to the recipient and each with $$\Delta < 0$$ is burned from the payer; reserve owed is pulled in ([direct allowance or Permit2](../design/payments.md)) and reserve received is paid out, optionally as native ETH. A position of any class can also be closed by transferring it into the pool: the transfer callback runs the transition and pays out, refunding whatever part of the position the close did not consume.
 
-bound the transactor's *own* loss — their spread and fees. Everyone else is protected by the [value invariant](value-invariant.md), not by the floors. A receiver floors what they get ($$\Delta X_{\min} > 0$$); a giver caps what they give ($$\Delta X_{\min} < 0$$); the minimum integer value stands for $$-\infty$$, no floor at all.
+### Operations
 
-Settlement is by sign: each side with $$\Delta > 0$$ is minted to the recipient and each side with $$\Delta < 0$$ is burned from the payer; reserve owed ($$\Delta R < 0$$) is pulled in ([direct allowance or Permit2](../design/payments.md)) and reserve received ($$\Delta R > 0$$) is paid out, optionally unwrapped to native ETH. A position can also be closed by simply transferring it into the pool — the transfer callback burns it and pays out the reserve.
+The reference Helper solves six single-direction operations and one compound one:
 
-### Multi-direction trades
+* **Open** Long or Short: pay reserve, mint at the class's dear bound, the higher of its two reserves, hence the fewest shares. The [opening fee](opening-fee.md) is added to the gross payment.
+* **Close** Long or Short: burn shares, receive their value at the class's cheap bound.
+* **Flip** Long to Short or back: a burn at the cheap bound feeding a fee'd mint at the other side's dear bound, with no reserve leg.
+* **Deposit** into the LP class: pay reserve, mint at the LP class's dear bound. No fee.
+* **Withdraw** from the LP class: burn shares, receive at the cheap bound.
+* **Rotate**: open one side and close the other in one transition, with a single net reserve leg.
 
-Because one price bound is picked per transition, the legal multi-leg combinations are exactly the **rotations** that agree on a single bound: receive A / give B, or give A / receive B — flips, close-one-open-the-other, trim one side while growing the other. Opening or closing *both* sides in one transition would want opposite bounds and is rejected by the exposure re-check. The single-coefficient engine collapses all legs into one signed scalar, so there is no straddle case and no special conflict handling.
+Per-leg worst-case pricing (mint dear, burn cheap) is exactly what clears the charge at both bases. For the sides, the dear bound is the higher price for Long and the lower for Short. The LP class's reserve is not monotone in price, so its dear and cheap bounds are found by comparing the two realized residuals directly.
+
+Having sized the legs, the Helper aims the two coefficients at whichever basis' floors bind: the protected side exactly at its per-share pin, and the traded side at whatever the settlement leaves after that pin and the LP class's fee-raised floor. Subtracting the raised floor is what leaves the fee on the LP class.
 
 ### Rounding tolerance
 
-The pool cannot tell an exact forward solve from a slightly overshooting inverse solve — the method is hidden inside the Helper — so every transition allows a bounded rounding dust (on the order of 1 wei per share at normal prices) on the invariant check. This is the acknowledged cost of keeping the solver outside the pool.
+The pool cannot tell an exact forward solve from an inverse solve that overshoots by one unit, so every gate allows a bounded dust per class: each side's own coefficient quantum, capped at a $$2^{-32}$$ fraction of that side's pre-trade reserve, plus a few wei; the LP class, which absorbs both sides' recovery dust, gets the sum. The cap matters on pools whose price has drifted far from the mark: uncapped, the quantum would grow until the gates stopped binding. Past the cap a solver must land the curve exactly or overpay, a liveness cost on far-drifted pools and never a leak. The most any transition can take for free stays below gas cost at any reserve size.
+
+One consequence is a known corner: a deeply saturated side on a high-power pool whose oracle has diverged may be unsolvable within tolerance, and the operation reverts cleanly with no state change. The corner is transient in price relative to the mark and heals as the price returns toward it. Integrators should size down or wait on such pools.

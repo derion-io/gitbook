@@ -13,4 +13,4 @@ On the right side, you will have 4 operational tabs: Long, Short, Swap, and LP.
 * Long: open long positions.
 * Short: open short positions.
 * Swap: swap and convert between tokens and positions (advanced).
-* LP: provide liquidity through the [Vault](../../vault/README.md).
+* LP: provide liquidity, either to a single pool's [LP class](../../liquidity/lp-class.md) or through the [Vault](../../liquidity/vault.md).

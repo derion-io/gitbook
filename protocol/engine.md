@@ -1,16 +1,54 @@
 ---
-description: The two-sided pool
+description: Long, Short, and the LP class
 ---
 
-# Trader Engine
+# Three Share Classes
 
-A Derion pool is a pure trader engine. It holds a single ERC-20 reserve token, and its working balance — the **engine reserve** $$R$$ — is fully partitioned between the two sides by a single coefficient $$\alpha$$:
+A Derion pool holds a single ERC-20 reserve token. Its working balance, the **engine reserve** $$R$$, is split at every touch between three share classes by the two [curves](pricing.md):
 
 $$
-q_A = \alpha x^k \qquad\quad r_A = \rho(q_A,\,R) \qquad\quad r_B = R - r_A
+r_A=\rho(\alpha x^{k},R) \qquad\quad r_B=\rho(\beta x^{-k},R) \qquad\quad r_C=R-r_A-r_B
 $$
 
-There is no third side. No LP token, no idle tranche, no phantom counterparty, and no privileged operation touches the pool: liquidity, when present, is just another trader (see [Liquidity Vault](../vault/README.md)).
+Each class is an ERC-1155 token id of the pool (Long `0x10`, Short `0x20`, LP `0x30`), minted and burned through the same `transition()` path, and each is worth its reserve pro-rata: a holder of $$n$$ out of $$s_X$$ shares owns $$n\,r_X/s_X$$. Positions are shares of a class, not accounts. There is no entry price, no per-position margin, and no per-user funding ledger.
+
+### The whole book is four numbers
+
+$$
+\langle\, R,\ \alpha,\ \beta,\ t \,\rangle
+$$
+
+The engine reserve, the two coefficients, and the last funding-accrual time. Everything else, the three reserves and every effective leverage, is re-derived from the curves on every touch at the oracle price.
+
+### The LP class
+
+$$r_C$$ has no coefficient. Its reserve is whatever the two power curves leave, which gives it a definite pay-off of its own: peaked at the price center and vanishing toward both extremes. It is a short-volatility tranche, and it plays four roles at once.
+
+**It is the counterparty.** As price moves, the winning side's reserve grows faster than the losing side's shrinks, and the difference breathes out of $$r_C$$. Given a state $$(R, \alpha, \beta)$$, $$r_C$$ is a pure function of price: a price round trip restores it exactly, with no path dependence.
+
+**It is depth, in both directions.** The inflection of $$\rho$$ sits at $$R/2$$ and $$R$$ carries the residual, so a pool with a funded LP class deleverages later on both sides at once. There is no minor side to pick and nothing to rotate.
+
+**It collects every revenue stream, in-engine.** [Funding](funding-rate.md) decays the sides into it; the [opening fee](opening-fee.md) is forced onto it by its fee-raised floor; the gap between the two oracle bounds on a diverged trade lands on it too. Nothing is routed, streamed, or flushed to a provider address. Value arrives as growth of $$r_C / s_C$$.
+
+**It is open.** Anyone deposits reserve for LP shares and withdraws through `transition()`, priced at the class's adverse bound in each direction exactly like the sides. Ownership is the token. The pool knows no liquidity provider by name; the [Vault](../liquidity/vault.md) is one holder among any others. See [The LP Class](../liquidity/lp-class.md).
+
+### Solvency is one inequality
+
+Because $$(\alpha x^k)(\beta x^{-k}) = \alpha\beta$$ does not depend on price, three statements are equivalent:
+
+$$
+\alpha\beta \le \left(\tfrac{R}{2}\right)^2
+\quad\Longleftrightarrow\quad
+r_A + r_B \le R \ \text{ at every price}
+\quad\Longleftrightarrow\quad
+r_C \ge 0 \ \text{ at any one price}
+$$
+
+The right-hand equivalence is the load-bearing one: checking the residual at the current price is a global solvency proof. The pool therefore needs no separate product check. Initialization rejects a seed with a negative residual, and the per-share floor on the LP class ([Value Gates](value-invariant.md)) keeps every later state solvent. That floor is stronger than $$r_C \ge 0$$: it is per-share non-decreasing, and the dead shares minted at initialization make the supply permanent, so a solvent pool cannot be ground insolvent.
+
+### Initialization
+
+A pool is seeded with $$\langle R, \alpha, \beta\rangle$$ and the reserve $$R$$ paid in. All three classes must clear a minimum reserve, which also rejects an insolvent seed outright, and all three seeds are minted to the dead address. They protect against share-inflation attacks, and they are the permanent non-zero supplies the per-share gates divide by. The seeding price is the oracle's spot alone: only the creator's own dead shares are being split, so a mispriced spot mis-splits the creator's deposit and harms nobody else.
 
 ### Reserve and outbox
 
@@ -20,18 +58,8 @@ $$
 \text{outbox} = \text{balance} - R
 $$
 
-is the **funding outbox**: reserve that [funding](funding-rate.md) has already released to the liquidity provider but that has not been flushed out yet. The outbox backs nothing — it is excluded from every curve evaluation and can never re-enter the engine, because trades move $$R$$ and the balance in lockstep. It physically leaves the pool only on a poke.
+holds only the protocol's cut of [funding](funding-rate.md), plus any donations, waiting for a poke to flush it. It backs nothing, is excluded from every curve evaluation, and is invariant across trades: a transition moves $$R$$ and the balance in lockstep, so nothing a trader does can feed or drain it.
 
-### The whole book is three numbers
+### A matched pair is a straddle
 
-The entire pool state is the triple
-
-$$
-\langle\, R,\ \alpha,\ t \,\rangle
-$$
-
-— the engine reserve, the single Long coefficient, and the last funding-accrual time. Everything else — $$r_A$$, $$r_B$$, effective leverage — is re-derived from the [curve](pricing.md) on every touch. Positions are shares of a side, not accounts: there is no entry price, no per-position margin, and no funding bookkeeping to settle per user.
-
-### A matched pair is a pure interest position
-
-Holding the same fractional share $$f$$ of both sides is price-neutral: $$f\,r_A + f\,r_B = f\,R$$ at every price. The only force that moves a matched pair is funding — the decay of $$R$$ — so a matched holder pays exactly the funding rate to the liquidity provider. (Exactly price-neutral for a share-matched pair; approximately so for a value-matched pair away from balance.)
+Holding the same fractional share of Long and Short is not price-neutral in a two-curve engine. Below the inflection, $$r_A + r_B = \alpha x^k + \beta x^{-k}$$ is smallest at the price center and grows in either direction, so a matched pair is a long straddle on $$p^k$$: it gains on any move and pays [funding](funding-rate.md) for the privilege. The LP class is the other side of that trade, which is what [LP Economics](../liquidity/lp-economics.md) prices.

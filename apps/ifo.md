@@ -17,8 +17,8 @@ Initial Future Offering (IFO) is an upgraded version of the Initial DEX Offering
 A typical IFO process is as follows:
 
 1. The token developer provides the initial liquidity to a Spot DEX AMM, preferably Uniswap V3, and receives the LP token.
-2. Instead of stopping there, the developer also stands up the perpetual market: a Derion pool on the new pair's oracle, with liquidity deposited into the [Vault](../vault/README.md) serving it, for which the developer receives VaultLP shares.
-3. The VaultLP can now be either burnt or locked, depending on the tokenomic design chosen by the token developer.
+2. Instead of stopping there, the developer also stands up the perpetual market: a Derion pool on the new pair's oracle, seeded with liquidity. The developer either deposits into the pool's own [LP class](../liquidity/lp-class.md) and receives its LP position token, or deposits into the [Vault](../liquidity/vault.md) serving it and receives VaultLP shares.
+3. The LP token can now be either burnt or locked, depending on the tokenomic design chosen by the token developer.
 
 The result is a (much) better IDO system that filters out the bad actors and attracts market confidence.
 

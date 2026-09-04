@@ -10,41 +10,49 @@ $$
 \rho(q,R)=\begin{cases} \begin{align*} q\quad &\text{if }q\le\frac{R}{2} \\ R-\frac{R^2}{4q}\quad&\text{if }q\ge\frac{R}{2} \end{align*} \end{cases}
 $$
 
-Below the inflection point $$q = R/2$$ the claim is paid in full — the **power branch**, where leverage compounds at the full power $$k$$. Above it, the pay-off bends onto the **asymptotic branch** and approaches $$R$$ without ever reaching it. The two branches meet smoothly at the inflection point, with slope 1 on both sides.
+Below the inflection point $$q = R/2$$ the claim is paid in full. This is the **power branch**, where leverage compounds at the full power $$k$$. Above it, the pay-off bends onto the **asymptotic branch** and approaches $$R$$ without ever reaching it. The two branches meet smoothly at the inflection point, with slope 1 on both sides.
 
-With the normalized index price $$x = p\,/\,\text{mark}$$, the Long side's reserve is
+### Two curves
 
-$$
-r_A=\rho(\alpha x^k,\,R)
-$$
-
-and the Short side is simply the remainder:
+With the normalized index price $$x = p\,/\,\text{mark}$$, each side has its own coefficient and its own curve:
 
 $$
-r_B=R-r_A
+r_A=\rho(\alpha x^k,\,R) \qquad\qquad r_B=\rho(\beta x^{-k},\,R)
 $$
 
-The complement is not a bookkeeping shortcut — it is itself an asymptotic short pay-off. Algebraically, $$R-\rho(\alpha x^k,R)=\rho(\beta x^{-k},R)$$ with the implied short coefficient $$\beta = R^2/4\alpha$$, so the two sides are exact mirror images around the inflection point: whenever one side is on its power branch, the other is on its asymptotic branch.
+The Long is a true $$p^k$$ pay-off below its inflection and the Short a true $$p^{-k}$$ pay-off below its own. Constant compounding leverage holds on both sides at any imbalance, not only near balance, and neither curve is derived from the other. What the two curves leave of the reserve,
+
+$$
+r_C = R - r_A - r_B
+$$
+
+is the [LP class](engine.md). It has no coefficient and no curve of its own; its pay-off is whatever the two power curves do not claim.
+
+An earlier engine used a single coefficient and defined the Short as the complement $$R - r_A$$. That is the boundary case $$\alpha\beta = (R/2)^2$$ of this one, where $$r_B \equiv R - r_A$$ and $$r_C \equiv 0$$; below its inflection that Short was linear in $$p^k$$ rather than a $$p^{-k}$$ pay-off, so "a Short is the mirror of a Long" held only near balance. With two coefficients it holds everywhere.
 
 Three properties of $$\rho$$ carry the whole protocol:
 
-* **No liquidation, ever.** $$\rho \to R$$ asymptotically, so the winning side can never claim the entire reserve and the losing side only approaches zero. $$0 \le r_A, r_B < R$$ holds at every price, unconditionally — even in a pool untouched for a year.
+* **No liquidation, ever.** $$\rho \to R$$ asymptotically, so the winning side can never claim the entire reserve and the losing side only approaches zero. $$0 \le r_A, r_B < R$$ holds at every price, unconditionally, even in a pool untouched for a year.
 * **Leverage elasticity.** As a side saturates, its effective leverage compresses continuously toward zero instead of hitting a margin call. Deleveraging replaces liquidation.
-* **Scale-free.** $$\rho(f q,\,f R) = f\,\rho(q,R)$$ — the identity that lets [funding](funding-rate.md) be applied as a single multiplication on $$R$$.
+* **Scale-free.** $$\rho(f q,\,f R) = f\,\rho(q,R)$$: the shape of the curve does not depend on the pool's size, so small and large pools behave identically.
 
 ### What a trader experiences
 
-A Long ×4 opened with 1.0 reserve: if the index rises 10%, it closes at ≈ 1.4641 (+46.41%); if the index falls 10%, ≈ 0.6561 (−34.39%); if the index crashes toward zero, a small residual remains — never zero, never liquidated. A Short is the mirror image. Compounding cuts both ways: larger gains on the right side, softened losses on the wrong side, no margin call in either direction.
+A Long ×4 opened with 1.0 reserve: if the index rises 10%, it closes at ≈ 1.4641 (+46.41%); if the index falls 10%, ≈ 0.6561 (−34.39%); if the index crashes toward zero, a small residual remains. Never zero, never liquidated. A Short is the mirror image. Compounding cuts both ways: larger gains on the right side, softened losses on the wrong side, no margin call in either direction.
 
 ### Why a power curve, not a linear pay-off
 
-"Constant leverage" and "linear pay-off" sound like synonyms; they are opposites. Leverage as a trader experiences it is elasticity — $$d\ln V / d\ln p$$. Demanding that it stay constant at $$k$$ forces $$V \propto p^k$$: a one-line differential equation with a unique solution, and that solution is a power curve.
+"Constant leverage" and "linear pay-off" sound like synonyms; they are opposites. Leverage as a trader experiences it is elasticity, $$d\ln V / d\ln p$$. Demanding that it stay constant at $$k$$ forces $$V \propto p^k$$: a one-line differential equation with a unique solution, and that solution is a power curve.
 
-A pay-off linear *in price*, $$V = V_0(1 + \lambda(p/p_0 - 1))$$, only has leverage $$\lambda$$ at its entry price. It decays toward 1× as the position wins, blows up toward infinity as it loses, and crosses zero at a finite price — and that zero crossing *is* a liquidation price. Every system built on linear pay-offs pays one of two taxes:
+A pay-off linear *in price*, $$V = V_0(1 + \lambda(p/p_0 - 1))$$, only has leverage $$\lambda$$ at its entry price. It decays toward 1× as the position wins, blows up toward infinity as it loses, and crosses zero at a finite price. That zero crossing *is* a liquidation price. Every system built on linear pay-offs pays one of two taxes:
 
-* **Liquidation** (margin perps): the pay-off crosses zero, so solvency depends on keepers closing positions in time — bad debt, insurance funds, auto-deleveraging, oracle-latency risk. Solvency becomes an operational process instead of a property of the math.
-* **Re-anchoring** (leveraged-ETF style tokens): reset the pay-off every epoch — path-dependent volatility drift, and value stops being a function of the current price alone.
+* **Liquidation** (margin perps): the pay-off crosses zero, so solvency depends on keepers closing positions in time. Bad debt, insurance funds, auto-deleveraging, oracle-latency risk. Solvency becomes an operational process instead of a property of the math.
+* **Re-anchoring** (leveraged-ETF style tokens): reset the pay-off every epoch. Path-dependent volatility drift, and value stops being a function of the current price alone.
 
-Both also destroy fungibility. $$p^k$$ is a pure function of the current price and composes multiplicatively, so every holder of a side owns shares of one common pay-off — no entry price, no per-account margin, no per-position funding bookkeeping. A linear pay-off cannot be stateless: its value depends on where it was anchored.
+Both also destroy fungibility. $$p^k$$ is a pure function of the current price and composes multiplicatively, so every holder of a side owns shares of one common pay-off: no entry price, no per-account margin, no per-position funding bookkeeping. A linear pay-off cannot be stateless; its value depends on where it was anchored.
 
-The two branches of $$\rho$$ then split the work cleanly. The power branch is the product — constant compounding leverage. The asymptotic branch is not about leverage at all — it is the solvency clamp that replaces liquidating the counterparty. The cost of the curve is equally explicit: its convexity has to be paid for — that is what [funding](funding-rate.md) is, the same reason power perps pay theta — and a saturated side's leverage dilutes until [depth](../vault/depth-provision.md) arrives. What that buys is unconditional full collateralization and stateless, fungible positions — a combination no linear pay-off can produce at any level of added machinery.
+The two branches of $$\rho$$ then split the work cleanly. The power branch is the product, constant compounding leverage. The asymptotic branch is not about leverage at all; it is the solvency clamp that replaces liquidating the counterparty. The cost of the curve is equally explicit: its convexity has to be paid for, which is what [funding](funding-rate.md) is (the same reason power perps pay theta), and a saturated side's leverage dilutes until [depth](../liquidity/depth-provision.md) arrives. What that buys is unconditional full collateralization and stateless, fungible positions, a combination no linear pay-off can produce at any level of added machinery.
+
+{% hint style="info" %}
+Throughout these pages $$k$$ is the pay-off power, the leverage a trader sees. How it maps onto the pool's `K` config depends on the oracle's price convention: `K = 2k` for the built-in Uniswap v3 fetcher, which reports square-root prices, and `K = k` for plain-price fetchers such as Chainlink or the [stock-token fetcher](oracle/stock-tokens.md). See [Pool Creation](../guide/pool-creation.md).
+{% endhint %}

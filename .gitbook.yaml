@@ -5,8 +5,13 @@ structure:
   summary: SUMMARY.md
 
 redirects:
-  protocol/liquidity-provision: vault/README.md
-  protocol/dynamic-r: vault/depth-provision.md
-  protocol/dynamic-lp: vault/lp-economics.md
+  vault: liquidity/vault.md
+  vault/depth-provision: liquidity/depth-provision.md
+  vault/deposit-withdraw: liquidity/deposit-withdraw.md
+  vault/governance: liquidity/governance.md
+  vault/lp-economics: liquidity/lp-economics.md
+  protocol/liquidity-provision: liquidity/README.md
+  protocol/dynamic-r: liquidity/depth-provision.md
+  protocol/dynamic-lp: liquidity/lp-economics.md
   protocol/maturity: protocol/README.md
   design/universal-token-router: design/payments.md

@@ -1,55 +1,49 @@
 # Funding
 
-Funding is what traders pay for their exposure, and what the liquidity provider earns for absorbing it. Unlike conventional perpetual exchanges with periodic funding epochs, Derion's funding is autonomous and continuous: it accrues on every pool touch from the time elapsed since the last one, computed purely from the pool state — no keeper, no schedule, no per-position bookkeeping.
+Funding is what traders pay for their exposure and what the [LP class](../liquidity/lp-class.md) earns for absorbing it. It is autonomous and continuous: it accrues on every pool touch from the time elapsed since the last one, computed from the pool state alone, with no keeper, no epoch, and no per-position bookkeeping. It runs entirely in reserve space and, apart from the protocol's cut, it never moves a token. Value accrues to the LP class as growth of $$r_C$$ in place.
 
 There are two components, each configured as a half-life.
 
 ## Interest
 
-Interest decays the engine reserve:
+Interest decays both side reserves proportionally:
 
 $$
-R \leftarrow R \cdot 2^{-\text{elapsed}\,/\,\text{INTEREST\_HL}}
+r_X \leftarrow r_X \cdot 2^{-\,\text{elapsed}\,/\,\text{INTEREST\_HL}} \qquad X \in \{A, B\}
 $$
 
-The coefficient $$\alpha$$ — every position's price-tracking identity — is left untouched, and the side reserves are re-derived from the [curve](pricing.md). Decaying $$R$$ rather than the positions makes interest *rent on reserve occupancy*: a saturated (dominant) side, whose reserve scales with $$R$$, pays the bulk of it; a small side deep on its power branch pays almost nothing until the shrinking inflection point reaches it; a matched Long+Short pair pays in full. `INTEREST_HL = 0` disables interest.
+$$R$$ stays where it is, so the residual $$r_C = R - r_A - r_B$$ grows by exactly what the sides released. This is rent on reserve occupancy: every side pays the same rate on the reserve it holds, a matched Long and Short pays in full, and the LP class pays nothing because it is the recipient. Rounding is down, so traders pay at least the rate, and a non-empty side never decays to zero. `INTEREST_HL = 0` disables interest.
 
 ## Premium
 
-Premium charges the crowded side. The gap between the **trader-held** reserves of the two sides decays toward zero:
+Premium charges the crowded side. The gap between the two side reserves decays toward zero:
 
 $$
-\text{gap} = |t_A - t_B|,\qquad \text{paid} = \text{gap}\cdot\left(1 - 2^{-\text{elapsed}\,/\,\text{PREMIUM\_HL}}\right)
+\text{gap} = |r_A - r_B|,\qquad \text{paid} = \text{gap}\cdot\left(1 - 2^{-\,\text{elapsed}\,/\,\text{PREMIUM\_HL}}\right)
 $$
 
-The dominant trader side shrinks by that amount (and $$R$$ with it, keeping $$r_A + r_B = R$$ exact); the smaller side is untouched. This is imbalance funding accrued to the liquidity side — the model of pool-based perp DEXs — not the CEX model where longs pay shorts: the side creating the counterparty risk pays the party absorbing it.
-
-"Trader-held" means the [Vault](../vault/README.md)'s own position is excluded from the gap. The premium must track the liquidity provider's actual net counterparty risk, not the depth the Vault itself provides — otherwise the Vault's own depth would damp the charge, or even misdirect it onto the provider's own side. `PREMIUM_HL = 0` disables the premium.
+The dominant side shrinks by that amount, into $$r_C$$ like interest; the smaller side is untouched. This is imbalance funding paid to the pool's counterparty, the model of pool-based perpetual exchanges rather than the peer model where longs pay shorts. Since the LP class holds no side, every side token belongs to a trader and the raw gap is the net trader imbalance; there is nothing to exclude. `PREMIUM_HL = 0` disables the premium.
 
 {% hint style="info" %}
-Both charges use exponential decay because it is the unique live basis that composes exactly across touches: a pool poked twice reaches the same state as one poked once for the combined duration (at the same price). A linear rate would drift with poke frequency. Left completely untouched, the premium self-balances the pool toward $$t_A = t_B$$.
+Both charges use exponential decay because it is the one live rate that composes exactly across touches: a pool poked twice reaches the same state as one poked once for the combined duration, at the same price. A linear rate would drift with poke frequency. Interest and premium each compose with themselves but not with each other, so poke cadence shifts a little of the incidence between the two charges. Both flows stay between the same three classes, so this moves who pays what, never whether value leaves the engine.
 {% endhint %}
 
-## The outbox and the flush
+## The protocol cut
 
-Funding releases reserve but transfers nothing on the trading path: on every touch, $$R$$ shrinks by the accrued interest and premium while the pool balance stays put, so the released value accumulates in the **outbox**,
-
-$$
-\text{outbox} = \text{balance} - R
-$$
-
-keeping swap gas deterministic and free of extra token transfers. The outbox physically leaves the pool only on a poke, which splits it between the protocol and the liquidity provider:
+The only value that ever leaves the engine outside a settlement is the protocol's share of the funding release:
 
 $$
-\text{fee} = \frac{\text{outbox}}{\text{FEE\_RATE}} \;\longrightarrow\; \text{FEE\_TO}
-\qquad\qquad
-\text{outbox} - \text{fee} \;\longrightarrow\; \text{PROVIDER}
+\text{cut} = \frac{\text{release}}{\text{FEE\_RATE}},\qquad R \leftarrow R - \text{cut}
 $$
 
-`sync()` is permissionless: it accrues funding at the manipulation-resistant TWAP (no trade follows, so there is no adverse bound to pick), persists the state, and flushes the outbox. Anyone can poke; the [Vault](../vault/depth-provision.md) exposes batch pokes over every pool it serves.
+It is carved out of $$R$$ at accrual with no transfer, so the trading path stays free of extra token movements, and sits in the balance as the outbox ($$\text{balance} - R$$) until a permissionless poke. `sync()` accrues funding at the TWAP, persists the state, and sends the outbox to `FEE_TO`. Donations to a pool land in the outbox and flush with it.
 
-* `FEE_TO` and `FEE_RATE` are immutables on the shared pool logic, set once at deployment — currently 1/5 of the flushed funding.
-* `PROVIDER` is a per-pool config payee, never a permission. With `PROVIDER = 0`, the LP yield routes to `FEE_TO`.
-* Donations to a pool land in the outbox and flush with it.
+`FEE_TO` and `FEE_RATE` are immutables on the shared pool logic, set once at deployment, currently 1/5 of the funding release. `FEE_RATE = 0` means no cut and nothing to flush.
 
-The off-chain `View` contract mirrors both charges exactly, so quotes track the pool byte-for-byte between pokes.
+Because the LP yield accrues in place, poking is not a standing obligation for anyone. Nothing of the LP's is ever stranded outside the engine, and a pool left alone is worth exactly what a poked one is. The poke is a state refresh plus the protocol's own collection.
+
+## Coefficient recovery
+
+Funding runs on reserves, so the stored coefficients go stale on every accrual. A poke recovers each moved side once by inverting the curve and persists the result; a trade needs no recovery because the Helper proposes fresh coefficients. At an extreme price relative to the mark the inversion can be unrepresentable for a side; the pool then keeps that side's stored coefficient and the charge falls on the LP class instead, a dust-level concession. If that leaves the sides summing above the cut-reduced $$R$$, the pool reclaims the un-backable part of the cut so the stored state is always solvent.
+
+The off-chain `View` contract mirrors both charges exactly, so quotes track the pool between pokes.

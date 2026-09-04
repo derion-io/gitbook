@@ -1,24 +1,43 @@
-# Value Invariant
+# Value Gates
 
-Whatever shape a transition takes, it has to pass one final check before it commits. Writing $$s_A, s_B$$ for the side supplies and primes for post-trade values, the pool requires the per-share value of **both** sides to be non-decreasing:
+Whatever shape a transition takes, it must pass one gate set at each oracle basis before it commits. Write $$s_X$$ for the class supplies, primes for post-trade values, and $$\varepsilon_A, \varepsilon_B$$ for the two sides' rounding dust. All reserves are evaluated at the basis under test, TWAP or spot.
+
+### The charge
 
 $$
-\frac{r_A'}{s_A'} \;\ge\; \frac{r_A}{s_A} - \varepsilon
-\qquad\text{and}\qquad
-\frac{r_B'}{s_B'} \;\ge\; \frac{r_B}{s_B} - \varepsilon
+\Delta R + \Delta A\,\frac{r_A}{s_A} + \Delta B\,\frac{r_B}{s_B} + \Delta C\,\frac{r_C}{s_C} \;\le\; -\,\text{fee}_{\min} + \varepsilon_A + \varepsilon_B
 $$
 
-up to a per-share rounding dust $$\varepsilon$$. Every unit of reserve belongs to exactly one of the two share classes ($$r_A + r_B = R$$), so these two inequalities are the entire safety statement. The transactor's own mint or burn is already counted in the post supplies $$s'$$, so the check permits only *them* to lose — their spread and fees, which their own slippage floors bound separately. No one but the transactor can lose value in a transition.
+The transactor's whole take across the three classes must cost at least its value at this basis plus the [opening fee](opening-fee.md). Requiring it at both bases is the adverse charge: the dear basis is the strict one. Mint legs round up and burn legs round down, both against the transactor.
 
-The check is direction-agnostic — it holds for any combination of $$\langle \Delta A, \Delta B, \Delta R \rangle$$ — which is what makes multi-direction trades safe with the same check the simple open/close path uses. Funding is not a counter-example: it is applied before the pre-trade snapshot, so the "before" inventory is already post-funding. The arithmetic runs at 512-bit intermediate precision, and the denominators are always positive because the pool's initialization mints unburnable dead shares on both sides.
+### The three floors
+
+$$
+\frac{r_A'}{s_A'} + \varepsilon_A \;\ge\; \frac{r_A}{s_A}
+\qquad
+\frac{r_B'}{s_B'} + \varepsilon_B \;\ge\; \frac{r_B}{s_B}
+\qquad
+\frac{r_C'}{s_C'} + \varepsilon_A + \varepsilon_B \;\ge\; \frac{r_C + \text{fee}_{\min}}{s_C}
+$$
+
+where $$r_A', r_B'$$ are re-evaluated by the pool from the proposed coefficients and $$r_C' = R_1 - r_A' - r_B'$$ is the residual, saturating at zero. No class's per-share value drops at either basis. The transactor's own mint or burn is already in the post supplies, so the floors let only them lose, and their own slippage floors bound that loss separately.
+
+**The fee-raised LP floor is the fee's routing.** The charge makes the transactor pay $$\text{fee}_{\min}$$; raising the LP class's floor by the same amount is what makes the fee land there rather than wherever the transactor-supplied Helper might aim it. A fee-dodging proposal fails the charge. A proposal that pays the fee but aims it at a side fails the LP floor.
+
+**Why the LP floor is per-share.** The side floors are one-sided: a proposal that gifts the residual to a side's incumbents is invisible to them and to the charge, and only the LP floor catches it. With the LP class tokenized, the same floor also prices the class's own deposits and withdrawals exactly like the sides'. One rule, three classes.
+
+**Solvency falls out.** The residual saturates at zero, so a proposal with $$r_A' + r_B' > R_1$$, equivalently $$\alpha_1\beta_1 > (R_1/2)^2$$, fails the LP floor outright. There is no separate product check.
+
+Funding is not a counter-example to any of this: it is applied before the pre-trade snapshot, so the "before" inventory is already post-funding. The arithmetic is 512-bit, and the denominators are positive because every class carries unburnable dead shares from initialization.
 
 ### Consolidated invariants
 
-1. $$\text{balance} \ge R$$ — the funding outbox $$\text{balance} - R$$ is non-negative and never enters the engine.
-2. $$r_A + r_B = R$$ — the engine reserve is fully partitioned between the two sides.
-3. $$0 \le r_A, r_B < R$$ — the asymptotic cap: neither side can drain the engine, so there is no liquidation.
-4. $$R_1 = R - \Delta R$$ on every transition — the engine moves in lockstep with the tokens.
-5. Per-share value is non-decreasing for both sides, up to $$\varepsilon$$ — no one but the transactor loses value.
-6. Funding moves value one way only: from the dominant trader side to the liquidity provider, applied before the trade snapshot.
-7. Whenever the oracle prices diverge, the selected price is adverse to the transactor's realized net exposure.
-8. A pool's reserve is reachable only through its own transitions — there is no cross-pool custody.
+1. $$\text{balance} \ge R$$, and $$\text{balance} - R$$ is invariant across transitions. Only funding's protocol cut feeds it; only a poke drains it.
+2. $$\alpha\beta \le (R/2)^2 \iff r_A + r_B \le R$$ at every price $$\iff r_C \ge 0$$ at any price. Enforced at initialization and preserved by the LP floor.
+3. $$0 \le r_A, r_B < R$$: the asymptotic cap. No liquidation.
+4. $$R_1 = R - \Delta R$$ exactly on every transition. The engine is structural.
+5. Per-share value of A, B, and C is non-decreasing at both bases, C's floor raised by the opening fee, each up to its class's dust. No class but the transactor loses; the fee and the divergence gaps land on the LP class.
+6. The charge holds at both bases over all three legs: the transactor pays at least the adverse valuation of their take plus the fee.
+7. Funding decays the sides into the residual: the LP class collects, traders pay, and only the protocol cut leaves the engine.
+8. Every class's supply has an unburnable dead-share floor.
+9. A pool's reserve is reachable only through its own transitions.
