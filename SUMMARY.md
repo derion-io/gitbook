@@ -38,7 +38,6 @@
   * [AMM-LP IL Hedge](apps/amm-lp-il-hedge.md)
   * [Initial Future Offering](apps/ifo.md)
   * [Derivative Backstop Mechanism](apps/backstop.md)
-  * [Depeggable Synthetics](apps/depeggable-synthetics.md)
 * [Tokenomics](tokenomics/README.md)
   * [Liquidity Mining](tokenomics/liquidity-mining.md)
   * [Referral Commission](tokenomics/referral-commission.md)

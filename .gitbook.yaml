@@ -15,3 +15,4 @@ redirects:
   protocol/dynamic-lp: liquidity/lp-economics.md
   protocol/maturity: protocol/README.md
   design/universal-token-router: design/payments.md
+  apps/depeggable-synthetics: apps/README.md
