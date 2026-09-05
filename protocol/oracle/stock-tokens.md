@@ -52,7 +52,7 @@ Pyth receivers may charge for updates. The pool forwards the caller's native val
 
 ### Validation
 
-Every Pyth value must be positive with an exponent in $$[-59, 0]$$, and the price leg's confidence interval must be within `maxConfBps` of the price when that cap is set. The v4 read fails closed: an uninitialized pool, or an overflow at an absurd raw price ratio, reverts rather than returning a wrong number. The `ORACLE` word's stock token must match the instance's.
+Every Pyth value, the price, the redemption rate and the quote feed alike, must be positive with an exponent in $$[-59, 0]$$ and, when the cap is set, a confidence interval within `maxConfBps` of its own value. The v4 read fails closed: an uninitialized pool, or an overflow at an absurd raw price ratio, reverts rather than returning a wrong number. The `ORACLE` word's stock token must match the instance's.
 
 ### Initialization
 
