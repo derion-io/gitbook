@@ -18,7 +18,7 @@ Every pool runs the same logic, so isolation is not about code bugs; it is about
 
 | Tier | Contract | Can | Cannot |
 | ---- | -------- | --- | ------ |
-| law + custody | Pool Logic + proxy (per pool) | hold funds; enforce the curves and the value gates; mint/burn its three classes | — |
+| law + custody | Pool Logic + proxy (per pool) | hold funds; enforce the curves and the value gates; mint/burn its three classes | none |
 | solver | [Helper](helper-contracts.md) (chosen per call) | propose a transition | touch funds; make anyone but its own caller lose |
 | oracle | [Fetcher](../protocol/oracle/README.md) (chosen per pool) | report the two prices its pool trades at | reach any other pool |
 | liquidity | [Vault](../liquidity/vault.md) | hold the LP class like anyone; govern its own book | use any pool permission; breach a gate |

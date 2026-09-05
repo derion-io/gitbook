@@ -8,7 +8,7 @@ description: convert between tokens and positions
 The screenshots on this page were taken on the previous version of the interface and have not yet been retaken for the current release.
 {% endhint %}
 
-“Swap” is our feature to trade between different tokens, including long/short position tokens, alongside other cryptocurrencies (ETH, WETH). Under the hood, a swap is a single multi-direction [transition](../../protocol/state-transition.md) — for example, flipping a Long into a Short without closing to the reserve token first.
+“Swap” is our feature to trade between different tokens, including long/short position tokens, alongside other cryptocurrencies (ETH, WETH). Under the hood, a swap is a single multi-direction [transition](../../protocol/state-transition.md), for example flipping a Long into a Short without closing to the reserve token first.
 
 Change to the “Swap” tab on the right panel to use swap.
 
