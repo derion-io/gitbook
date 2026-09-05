@@ -40,7 +40,7 @@ The four minimums are pure slippage floors: a receiver floors what it gets (`> 0
 | open, close, flip, LP deposit, LP withdraw | `abi.encode(uint256 sideIn, uint256 sideOut, uint256 amount)` |
 | rotate (open one side, close the other) | `abi.encode(type(uint256).max, uint256 openSide, uint256 openReserve, uint256 closeSide, uint256 closeAmount, uint256 0)` |
 
-with sides `SIDE_R = 0x00`, `SIDE_A = 0x10`, `SIDE_B = 0x20`, `SIDE_C = 0x30`. For an open (`SIDE_R → A/B`) `amount` is the **net** reserve; the opening fee is added on top and pulled as part of `dR`. For an LP deposit (`SIDE_R → C`) it is the reserve paid. For closes, withdrawals, and flips it is the number of shares to burn.
+with sides `SIDE_R = 0x00`, `SIDE_A = 0x10`, `SIDE_B = 0x20`, `SIDE_C = 0x30`. `SIDE_E = 0x01` is `SIDE_R` paid out as native ETH; the quoting functions take it as an alias of `SIDE_R`, while a transition makes the same choice with `unwrapETH`. For an open (`SIDE_R → A/B`) `amount` is the **net** reserve; the opening fee is added on top and pulled as part of `dR`. For an LP deposit (`SIDE_R → C`) it is the reserve paid. For closes, withdrawals, and flips it is the number of shares to burn.
 
 `oracleData` is empty for a read-only fetcher. On a pull-oracle pool it carries the signed update blobs, and `msg.value` may carry the update fee; the pool forwards native value to the fetcher only when `oracleData` is non-empty and returns whatever the fetcher does not spend ([Payments](../design/payments.md)).
 
