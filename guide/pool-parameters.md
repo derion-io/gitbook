@@ -6,7 +6,7 @@ description: Choosing leverage, funding, fee, headroom, and ramp so the LP class
 
 How to pick the leverage, `INTEREST_HL`, `PREMIUM_HL`, `OPEN_RATE`, and the Vault's per-pool headroom and ramp for a given asset, so that the [LP class](../liquidity/lp-class.md) comes out flat or better across the price moves the asset actually produces. [LP Economics](../liquidity/lp-economics.md) derives the model this page applies: the LP is short a straddle on $$p^k$$, its cost grows with the square of leverage and the square of volatility, and interest, premium, and the opening fee are what pay for it.
 
-The steps below are implemented in the parameter calculator shipped with the core repository (`deploy/params.html`). It fetches the price history for a ticker, CoinGecko id, or on-chain pool address, measures the inputs, emits the config fields, and replays the engine over the history and over synthetic regimes.
+The steps below are implemented in the parameter calculator that ships with the core repository (`deploy/params.html`; the repository is not public at the time of writing). It fetches the price history for a ticker, CoinGecko id, or on-chain pool address, measures the inputs, emits the config fields, and replays the engine over the history and over synthetic regimes.
 
 ## 0. Notation
 
