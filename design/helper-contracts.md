@@ -10,7 +10,7 @@ The reference Helper's payload is `abi.encode(sideIn, sideOut, amount)` for open
 
 ### View
 
-A read-only quoting contract that mirrors the pool's evaluation, including both [funding](../protocol/funding-rate.md) charges and the pending protocol cut, so off-chain estimates track the chain exactly between pokes. It reports the three class reserves and supplies, both oracle prices, and the pool's metadata. `EOAProbe` is a companion for dry-running a whole transaction via state override: installed at the caller's address, it forwards the call, captures gas and return data, and accepts the ETH and ERC-1155 transfers a real account would.
+A read-only quoting contract that mirrors the pool's evaluation, including both [funding](../protocol/funding-rate.md) charges and the pending protocol cut, so off-chain estimates track the chain exactly between pokes. It reports the three class reserves and supplies, both oracle prices, and the pool's metadata. `EOAProbe` is a companion for dry-running a whole transaction via state override: installed at the caller's address, it forwards the call, captures gas and return data, and accepts the ETH and ERC-1155 transfers a real account would. Two smaller read helpers sit beside them: `TokenPriceView` batch-reads Uniswap v3 market prices for a front end, and `MetaProxyView` computes the MetaProxy init-code hash for a config, which is how an integrator recomputes a pool's address to check that an ERC-1155 id really belongs to a Derion pool ([Derivative Tokens](derivative-tokens.md)).
 
 ### Factory
 
