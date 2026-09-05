@@ -49,7 +49,7 @@ Settlement is by sign. Each class with $$\Delta > 0$$ is minted to the recipient
 
 ### Operations
 
-The reference Helper solves six single-direction operations and one compound one:
+The reference Helper solves five single-direction operations and one compound one:
 
 * **Open** Long or Short: pay reserve, mint at the class's dear bound, the higher of its two reserves, hence the fewest shares. The [opening fee](opening-fee.md) is added to the gross payment.
 * **Close** Long or Short: burn shares, receive their value at the class's cheap bound.
