@@ -10,7 +10,7 @@ Token Distribution:
 
 * Community: 63%
   * Liquidity Mining: 28%
-  * Trading Incentive: 14%
-  * Referrer Commission: 21%
+  * Trading Incentive: 21%
+  * Referrer Commission: 14%
 * Partnership and Growth: 28%
 * Core Team: 9%
