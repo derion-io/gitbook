@@ -4,9 +4,13 @@ description: Open Long and Short positions
 
 # Long/Short
 
+{% hint style="info" %}
+The screenshots on this page were taken on the previous version of the interface and have not yet been retaken for the current release.
+{% endhint %}
+
 To open a long/short position on Derion, first, choose the asset pair you wish to trade. The trading pair can be selected at the top left of the screen.
 
-<figure><img src="https://lh6.googleusercontent.com/CaBrGPHsP0z9y2OgljQz__O8lrjT4xj055TYsfZMRZ1JIE38BhOHVIuGSDCqxbLxE5YpIVpuEaz9qlImD3BtHTbcKIn1c8LadQbEMm95DZwoNCHb1ASyAa3ZfXnzybF-tMvUphhxeY8vEJKXfmM-WwM" alt=""><figcaption><p>Long/Short</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/guide-trade-select-pair.png" alt=""><figcaption><p>Long/Short</p></figcaption></figure>
 
 Afterward, you can choose to either long or short on the right panel, and select between the available leverage levels. After choosing the leverage and entering the amount you want to trade, you should consider a number of factors before opening the position:
 
@@ -17,10 +21,10 @@ Afterward, you can choose to either long or short on the right panel, and select
 * Deleverage Risk: the risk of your position entering the deleveraged regime. The larger the position relative to the pool, the higher the risk.
 * Estimated Gas/Estimated Fee: the estimated gas fee at that time.
 
-After carefully checking all the details, you can open your position by clicking the blue button below (“Long 8x ETH” in this example).
+After carefully checking all the details, open the position with the blue button under the panel. Its label names the side, leverage, and asset you selected.
 
-<figure><img src="https://lh5.googleusercontent.com/Bf8a6Zbd-QfY3_bdtZ0GkBItF3tH4h-0WayimfYiiWaEC5nkqOTrVE-JmqMWow8_88Y0Xgukw13n2r3YHXaeaPNcE0FvP46kHeNkun1tov8Lp1XpgKvol9CuWxshm3lUEyLfykwbH-c0q21BijGtq4o" alt=""><figcaption><p>Open Position</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/guide-trade-open-position.png" alt=""><figcaption><p>Open Position</p></figcaption></figure>
 
 After confirming the transaction in your wallet, your position should be shown on the bottom-left panel. You can close your position anytime here.
 
-<figure><img src="https://lh4.googleusercontent.com/KZIOC65knt3P_cBQqmLpE-BSMhOxpOtHxQp55tA4HvXsfsv-Oj4XZhEB7DCrcNqfu1ZxezEobNrteBvQ1oEF_C1M61hnPXFUkiEyUrxOWO5ZzAT-UN5oNVnHkg3O78SwFtP5h9SQv7n49bZS8mVogr0" alt=""><figcaption><p>Positions</p></figcaption></figure>
+<figure><img src="../../.gitbook/assets/guide-trade-positions.png" alt=""><figcaption><p>Positions</p></figcaption></figure>
