@@ -1,5 +1,9 @@
 # Rewards
 
+{% hint style="warning" %}
+Designed for the v3 deployment; not yet re-published for the current protocol version.
+{% endhint %}
+
 DER is distributed to the community through a novel model called **Sleeper Tokenomics**, where the full token reward is only reached when the TVL (Total Value Locked) reaches its target capacity. This model creates a fairer Liquidity Mining environment by closing the rewards gap between first-comers and late-arriving participants.
 
 A total of 42,000 DER (42% of the total supply) is locked in the Derion Incentive contract. This DER is released as an incentive for users who stake tokens into the Derion incentivized pools. Each day, at most 0.19% of the remaining DER in the pool is distributed to the staked Liquidity Providers and Referrer Commission, meaning it takes about 1 year to halve the tokens in the pool with full capacity staking.

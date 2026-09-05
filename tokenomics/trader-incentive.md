@@ -1,5 +1,9 @@
 # Trader Incentive
 
+{% hint style="warning" %}
+Designed for the v3 deployment; not yet re-published for the current protocol version.
+{% endhint %}
+
 Trader Incentive is a unique program where losing positions will be compensated with DER proportional to the value lost. This means that if a trader predicts the correct market direction, they will receive [rETH](https://rocketpool.net) or [BNBx](https://www.staderlabs.com) as profits. However, if they go in the wrong market direction, they will receive DER as insurance.
 
 21% of the initial supply of DER is locked in the Trader Incentive contract to compensate for losing traders. Please refer to [rewards.md](rewards.md "mention") for the exact calculation.
