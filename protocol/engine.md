@@ -48,7 +48,7 @@ The right-hand equivalence is the load-bearing one: checking the residual at the
 
 ### Initialization
 
-A pool is seeded with $$\langle R, \alpha, \beta\rangle$$ and the reserve $$R$$ paid in. All three classes must clear a minimum reserve, which also rejects an insolvent seed outright, and all three seeds are minted to the dead address. They protect against share-inflation attacks, and they are the permanent non-zero supplies the per-share gates divide by. The seeding price is the oracle's spot alone: only the creator's own dead shares are being split, so a mispriced spot mis-splits the creator's deposit and harms nobody else.
+A pool is seeded with $$\langle R, \alpha, \beta\rangle$$ and the reserve $$R$$ paid in. All three classes must clear a minimum reserve, which also rejects an insolvent seed outright, and all three seeds are minted to an address nobody controls. They protect against share-inflation attacks, and they are the permanent non-zero supplies the per-share gates divide by. The seeding price is the oracle's spot alone: only the creator's own dead shares are being split, so a mispriced spot mis-splits the creator's deposit and harms nobody else.
 
 ### Reserve and outbox
 

@@ -20,7 +20,7 @@ There is no provider field. Liquidity is the pool's own [LP class](../liquidity/
 
 A deployed pool cannot be used until `init` seeds it with a state $$\langle R, \alpha, \beta \rangle$$ and the reserve $$R$$ paid in. At the fetcher's spot price the two curves split $$R$$ into $$r_A$$, $$r_B$$, and the residual $$r_C$$, and all three must clear the minimum reserve (10⁶ wei each). A residual below zero means the seed is insolvent and the call reverts. A simple choice is a third each: pick $$\alpha$$ so that $$r_A = R/3$$ and $$\beta$$ so that $$r_B = R/3$$ at the seeding price, using the inverse of the curve.
 
-All three seeds are minted to the dead address. They protect the pool against share-inflation attacks and are the permanent supplies the per-share gates divide by, and they are never returned. Keep the seed small.
+All three seeds are minted to an address nobody controls. They protect the pool against share-inflation attacks and are the permanent supplies the per-share gates divide by, and they are never returned. Keep the seed small.
 
 The Factory's `deploy` runs deployment and `init` in one transaction, and `deployWithStrategy` additionally writes a Vault strategy that extends an existing one with the new pool, ready to be voted for ([Strategy Governance](../liquidity/governance.md)). See the [Pool API](../contracts/api.md).
 

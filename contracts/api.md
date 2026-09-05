@@ -66,7 +66,7 @@ struct State {
 }
 ```
 
-Seeds a freshly deployed pool. The reserve is pulled through the `Payment` path, the two curves are evaluated at the fetcher's spot price, and all three classes must clear the minimum reserve (currently 10⁶ wei each), which also rejects an insolvent seed. The three seeds are minted to the dead address and can never be withdrawn. See [Pool Creation](../guide/pool-creation.md).
+Seeds a freshly deployed pool. The reserve is pulled through the `Payment` path, the two curves are evaluated at the fetcher's spot price, and all three classes must clear the minimum reserve (currently 10⁶ wei each), which also rejects an insolvent seed. The three seeds are minted to `address(1)` and can never be withdrawn. See [Pool Creation](../guide/pool-creation.md).
 
 ## sync
 
