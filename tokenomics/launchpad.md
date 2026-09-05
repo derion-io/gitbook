@@ -8,7 +8,7 @@ The first partnership we are seeking is with Launchpads to integrate with [ifo.m
 
 <figure><img src="../.gitbook/assets/image (1) (1) (1) (1) (1) (1).png" alt=""><figcaption></figcaption></figure>
 
-Referrer share calculation from pool fee, after deducting the partner's share (for reference only):
+Illustrative referrer schedule from the original proposal, quoted against gross pool revenue (for reference only):
 
 * referrer receives \~$4k for the first $5k pool revenue
 * referrer receives \~$7k for the first $10k pool revenue
