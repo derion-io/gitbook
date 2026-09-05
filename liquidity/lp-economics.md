@@ -98,7 +98,7 @@ Break-even interest half-lives in days for a matched book at $$\varphi = 0.8$$, 
 | 16 | 62 | 20 | 7.8 | 4.4 | 2.5 | 1.6 | 0.9 |
 | 32 | 15 | 5.0 | 2.0 | 1.1 | 0.6 | 0.4 | 0.2 |
 
-At $$z = 2$$ (flat on about 95% of days) divide by 4. A BTC ×16 pool would need a half-life near two days, a 27%/day bleed. There is no interest rate at which it works; the fix is a lower leverage.
+At $$z = 2$$ (flat on about 95% of days) divide by 4. A BTC ×16 pool needs a half-life between one and four days depending on the coverage chosen, a bleed of 15% to 47% a day; §5 works one real day out to 2.2 days. There is no interest rate at which it works; the fix is a lower leverage.
 
 ### Comparison with exchange funding
 
