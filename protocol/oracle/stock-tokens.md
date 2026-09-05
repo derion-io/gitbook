@@ -79,8 +79,8 @@ The per-ticker immutables:
 
 To be verified on-chain before any mainnet pool:
 
-* A Pyth receiver on Robinhood Chain (chain id 4663) that speaks the standard interface and verifies update payloads. The receiver at `0xa80258Eea4BA0865610eb239045737D08929c40b`, as checked on 2026-08-27, does so, takes permissionless fee-less updates, and carries NVDAX, SPYX, GOOGLX, SPCXX, USDG, and ETH feeds. Its implementation is unverified and sits behind an owner-upgradable proxy, so the oracle operator is trusted.
-* A keeper, or a router bundling `updatePriceFeeds` ahead of `transition`, keeping the stored feeds within `maxAge` and `maxAgeRR`. Hermes API access has been paid since 2026-07.
+* A Pyth receiver on Robinhood Chain (chain id 4663) that speaks the standard interface and verifies update payloads. The receiver at `0xa80258Eea4BA0865610eb239045737D08929c40b` did so when last inspected, in August 2026: it takes permissionless fee-less updates and carries NVDAX, SPYX, GOOGLX, SPCXX, USDG, and ETH feeds. Its implementation is unverified and sits behind an owner-upgradable proxy, so the oracle operator is trusted. Inspect it again before deploying against it.
+* A keeper, or a router bundling `updatePriceFeeds` ahead of `transition`, keeping the stored feeds within `maxAge` and `maxAgeRR`. Hermes, the Pyth price service the updates are pulled from, needs a paid plan for production use.
 * The canonical, deepest v4 pool for the ticker, whose hook must not distort its slot0 semantics.
 * The ERC-8056 `uiMultiplier()` name and 1e18 scale, per Robinhood's stock-token documentation.
 
