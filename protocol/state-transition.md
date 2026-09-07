@@ -1,6 +1,10 @@
+---
+description: One call for every operation, checked at both prices
+---
+
 # State Transition
 
-All trades go through a single state-changing entry point: `transition()`. The pool does not solve anything itself. It snapshots its state, lets an untrusted **Helper** chosen by the caller propose the complete transition, then re-prices, verifies at both oracle bases, and settles. A dishonest Helper can only hurt its own caller.
+Opening or closing a position, flipping it to the other side, depositing into or withdrawing from the LP class: every one of these is the same call on the pool, `transition()`. The caller states what they want and the worst they will accept. A **Helper** contract chosen by the caller, the equivalent of a router, works out the exact numbers. The pool snapshots its state, re-prices the proposal at both oracle bases, checks it against the [value gates](value-invariant.md), and settles. The pool does not solve anything itself, and a dishonest Helper can only hurt its own caller. Through the app, the app picks the Helper and fills in the slippage; the rest of this page is what happens underneath.
 
 ### The delta basis
 
@@ -43,7 +47,7 @@ The Helper is a convenience, never a trust assumption. Step 7 re-evaluates the c
 
 ### Slippage and settlement
 
-The floors $$\Delta X \ge \Delta X_{\min}$$ for $$X \in \{A, B, C, R\}$$ bound the transactor's own loss, their spread and fees. Everyone else is protected by the value gates. A receiver floors what they get, a giver caps what they give, and the minimum integer stands for no floor at all.
+The slippage a trader sets is these floors. $$\Delta X \ge \Delta X_{\min}$$ for $$X \in \{A, B, C, R\}$$ bound the transactor's own loss, their spread and fees. Everyone else is protected by the value gates. A receiver floors what they get, a giver caps what they give, and the minimum integer stands for no floor at all.
 
 Settlement is by sign. Each class with $$\Delta > 0$$ is minted to the recipient and each with $$\Delta < 0$$ is burned from the payer; reserve owed is pulled in ([direct allowance or Permit2](../design/payments.md)) and reserve received is paid out, optionally as native ETH. A position of any class can also be closed by transferring it into the pool: the transfer callback runs the transition and pays out, refunding whatever part of the position the close did not consume.
 
@@ -58,7 +62,7 @@ The reference Helper solves five single-direction operations and one compound on
 * **Withdraw** from the LP class: burn shares, receive at the cheap bound.
 * **Rotate**: open one side and close the other in one transition, with a single net reserve leg.
 
-Per-leg worst-case pricing (mint dear, burn cheap) is exactly what clears the charge at both bases. For the sides, the dear bound is the higher price for Long and the lower for Short. The LP class's reserve is not monotone in price, so its dear and cheap bounds are found by comparing the two realized residuals directly.
+Per-leg worst-case pricing (mint dear, burn cheap) is exactly what clears the charge at both bases. For the sides, the dear bound is the higher price for Long and the lower for Short. The LP class's reserve is not monotone in price, so its dear and cheap bounds are found by comparing the two realized residuals directly. When the oracle's two prices agree, dear and cheap coincide and there is no spread.
 
 Having sized the legs, the Helper aims the two coefficients at whichever basis' floors bind. For a side operation one side is protected and aimed exactly at its per-share pin: the side being burned, or on a plain open the side not being minted. The other side, the minted side on an open or a flip and the untouched complement on a close, takes what the settlement leaves after that pin and the LP class's fee-raised floor, shaved by its own quantum. Subtracting the raised floor is what leaves the fee on the LP class. For an LP deposit or withdrawal both side coefficients are aimed to preserve their reserves at both bases, and the residual takes or gives the whole reserve leg.
 

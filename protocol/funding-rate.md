@@ -1,8 +1,20 @@
+---
+description: Interest and premium, paid by traders to the LP class
+---
+
 # Funding
 
-Funding is what traders pay for their exposure and what the [LP class](../liquidity/lp-class.md) earns for absorbing it. It is autonomous and continuous: it accrues on every pool touch from the time elapsed since the last one, computed from the pool state alone, with no keeper, no epoch, and no per-position bookkeeping. It runs entirely in reserve space and, apart from the protocol's cut, it never moves a token. Value accrues to the LP class as growth of $$r_C$$ in place.
+Funding on an exchange is a payment between longs and shorts every few hours, set by how far the perpetual trades from its index. Funding in a Derion pool is paid by traders to the pool's [LP class](../liquidity/lp-class.md), continuously, in two parts: **interest**, which every position pays on the reserve it holds, and **premium**, which the crowded side pays on its excess over the other side. Both are set per pool as half-lives. Both accrue to the LP class as growth of $$r_C$$ in place, with nothing to claim and no epoch to wait for.
 
-There are two components, each configured as a half-life.
+| | Exchange funding | Derion funding |
+| --- | --- | --- |
+| Who pays whom | longs pay shorts, or the reverse | both sides pay the LP class |
+| Rate | a premium index, reset every interval | two half-lives fixed in the pool config |
+| Cadence | every 1 to 8 hours | continuous, accrued on every pool touch from the time elapsed |
+| Quoted on | notional | position value; divide by $$k$$ to compare |
+| Bookkeeping | debited and credited per account | the side reserves decay into the LP residual; no per-position ledger |
+
+It is autonomous: computed from the pool state alone, with no keeper and no per-position bookkeeping. It runs entirely in reserve space and, apart from the protocol's cut, it never moves a token.
 
 ## Interest
 
@@ -14,6 +26,17 @@ $$
 
 $$R$$ stays where it is, so the residual $$r_C = R - r_A - r_B$$ grows by exactly what the sides released. This is rent on reserve occupancy: every side pays the same rate on the reserve it holds, a matched Long and Short pays in full, and the LP class pays nothing because it is the recipient. Rounding is down, so traders pay at least the rate, and a non-empty side never decays to zero. `INTEREST_HL = 0` disables interest.
 
+What a half-life means to a holder, as the share of position value gone per day at an unchanged price:
+
+| `INTEREST_HL` | Daily bleed |
+| --- | --- |
+| 30 days | 2.3% |
+| 90 days | 0.77% |
+| 180 days | 0.38% |
+| 365 days | 0.19% |
+
+A position of value $$V$$ at power $$k$$ carries $$kV$$ of notional, so divide by $$k$$ to set it against exchange funding: a ×4 position on a 365-day half-life pays about 0.05% of notional a day. It is priced above exchange funding in a calm market because it is paying for something an exchange position does not have, convex P&L with no liquidation. [LP Economics](../liquidity/lp-economics.md) has the full table and the break-even the half-life is chosen against.
+
 ## Premium
 
 Premium charges the crowded side. The gap between the two side reserves decays toward zero:
@@ -23,6 +46,8 @@ $$
 $$
 
 The dominant side shrinks by that amount, into $$r_C$$ like interest; the smaller side is untouched. This is imbalance funding paid to the pool's counterparty, the model of pool-based perpetual exchanges rather than the peer model where longs pay shorts. Since the LP class holds no side, every side token belongs to a trader and the raw gap is the net trader imbalance; there is nothing to exclude. `PREMIUM_HL = 0` disables the premium.
+
+For a trader this is the rate the interface shows as the premium rate: zero while your side is the smaller one, and rising with how far your side exceeds the other. For a provider it is the payment for carrying a one-sided book, which is where the LP class's exposure is largest.
 
 {% hint style="info" %}
 Both charges use exponential decay because it is the one live rate that composes exactly across touches: a pool poked twice reaches the same state as one poked once for the combined duration, at the same price. A linear rate would drift with poke frequency. Interest and premium each compose with themselves but not with each other, so poke cadence shifts a little of the incidence between the two charges. Both flows stay between the same three classes, so this moves who pays what, never whether value leaves the engine.

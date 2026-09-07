@@ -1,10 +1,14 @@
+---
+description: The one optional fee, where it lands, and when to charge it
+---
+
 # Opening Fee
 
-A pool may charge a fee on opening Long and Short positions through its `OPEN_RATE` config: the fraction of the gross payment that becomes position, so a rate of 1 (Q128) is no fee, and so is a rate of 0, the off switch. Closes pay nothing, and neither do deposits into or withdrawals from the LP class. Providing liquidity pays no leverage fee.
+An exchange charges a taker fee on the open and again on the close. A Derion pool charges at most one fee, on reserve that becomes a Long or Short position, and the fair default is none. A pool sets it through its `OPEN_RATE` config: the fraction of the gross payment that becomes position, so a rate of 1 (Q128) is no fee, and so is a rate of 0, the off switch. Every leg that mints Long or Short shares pays it, including the minted side of a flip. Closes pay nothing, and neither do deposits into or withdrawals from the LP class. Providing liquidity pays no leverage fee.
 
 ### Where it lands
 
-The pool computes the fee floor itself from the realized mint legs, valued pro-rata at each oracle basis, and enforces it twice ([Value Gates](value-invariant.md)): the transactor's charge must include it, and the LP class's per-share floor is raised by it. The first makes the fee binding even though the solver is transactor-supplied; the second directs it to the LP class rather than to the incumbents of the side being minted. The fee is not transferred anywhere. It arrives as growth of $$r_C / s_C$$.
+The pool computes the fee floor itself from the realized mint legs, valued pro-rata at each oracle basis, and enforces it twice ([Value Gates](value-invariant.md)): the transactor's charge must include it, and the LP class's per-share floor is raised by it. The first makes the fee binding even though the solver is transactor-supplied; the second directs it to the LP class rather than to the incumbents of the side being minted. The fee is not transferred anywhere. It arrives as growth of $$r_C / s_C$$, the same way funding does, so for a provider it is one more stream in the same share.
 
 There is no waiver for any address. The pool knows no provider, and the [Vault](../liquidity/vault.md) pays no fee on its deposits only because LP-class legs are fee-free for everyone.
 

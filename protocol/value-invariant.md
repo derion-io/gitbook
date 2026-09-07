@@ -1,4 +1,10 @@
+---
+description: No class loses on anyone else's trade
+---
+
 # Value Gates
+
+The question a liquidity provider asks of any pool is whether someone else's trade can make their share worth less. In a Derion pool the answer is checked arithmetically on every transition: at both oracle prices, the value per share of every class must hold, and the only account that can lose is the one making the trade. For a trader the same rules fix the other side of the bargain: you are charged the worse of the two prices plus the opening fee, and never more than your own slippage floors allow.
 
 Whatever shape a transition takes, it must pass one gate set at each oracle basis before it commits. Write $$s_X$$ for the class supplies, primes for post-trade values, and $$\varepsilon_A, \varepsilon_B$$ for the two sides' rounding dust. All reserves are evaluated at the basis under test, TWAP or spot.
 
@@ -29,6 +35,17 @@ where $$r_A', r_B'$$ are re-evaluated by the pool from the proposed coefficients
 **Solvency falls out.** The residual saturates at zero, so a proposal with $$r_A' + r_B' > R_1$$, equivalently $$\alpha_1\beta_1 > (R_1/2)^2$$, fails the LP floor outright. There is no separate product check.
 
 Funding is not a counter-example to any of this: it is applied before the pre-trade snapshot, so the "before" inventory is already post-funding. The arithmetic is 512-bit, and the denominators are positive because every class carries unburnable dead shares from initialization.
+
+### What the gates rule out
+
+Read as a list of things nobody can do to a holder, up to a bounded rounding dust:
+
+* Price a trade against reserves the pool did not compute. The pool re-evaluates the curves from the proposed coefficients at its own two prices.
+* Skip the opening fee, or pay it to a side instead of the LP class.
+* Lower any class's value per share, including the LP class's, at either oracle price.
+* Leave the pool insolvent.
+
+The transactor is the only party who can come out behind, and their own floors say by how much. This is why no address in the system needs to be trusted to solve trades, and why a holder of the LP class does not have to watch who else trades or deposits.
 
 ### Consolidated invariants
 
