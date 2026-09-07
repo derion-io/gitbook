@@ -111,7 +111,7 @@ The same margin can be stated the way an LP thinks about it, as a target edge $$
 
 ## 3. `PREMIUM_HL`
 
-Interest pays for variance. The premium pays for *direction*. When the book is one-sided the LP is the counterparty to a net leveraged position; if the price trends at $$m$$ the LP loses $$k m |r_A - r_B|$$ per year with no offsetting variance income. The premium charges the dominant side $$\lambda_P |r_A - r_B|$$ and pays it entirely to $$r_C$$, so the LP is compensated exactly on the exposure it carries:
+Interest pays for variance. The premium pays for *direction*. When the book is one-sided the LP is the counterparty to a net leveraged position; if the price trends at $$m$$ the LP loses $$k m |r_A - r_B|$$ per year with no offsetting variance income. The premium charges the dominant side $$\lambda_P |r_A - r_B|$$ and pays it, less the protocol cut, to $$r_C$$ rather than to the minority side, so the LP is compensated exactly on the exposure it carries:
 
 $$
 \varphi\lambda_P \;\ge\; k\, m_{\text{ref}} \qquad\Longrightarrow\qquad \text{PREMIUM\_HL} \;\le\; \frac{\varphi \ln 2}{k\, m_{\text{ref}}}
@@ -186,7 +186,7 @@ $$
 | 2 | 2.5% | 4.9% | 9.5% | 14.0% | 22.5% | 41.4% |
 | 4 | 1.2% | 2.4% | 4.7% | 6.8% | 10.7% | 18.9% |
 | 8 | 0.6% | 1.2% | 2.3% | 3.3% | 5.2% | 9.1% |
-| 16 | 0.3% | 0.6% | 1.2% | 1.7% | 2.6% | 4.4% |
+| 16 | 0.3% | 0.6% | 1.1% | 1.7% | 2.6% | 4.4% |
 
 What headroom does for the LP is bound the exposure per pool per refill cycle:
 
@@ -348,7 +348,7 @@ for each day t with log return u:
     i  = 1 − 2^(−1/HL_I_days);  rA -= rA·i;  rB -= rB·i;  release = the two decrements
     gap = |rA − rB|;  d = gap·(1 − 2^(−1/HL_P_days));  dominant side −= d;  release += d
     R  -= release·(1 − φ)                                    # protocol cut leaves; the rest is rC's
-    # optional: churn — reopen a fraction 1/τ_h of each side at the new price, paying f into rC
+    # optional: churn, reopen a fraction 1/τ_h of each side at the new price, paying f into rC
     # refill toward target, ramp-capped
     Rt = 2·max(rA, rB)·(1+h);  dep = min(Rt − R, idle·(1 − 2^(−1/T_half_days)))  if Rt > R
     R += dep;  idle −= dep;  re-evaluate rA, rB at the new R;  cum_lp += (R − rA − rB) − rC_prev − dep

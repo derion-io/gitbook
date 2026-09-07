@@ -1,7 +1,7 @@
 # Contract Addresses
 
 {% hint style="warning" %}
-The addresses below are **legacy (v3) deployments**. Addresses for the current protocol version will be published here once deployed.
+The addresses below are **legacy (v3) deployments**. The core repository holds no deployment record for the current protocol version; deployment records live in the separate `derion-io/configs` repository, which the deploy tool prepares entries for. Addresses will be published here once deployed.
 {% endhint %}
 
 ## Arbitrum (42161)

@@ -68,7 +68,7 @@ before it reaches its inflection.
 | 2 | 2.5% | 4.9% | 9.5% | 14.0% | 22.5% | 41.4% |
 | 4 | 1.2% | 2.4% | 4.7% | 6.8% | 10.7% | 18.9% |
 | 8 | 0.6% | 1.2% | 2.3% | 3.3% | 5.2% | 9.1% |
-| 16 | 0.3% | 0.6% | 1.2% | 1.7% | 2.6% | 4.4% |
+| 16 | 0.3% | 0.6% | 1.1% | 1.7% | 2.6% | 4.4% |
 
 Read against daily volatility: a ×16 BTC pool with 10% headroom is at full leverage only inside ±0.6%, a fifth of a normal day. Past that the winner is on the asymptotic branch and its marginal leverage decays.
 

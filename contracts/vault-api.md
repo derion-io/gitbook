@@ -80,9 +80,9 @@ event VaultPool(address indexed pool, bool active);
 | Reason | When |
 | --- | --- |
 | `Vault: ZERO_RECIPIENT`, `SIG_RECIPIENT`, `ZERO_AMOUNT`, `MIN_DEPOSIT`, `ZERO_SHARES` | a deposit with no recipient, a recipient other than the signer, a zero amount, a first deposit at or below 10⁶ wei, or too small to mint a share |
-| `Vault: ZERO_PAYOUT`, `ILLIQUID` | a withdrawal that would pay nothing; the closes could not raise the marked amount |
+| `Vault: ZERO_SHARES`, `ZERO_PAYOUT`, `ILLIQUID` | a withdrawal of zero shares; one that would pay nothing; the closes could not raise the marked amount |
 | `Vault: INDEX`, `WRONG_INDEX` | `rebalance` with an index outside the active strategy or pointing at another pool |
 | `Vault: NO_AUTHORITY`, `IS_FUNDED`, `GAP`, `NOTHING` | `defund` under a strategy without authority, against a pool the strategy funds, with a gap index past the end, or with no position to close |
-| `Vault: UNKNOWN_STRATEGY`, `UNKNOWN_BASE` | a vote for, or an extension of, a blob the Vault did not create |
-| `Vault: NO_MAJORITY`, `DEFUND_FIRST` | `changeStrategy` or `lockAndVote` without the majority; a promotion while a dropped pool is still held |
+| `Vault: UNKNOWN_STRATEGY`, `UNKNOWN_BASE` | a lock, revote, or `changeStrategy` naming a blob the Vault did not create; an extension of one |
+| `Vault: NO_MAJORITY`, `DEFUND_FIRST` | `changeStrategy` without the majority, or `lockAndVote` when the strategy is not active after the lock (no majority, or a dropped pool still held); a `changeStrategy` promotion while a dropped pool is still held |
 | `Strategy: LEN`, `MAX_POOLS`, `ORDER`, `RAMP_HL`, `HEAD_ROOM` | array lengths differ; more than 32 pools; pools not strictly ascending; a ramp half-life of zero or at least 2^64; a headroom at or above 2^32 |

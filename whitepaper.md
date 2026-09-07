@@ -4,5 +4,5 @@
 Derivable Whitepaper on SSRN
 {% endembed %}
 
-The paper is from 2023 and predates the current engine. The dual-basis gate set, the tokenized LP class as the residual of two curves, in-engine funding, and the Vault came later, as did an interim single-coefficient version in which the Short was the complement of the Long. [Protocol Design](protocol/README.md) describes what runs today, and [Pay-off Curve](protocol/pricing.md) shows how that single-coefficient design is a boundary case of the current one.
+The paper is from 2023 and predates the current engine. The dual-basis gate set and the Vault came later, as did an interim single-coefficient version in which the Short was the complement of the Long. [Protocol Design](protocol/README.md) describes what runs today, and [Pay-off Curve](protocol/pricing.md) shows how that single-coefficient design is a boundary case of the current one.
 

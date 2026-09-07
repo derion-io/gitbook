@@ -13,7 +13,7 @@ interface IFetcher {
 
 `ORACLE` is the pool's config word, which the fetcher interprets however it likes. The convention is to keep the source or asset address in the low 160 bits: the pool emits that address as the `index` topic of every Position event, so indexers can group markets by it.
 
-`data` is the caller's `oracleData`, forwarded verbatim. It is empty on initialization, and on pokes and quotes unless the caller passes some. A read-only source ignores it. A pull oracle applies or parses it before reading. The fetcher must make sure that caller-supplied data can only make the price fresher: verify signatures, bound the publish time, and never let a caller choose among stale values.
+`data` is the caller's `oracleData`, forwarded verbatim. Initialization never calls `fetch` (it reads `spot`, below); on pokes and quotes `data` is empty unless the caller passes some. A read-only source ignores it. A pull oracle applies or parses it before reading. The fetcher must make sure that caller-supplied data can only make the price fresher: verify signatures, bound the publish time, and never let a caller choose among stale values.
 
 Both returned prices are Q128 fixed point in the same convention, and that convention decides how `K` and `MARK` are read: square-root prices give $$k = K/2$$ and a square-root `MARK`; plain prices give $$k = K$$ and a plain `MARK`. A source with a single price returns it as both TWAP and spot.
 

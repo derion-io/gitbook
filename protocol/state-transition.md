@@ -62,7 +62,7 @@ Per-leg worst-case pricing (mint dear, burn cheap) is exactly what clears the ch
 
 Having sized the legs, the Helper aims the two coefficients at whichever basis' floors bind. For a side operation one side is protected and aimed exactly at its per-share pin: the side being burned, or on a plain open the side not being minted. The other side, the minted side on an open or a flip and the untouched complement on a close, takes what the settlement leaves after that pin and the LP class's fee-raised floor, shaved by its own quantum. Subtracting the raised floor is what leaves the fee on the LP class. For an LP deposit or withdrawal both side coefficients are aimed to preserve their reserves at both bases, and the residual takes or gives the whole reserve leg.
 
-Under a diverged oracle with a saturated side, the reference Helper may resize a mint, a side open or an LP deposit, down to what the capped reserves back at both bases; the transactor absorbs that reduction, bounded by their own slippage floor. A withdrawal has no mint to resize and reverts cleanly instead.
+Under a diverged oracle with a saturated side, the reference Helper may resize a mint (a side open, the minted leg of a flip or rotation, or an LP deposit) down to what the capped reserves back at both bases; the transactor absorbs that reduction, bounded by their own slippage floor. A close or withdrawal has no mint to resize and reverts cleanly instead.
 
 ### Rounding tolerance
 

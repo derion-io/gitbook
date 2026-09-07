@@ -52,6 +52,8 @@ IERC1155(token).safeTransferFrom(owner, pool, id, amount, abi.encode(param));
 
 The pool's `onERC1155Received` decodes the `Param`, runs `transition` with the recipient pinned to the sender, pays out, and refunds any part of the transferred position the close did not consume. Batch transfers are rejected.
 
+The reference Helper accepts the same transfer as a relay: `safeTransferFrom(owner, helper, id, amount, abi.encode(pool, recipient, abi.encode(param)))` makes it forward the position to `pool`, unwrap the WETH it is paid, and send native ETH to `recipient`. It predates `unwrapETH`, which does the same on a direct transfer. Because the pool sees the Helper as the sender, any refund of an unconsumed remainder lands on the Helper, and `sweep(id, recipient)` moves such a balance out for whoever calls it first.
+
 ## Helper interface
 
 ```solidity
@@ -99,7 +101,7 @@ struct State {
 }
 ```
 
-Seeds a freshly deployed pool. `R`, `a`, and `b` must be positive and below $$2^{224}$$. The reserve is pulled through the `Payment` path, the two curves are evaluated at the fetcher's spot price, and all three classes must clear the minimum reserve (currently 10⁶ wei each), which also rejects an insolvent seed. The three seeds are minted to `address(1)` and can never be withdrawn. See [Pool Creation](../guide/pool-creation.md).
+Seeds a freshly deployed pool. `R`, `a`, and `b` must be positive and below $$2^{224}$$. The reserve is pulled through the `Payment` path, the two curves are evaluated at the fetcher's spot price, and all three classes must clear the minimum reserve (currently 10⁶ wei each). An insolvent seed, whose two sides already exceed `R` at that price, fails the residual computation outright. The three seeds are minted to `address(1)` and can never be withdrawn. See [Pool Creation](../guide/pool-creation.md).
 
 ## sync
 
@@ -194,18 +196,34 @@ function deployWithStrategy(
     address baseToken, bytes32 baseSymbol, bytes32 topic2, bytes32 topic3,
     address vault, address baseStrategy, uint256 rampHL, uint256 headRoom
 ) external payable returns (address pool, address strategy);
+
+function create(Config memory config) external returns (address pool);   // createPool without the revert; zero on failure
+address public immutable LOGIC;                                         // the shared pool logic
 ```
 
-`createPool` deploys the MetaProxy only and emits nothing. `deploy` also runs `init` in the same transaction: on a WETH pool `msg.value` is either zero, with the seed pulled through `payment`, or exactly `state.R`; on any other reserve it must be zero. `deployWithStrategy` additionally asks `vault` to write a strategy extending `baseStrategy` (or a fresh single-pool one when it is zero) with the new pool, which LPs can then vote for ([Strategy Governance](../liquidity/governance.md)). `deploy` and `deployWithStrategy` emit an anonymous log with four topics (`baseToken`, `baseSymbol`, `topic2`, `topic3`) whose data is the ABI-encoded config fields followed by the pool address; this is how indexers discover pools, and a pool created with `createPool` is invisible to them.
+A pool's address is the CREATE2 address, with salt 0 and the Factory as deployer, of the MetaProxy init code built from `LOGIC` and `abi.encode(config)`; `MetaProxyView.computeBytecodeHash` produces that hash. `createPool` deploys the MetaProxy only and emits nothing. `deploy` also runs `init` in the same transaction: on a WETH pool `msg.value` is either zero, with the seed pulled through `payment`, or exactly `state.R`; on any other reserve it must be zero. Since `init` pulls from its caller, a `deploy` that sends no native value needs a Permit2 signature in `payment`; the direct-allowance path would pull from the Factory itself. `deployWithStrategy` additionally asks `vault` to write a strategy extending `baseStrategy` (or a fresh single-pool one when it is zero) with the new pool, which LPs can then vote for ([Strategy Governance](../liquidity/governance.md)). `deploy` and `deployWithStrategy` emit an anonymous log with four topics (`baseToken`, `baseSymbol`, `topic2`, `topic3`) whose data is the ABI-encoded config fields followed by the pool address; this is how indexers discover pools, and a pool created with `createPool` is invisible to them.
+
+## Token
+
+```solidity
+function mint(address to, uint256 id, uint256 amount, bytes memory data) external;   // only address(uint160(id))
+function burn(address from, uint256 id, uint256 amount) external;                     // only address(uint160(id))
+function totalSupply(uint256 id) external view returns (uint256);
+function uri(uint256 id) external view returns (string memory);      // delegated to the descriptor
+function setDescriptor(address descriptor) external;                 // descriptor setter only
+function setDescriptorSetter(address setter) external;               // descriptor setter only
+```
+
+The shared ERC-1155 is an OpenZeppelin `ERC1155Supply` named `Derion Position` (`DERION-POS`), plus the open mint/burn rule ([Derivative Tokens](../design/derivative-tokens.md)). `uri` forwards to the descriptor's `constructMetadata(id)`, which the reference descriptor answers only for ids whose low 160 bits resolve to a pool of its Factory (`NOT_A_DERION_TOKEN` otherwise).
 
 ## Reverts
 
-Every failure is a `require` string.
+Pool, Factory, and Helper checks are `require` strings. Not every revert carries one: a proposal that cannot be applied at all (a burn larger than a class's supply, an insolvent seed at `init`) fails with a Solidity arithmetic panic, a burn or transfer beyond the holder's balance surfaces as the token's OpenZeppelin custom error (`ERC1155InsufficientBalance`), and a malformed `Param` or payload fails in ABI decoding.
 
 | Reason | When |
 | --- | --- |
 | `PoolBase: ZERO_RECIPIENT`, `SIG_RECIPIENT` | no recipient; the recipient differs from the Permit2 signer |
-| `PoolBase: ALREADY_INITIALIZED`, `ZERO_PARAM`, `STATE_OVERFLOW_R/A/B`, `MINIMUM_RESERVE_A/B/C` | `init` on a seeded pool; a zero seed value; a seed value at or above 2^224; a class seeded below 10⁶ wei, which is also how an insolvent seed fails |
+| `PoolBase: ALREADY_INITIALIZED`, `ZERO_PARAM`, `STATE_OVERFLOW_R/A/B`, `MINIMUM_RESERVE_A/B/C` | `init` on a seeded pool; a zero seed value; a seed value at or above 2^224; a class seeded below 10⁶ wei (an insolvent seed, whose sides already exceed `R`, panics on the residual before this check) |
 | `PoolBase: ONLY_TOKEN`, `WRONG_POOL`, `BATCH_NOT_SUPPORTED` | a transfer-close not sent by the token, carrying another pool's id, or sent as a batch |
 | `PoolBase: STATE_INTEGRITY` | `ensureStateIntegrity()` called during a transition |
 | `PoolLogic: SLIPPAGE` | a realized delta below its floor |
@@ -214,3 +232,5 @@ Every failure is a `require` string.
 | `PoolLogic: SIDE_IN`, `SIDE_OUT` | an unsupported side pair in a quote |
 | `Utils: NOT_WETH`, `msg.value > amount` | native value on a non-WETH reserve at `init`; more native than the reserve owed |
 | `PoolFactory: CREATE2_FAILED`, `VALUE_MISMATCH`, `UNUSED_VALUE`, `POOL_INIT_FAILED` | a duplicate config; a WETH seed value that is neither zero nor `state.R`; native value on a non-WETH pool; the seed did not reach the pool |
+| `Helper: ONLY_TOKEN`, `SAME_SIDE`, `SIDE_IN`, `SIDE_OUT`, `ROTATE_SAME`, `ROTATE_OPEN`, `ROTATE_CLOSE`, `NO_TARGET` | reference Helper: a position with data sent to it by anything but the token; `sideIn == sideOut`; a `sideIn` other than A or B on a close or flip; a `sideOut` other than A or B on an open, other than R on an LP withdrawal, or other than R, A, or B on a close; rotation legs that are equal or not both A or B; an aim that lands a coefficient at zero |
+| `UNAUTHORIZED_MINT_BURN`, `UNAUTHORIZED` | token: a mint or burn of an id whose low 160 bits are not the caller; a descriptor change by anyone but the setter |
