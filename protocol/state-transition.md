@@ -12,7 +12,7 @@ $$
 \langle\, \Delta A_{\min},\ \Delta B_{\min},\ \Delta C_{\min},\ \Delta R_{\min} \,\rangle
 $$
 
-floors on the change of their Long, Short, and LP balances and on the reserve they receive, together with the Helper's address, an opaque intent payload for it, and an optional oracle update for the pool's fetcher.
+floors on the change of their Long, Short, and LP balances and on the reserve they receive, together with the Helper's address, an opaque intent payload for it, a flag to receive reserve as native ETH, and an optional oracle update for the pool's fetcher.
 
 The Helper answers with the proposed transition, every part of it untrusted:
 
@@ -32,7 +32,7 @@ so the engine moves exactly with the tokens and nothing is routed anywhere else.
 
 1. Snapshot the three supplies $$s_A, s_B, s_C$$.
 2. Fetch both oracle bases, TWAP and spot, forwarding any caller-supplied oracle data ([Price Oracle](oracle/README.md)).
-3. Accrue [funding](funding-rate.md) at the TWAP. This yields the pre-trade side reserves at the TWAP basis; the reserves at the spot basis follow from the same coefficients, and the LP residual at each basis is $$R - r_A - r_B$$.
+3. Accrue [funding](funding-rate.md) at the TWAP. This yields the pre-trade side reserves at the TWAP basis. If the oracle diverged, the pool recovers each moved side's coefficient from those reserves, without persisting it, and evaluates the spot-basis reserves from the recovered pair. The LP residual at each basis is $$R - r_A - r_B$$.
 4. The Helper solves the trade against this snapshot and returns $$\langle \alpha_1, \beta_1, \Delta A, \Delta B, \Delta C, \Delta R \rangle$$.
 5. Check the transactor's own slippage floors.
 6. Fix $$R_1 = R - \Delta R$$.
@@ -60,7 +60,9 @@ The reference Helper solves five single-direction operations and one compound on
 
 Per-leg worst-case pricing (mint dear, burn cheap) is exactly what clears the charge at both bases. For the sides, the dear bound is the higher price for Long and the lower for Short. The LP class's reserve is not monotone in price, so its dear and cheap bounds are found by comparing the two realized residuals directly.
 
-Having sized the legs, the Helper aims the two coefficients at whichever basis' floors bind: the protected side exactly at its per-share pin, and the traded side at whatever the settlement leaves after that pin and the LP class's fee-raised floor. Subtracting the raised floor is what leaves the fee on the LP class.
+Having sized the legs, the Helper aims the two coefficients at whichever basis' floors bind. For a side operation one side is protected and aimed exactly at its per-share pin: the side being burned, or on a plain open the side not being minted. The other side, the minted side on an open or a flip and the untouched complement on a close, takes what the settlement leaves after that pin and the LP class's fee-raised floor, shaved by its own quantum. Subtracting the raised floor is what leaves the fee on the LP class. For an LP deposit or withdrawal both side coefficients are aimed to preserve their reserves at both bases, and the residual takes or gives the whole reserve leg.
+
+Under a diverged oracle with a saturated side, the reference Helper may resize a mint, a side open or an LP deposit, down to what the capped reserves back at both bases; the transactor absorbs that reduction, bounded by their own slippage floor. A withdrawal has no mint to resize and reverts cleanly instead.
 
 ### Rounding tolerance
 

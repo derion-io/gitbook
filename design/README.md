@@ -24,8 +24,8 @@ Every pool runs the same logic, so isolation is not about code bugs; it is about
 | liquidity | [Vault](../liquidity/vault.md) | hold the LP class like anyone; govern its own book | use any pool permission; breach a gate |
 | composition | [Zapper](helper-contracts.md), aggregators, routers | route and convert input tokens | bypass any pool gate |
 
-No admin, pause, or upgrade key touches pool funds anywhere in the system. The single permissioned role in the protocol is the token metadata descriptor setter, view-only by construction.
+No admin, pause, or upgrade key touches pool funds anywhere in the system. The only permissioned roles sit outside pool funds: the token metadata descriptor setter, view-only by construction, and the fee receiver's setter and collector, which govern protocol fees already flushed out of the pools.
 
 ### Reentrancy
 
-`transition` and `sync` are guarded with transient-storage reentrancy locks; initialization follows checks-effects-interactions. View functions additionally reject read-only reentrancy, so quoting contracts cannot be fooled mid-transition. Any contract that reads pool state from inside its own callback path (an ERC-1155 receiver, a flash-loan callback, a routing aggregator) should call `ensureStateIntegrity()` first; it reverts while the pool is mid-transition. The Vault's state-changing entry points carry the same lock.
+`transition` and `sync` are guarded with transient-storage reentrancy locks; initialization follows checks-effects-interactions. View and quote functions do not check the lock themselves, so a contract that reads pool state from inside its own callback path (an ERC-1155 receiver, a flash-loan callback, a routing aggregator) should call `ensureStateIntegrity()` first; it reverts while the pool is mid-transition. The Vault's state-changing entry points carry the same lock, apart from its pokes, which only forward to the pool's guarded `sync`.

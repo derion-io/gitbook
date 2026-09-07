@@ -4,5 +4,5 @@
 Derivable Whitepaper on SSRN
 {% endembed %}
 
-The paper describes the original single-coefficient engine, in which the Short was defined as the complement of the Long. The current protocol runs two coefficients and three share classes; [Pay-off Curve](protocol/pricing.md) shows how the earlier design is a boundary case of it.
+The paper is from 2023 and predates the current engine. The dual-basis gate set, the tokenized LP class as the residual of two curves, in-engine funding, and the Vault came later, as did an interim single-coefficient version in which the Short was the complement of the Long. [Protocol Design](protocol/README.md) describes what runs today, and [Pay-off Curve](protocol/pricing.md) shows how that single-coefficient design is a boundary case of the current one.
 

@@ -1,6 +1,6 @@
 # Opening Fee
 
-A pool may charge a fee on opening Long and Short positions through its `OPEN_RATE` config: the fraction of the gross payment that becomes position, so a rate of 1 (Q128) is no fee. Closes pay nothing, and neither do deposits into or withdrawals from the LP class. Providing liquidity pays no leverage fee.
+A pool may charge a fee on opening Long and Short positions through its `OPEN_RATE` config: the fraction of the gross payment that becomes position, so a rate of 1 (Q128) is no fee, and so is a rate of 0, the off switch. Closes pay nothing, and neither do deposits into or withdrawals from the LP class. Providing liquidity pays no leverage fee.
 
 ### Where it lands
 

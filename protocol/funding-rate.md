@@ -38,12 +38,12 @@ $$
 
 It is carved out of $$R$$ at accrual with no transfer, so the trading path stays free of extra token movements, and sits in the balance as the outbox ($$\text{balance} - R$$) until a permissionless poke. `sync()` accrues funding at the TWAP, persists the state, and sends the outbox to `FEE_TO`. Donations to a pool land in the outbox and flush with it.
 
-`FEE_TO` and `FEE_RATE` are immutables on the shared pool logic, set once at deployment, currently 1/5 of the funding release. `FEE_RATE = 0` means no cut and nothing to flush.
+`FEE_TO` and `FEE_RATE` are immutables on the shared pool logic, set once at deployment, currently 1/5 of the funding release. `FEE_RATE = 0` means no cut; a poke then flushes only whatever was donated.
 
 Because the LP yield accrues in place, poking is not a standing obligation for anyone. Nothing of the LP's is ever stranded outside the engine, and a pool left alone is worth exactly what a poked one is. The poke is a state refresh plus the protocol's own collection.
 
 ## Coefficient recovery
 
-Funding runs on reserves, so the stored coefficients go stale on every accrual. A poke recovers each moved side once by inverting the curve and persists the result; a trade needs no recovery because the Helper proposes fresh coefficients. At an extreme price relative to the mark the inversion can be unrepresentable for a side; the pool then keeps that side's stored coefficient and the charge falls on the LP class instead, a dust-level concession. If that leaves the sides summing above the cut-reduced $$R$$, the pool reclaims the un-backable part of the cut so the stored state is always solvent.
+Funding runs on reserves, so the stored coefficients go stale on every accrual. A poke recovers each moved side once by inverting the curve and persists the result. A trade needs no persisted recovery because the Helper proposes fresh coefficients; when the oracle has diverged, the pool performs the same recovery transiently to price the spot-basis gates. Two corners exist at an extreme price relative to the mark. The inversion can be unrepresentable for a side; the pool then keeps that side's stored coefficient and the charge falls on the LP class instead, a dust-level concession. And a side's coefficient quantum can exceed its funded target, so the recovered side re-evaluates above where funding put it; if that leaves the two sides summing above the cut-reduced $$R$$, the pool reclaims the un-backable part of the cut so the stored state is always solvent.
 
-The off-chain `View` contract mirrors both charges exactly, so quotes track the pool between pokes.
+The off-chain `View` contract mirrors both charges exactly, evaluated at the spot rather than the TWAP, so its quotes match what the next poke commits whenever the two bases agree.

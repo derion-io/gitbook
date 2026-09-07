@@ -24,4 +24,4 @@ A pool never holds its own tokens: positions transferred into a pool are burned 
 
 ### Metadata
 
-Names, symbols, and display metadata come from a swappable, view-only **descriptor** contract. The descriptor setter is the only permissioned role in the protocol; it can change how positions render in wallets and nothing else.
+Names, symbols, and display metadata come from a swappable, view-only **descriptor** contract. The descriptor setter is permissioned, one of the two administrative roles in the protocol (the other manages the protocol-fee receiver); it can change how positions render in wallets and nothing else.

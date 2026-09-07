@@ -22,33 +22,35 @@ Both legs are returned as **plain** Q128 prices (quote per stock token, in human
 
 ### Why two sources
 
-The engine gates every trade at both bases, so manipulating either source alone only worsens the manipulator's own execution. A trader-favorable mispricing needs the local v4 pool and the global xStock market to be wrong in the same direction at the same time. On top of that, the fetcher refuses to price when the two legs disagree by more than `maxDivergeBps` of the lower one; trading halts until they reconverge.
+The engine gates every trade at both bases, so manipulating either source alone only worsens the manipulator's own execution. A trader-favorable mispricing needs both legs to agree on a wrong price at the same time. The two legs are not equally hard to move. The spot is a live AMM price that a caller can push within the same transaction that trades against the pool, for the cost of the v4 pool's fees on the liquidity in range. The TWAP is a signed Pyth print that nobody can forge, but the caller chooses which print inside the freshness window to bring, so the protection rests on that window being tight: a wide window lets a caller pair a print from before a move with a spot pushed back to it (see Freshness). On top of that, the fetcher refuses to price when the two legs disagree by more than `maxDivergeBps` of the lower one; the pool halts, trades, quotes and pokes alike, until they reconverge.
 
 ### Corporate actions
 
-A split moves the redemption rate and/or the multiplier, never the composed price. Take a 2:1 split where the xStock rebases (its price halves, $$RR$$ stays 1) and the Robinhood token doubles its multiplier: the TWAP leg is unchanged, the v4 pool's price of the token is unchanged, and quotes through the pool are continuous. The only exposure is transient: the two can update out of sync, and the divergence cap together with the engine's adverse-bound gating contains that window.
+A split moves the redemption rate and/or the multiplier, never the composed price. Take a 2:1 split where the xStock rebases (its price halves, $$RR$$ stays 1) and the Robinhood token doubles its multiplier: the TWAP leg is unchanged, the v4 pool's price of the token is unchanged, and quotes through the pool are continuous. The only exposure is transient: the two can update out of sync. A gap beyond the divergence cap halts the pool; a smaller one prices the pool, and its funding, at the de-synced TWAP until the sources agree, with the adverse-bound gating charging the transactor rather than the incumbents for the gap in the meantime.
 
 ### Freshness
 
 Pyth is a pull oracle. Prices reach the chain when someone posts a signed update, and the fetcher accepts two freshness regimes.
 
-**Stored price.** With empty `oracleData` the fetcher reads the receiver's stored price and requires it no older than `maxAge` seconds (`maxAgeRR` for the redemption rate, which updates rarely). Pokes, quotes, and the Vault's NAV marking take this path. A keeper owns it.
+**Stored price.** With empty `oracleData` the fetcher reads the receiver's stored price and requires it no older than `maxAge` seconds (`maxAgeRR` for the redemption rate, which updates rarely). Pokes, quotes, and the Vault's NAV marking take this path unless the caller carries data. A keeper owns it.
 
-**Caller-carried price.** A transactor puts Pyth update blobs in `Param.oracleData`. The fetcher hands them to the receiver's stateless parse, which verifies the signatures and returns the price without storing it, and requires the publish time to fall inside $$[\text{now} - \text{maxAgeTrade},\ \text{now} + 15\,\text{s}]$$. Nothing is written, so the keeper still owns the stored price the empty-data paths read. Signature verification plus the window mean a caller can neither forge a price nor cherry-pick a stale one.
+**Caller-carried price.** A transactor puts Pyth update blobs in `Param.oracleData`. The fetcher hands them to the receiver's stateless parse, which verifies the signatures and returns the price without storing it, and requires the publish time to fall inside $$[\text{now} - \text{maxAgeTrade},\ \text{now} + 15\,\text{s}]$$. Nothing is written, so the keeper still owns the stored price the empty-data paths read. Signature verification plus the window mean a caller can neither forge a price nor bring one older than `maxAgeTrade`. Inside the window the caller chooses the print, and the receiver does not compare it with the print it already stores, so the window is the whole protection on this path: set it in seconds, not minutes, and never leave it at zero, which widens it to the stored-price bound.
+
+Only the price leg is taken from the blob. The redemption rate and the quote feed are always read from the receiver's storage, within `maxAgeRR` and `maxAge` respectively, so a ticker configured with either still depends on the keeper even when every trade carries data.
 
 `maxAgeTrade` is a per-pool field carried in the pool's `ORACLE` word, so pools sharing one fetcher instance can each tune their own window:
 
 | Bits | Field |
 | --- | --- |
 | 192–255 | reserved |
-| 160–191 | `maxAgeTrade` in seconds; 0 falls back to `maxAge` |
+| 160–191 | `maxAgeTrade` in seconds; 0 falls back to `maxAge`, the stored-price bound, which is far looser than a trade needs |
 | 0–159 | the stock token address, checked against the instance |
 
 The 15-second publish-ahead tolerance covers clock skew between the sequencer and Pythnet. It is a property of the chain, not of a market, so it is a constant rather than a per-pool field.
 
 ### Update fees
 
-Pyth receivers may charge for updates. The pool forwards the caller's native value to the fetcher only on the fresh-update path (non-empty `oracleData`); the fetcher pays exactly the receiver's quoted fee and refunds the remainder, which the pool recovers for the reserve leg or returns to the caller. The same path works against a fee-less and a fee-charging receiver. Underpaying reverts.
+Pyth receivers may charge for updates. The pool forwards the caller's native value to the fetcher only on the fresh-update path (non-empty `oracleData`); the fetcher pays exactly the receiver's quoted fee and refunds the remainder, which the pool recovers for the reserve leg or returns to the caller. The same transition path works against a fee-less and a fee-charging receiver. Underpaying reverts. Pokes and quotes are not payable and forward nothing, so on a fee-charging receiver they must be called with empty data; that includes the Vault's `oracleData` overloads, which work only against a fee-less receiver.
 
 ### Validation
 
@@ -56,7 +58,7 @@ Every Pyth value, the price, the redemption rate and the quote feed alike, must 
 
 ### Initialization
 
-The seeding price for `init` is the v4 spot alone, with no Pyth involvement. A pool can therefore be created before its feed has ever been stored on the receiver, and a trade-only ticker, one the keeper never pushes, still trades through caller-carried data.
+The seeding price for `init` is the v4 spot alone, with no Pyth involvement. A pool can therefore be created before its feed has ever been stored on the receiver, and a trade-only ticker, one the keeper never pushes, still trades through caller-carried data, provided it is configured without a redemption-rate or quote feed.
 
 ### Configuration
 
@@ -71,7 +73,7 @@ The per-ticker immutables:
 | `quoteId` | The `Crypto.<QUOTE>/USD` feed to price the TWAP leg in the pool's quote units; 0 assumes the quote holds $1. |
 | `multiplier` | The ERC-8056 `uiMultiplier()` source (the stock token itself); 0 to skip. |
 | `stockToken` | Sanity-checked against the `ORACLE` word. |
-| `maxAge`, `maxAgeRR` | Stored-price staleness bounds in seconds. |
+| `maxAge`, `maxAgeRR` | Staleness bounds in seconds: `maxAge` for the stored price and the quote feed, `maxAgeRR` for the redemption rate. |
 | `maxConfBps` | Confidence cap in basis points of the price; 0 disables. |
 | `maxDivergeBps` | TWAP/spot divergence cap in basis points of the lower; 0 disables. |
 
@@ -81,6 +83,7 @@ To be verified on-chain before any mainnet pool:
 
 * A Pyth receiver on Robinhood Chain (chain id 4663) that speaks the standard interface and verifies update payloads. The receiver at `0xa80258Eea4BA0865610eb239045737D08929c40b` did so when last inspected, in August 2026: it takes permissionless fee-less updates and carries NVDAX, SPYX, GOOGLX, SPCXX, USDG, and ETH feeds. Its implementation is unverified and sits behind an owner-upgradable proxy, so the oracle operator is trusted. Inspect it again before deploying against it.
 * A keeper, or a router bundling `updatePriceFeeds` ahead of `transition`, keeping the stored feeds within `maxAge` and `maxAgeRR`. Hermes, the Pyth price service the updates are pulled from, needs a paid plan for production use.
+* `maxAgeTrade` set explicitly, in seconds, in every pool's `ORACLE` word, and `maxAge` close to the keeper's push cadence.
 * The canonical, deepest v4 pool for the ticker, whose hook must not distort its slot0 semantics.
 * The ERC-8056 `uiMultiplier()` name and 1e18 scale, per Robinhood's stock-token documentation.
 

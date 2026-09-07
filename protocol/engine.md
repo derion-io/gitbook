@@ -10,7 +10,7 @@ $$
 r_A=\rho(\alpha x^{k},R) \qquad\quad r_B=\rho(\beta x^{-k},R) \qquad\quad r_C=R-r_A-r_B
 $$
 
-Each class is an ERC-1155 token id of the pool (Long `0x10`, Short `0x20`, LP `0x30`), minted and burned through the same `transition()` path, and each is worth its reserve pro-rata: a holder of $$n$$ out of $$s_X$$ shares owns $$n\,r_X/s_X$$. Positions are shares of a class, not accounts. There is no entry price, no per-position margin, and no per-user funding ledger.
+Each class is an ERC-1155 token of the pool, its id the side code (Long `0x10`, Short `0x20`, LP `0x30`) packed above the pool address, minted and burned through the same `transition()` path, and each is worth its reserve pro-rata: a holder of $$n$$ out of $$s_X$$ shares owns $$n\,r_X/s_X$$. Positions are shares of a class, not accounts. There is no entry price, no per-position margin, and no per-user funding ledger.
 
 ### The whole book is four numbers
 

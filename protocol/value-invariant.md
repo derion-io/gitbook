@@ -13,14 +13,14 @@ The transactor's whole take across the three classes must cost at least its valu
 ### The three floors
 
 $$
-\frac{r_A'}{s_A'} + \varepsilon_A \;\ge\; \frac{r_A}{s_A}
+r_A'\,\frac{s_A}{s_A'} + \varepsilon_A \;\ge\; r_A
 \qquad
-\frac{r_B'}{s_B'} + \varepsilon_B \;\ge\; \frac{r_B}{s_B}
+r_B'\,\frac{s_B}{s_B'} + \varepsilon_B \;\ge\; r_B
 \qquad
-\frac{r_C'}{s_C'} + \varepsilon_A + \varepsilon_B \;\ge\; \frac{r_C + \text{fee}_{\min}}{s_C}
+r_C'\,\frac{s_C}{s_C'} + \varepsilon_A + \varepsilon_B \;\ge\; r_C + \text{fee}_{\min}
 $$
 
-where $$r_A', r_B'$$ are re-evaluated by the pool from the proposed coefficients and $$r_C' = R_1 - r_A' - r_B'$$ is the residual, saturating at zero. No class's per-share value drops at either basis. The transactor's own mint or burn is already in the post supplies, so the floors let only them lose, and their own slippage floors bound that loss separately.
+where $$r_A', r_B'$$ are re-evaluated by the pool from the proposed coefficients and $$r_C' = R_1 - r_A' - r_B'$$ is the residual, saturating at zero. Each is a per-share floor written with the post-trade reserve rescaled to the pre-trade supply, so that the dust allowance reads in reserve units. No class's per-share value drops at either basis. The transactor's own mint or burn is already in the post supplies, so the floors let only them lose, and their own slippage floors bound that loss separately.
 
 **The fee-raised LP floor is the fee's routing.** The charge makes the transactor pay $$\text{fee}_{\min}$$; raising the LP class's floor by the same amount is what makes the fee land there rather than wherever the transactor-supplied Helper might aim it. A fee-dodging proposal fails the charge. A proposal that pays the fee but aims it at a side fails the LP floor.
 

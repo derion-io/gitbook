@@ -11,7 +11,7 @@ Anyone can create a market for any value feed and participate alongside or again
 A Derion market is one pool with three share classes, all issued as fungible tokens:
 
 * **Long** and **Short**, each a true power pay-off of the index price. Traders hold these.
-* **The LP class**, the reserve the two pay-offs leave over. It is the counterparty to both sides, the depth that keeps them at full leverage, and the recipient of every fee and funding stream. Anyone can hold it, directly or through the shared [Liquidity Vault](liquidity/vault.md).
+* **The LP class**, the reserve the two pay-offs leave over. It is the counterparty to both sides, the depth that keeps them at full leverage, and the recipient of every fee and funding stream, less the protocol's cut of funding. Anyone can hold it, directly or through the shared [Liquidity Vault](liquidity/vault.md).
 
 The pool holds the funds, enforces the pay-off curves, and verifies every state change against both of its oracle's prices. No address is special to it: providing liquidity is a trade through the same path as every other trade, and the pool works with an empty LP class just as it works with a deep one.
 
@@ -21,7 +21,7 @@ Unlike conventional perpetual and futures markets, Derion positions carry compou
 
 <figure><img src=".gitbook/assets/image (5).png" alt="" width="563"><figcaption></figcaption></figure>
 
-The LP class is the passive side of the market. It absorbs the trader imbalance as counterparty and, in return, collects the funding paid by both Long and Short, the opening fees, and the spread between the oracle's two prices.
+The LP class is the passive side of the market. It absorbs the trader imbalance as counterparty and, in return, collects the funding paid by both Long and Short (less the protocol's cut), the opening fees, and the spread between the oracle's two prices.
 
 ### Fully On-chain
 

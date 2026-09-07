@@ -283,7 +283,7 @@ Stock-specific extras that are not in the formulas: market hours (the underlying
 Illustrative starting points at $$\varphi = 0.8$$, $$z = 1.5$$, $$S = 1$$, refill once a day. The volatilities are *assumptions* typical of each name over recent years; re-measure them (§7) before deploying anything. $$k$$ is $$k_{\max}$$ rounded down to the half-step at the tolerance shown, and the other parameters follow from that $$k$$. The `f (events)` column is the straddle bound of §4, shown to inform the leverage decision; the default `OPEN_RATE` fee is 0.
 
 {% hint style="warning" %}
-The leverages in these tables were sized with a value-bleed tolerance (1%/day of position value for crypto, 0.5%/day for stocks) at $$z = 1.5$$. Section 1 and the calculator now size from a notional funding tolerance (0.2%/day and 0.1%/day by default) and a target edge, so running the §9 recipe with those defaults will not reproduce the tables exactly. It lands in the same place for the volatile names and higher for the index ETFs, where other bounds take over.
+The leverages in these tables were sized with a value-bleed tolerance (1%/day of position value for crypto, 0.5%/day for stocks) at $$z = 1.5$$. Section 1 and the calculator now size from a notional funding tolerance and a target edge. The calculator's class defaults are 0.2%/day for crypto and 0.1%/day for stocks, and its pre-selected Aggressive profile doubles them, sets $$S = 0.5$$ and a zero edge, so running the §9 recipe with those defaults will not reproduce the tables exactly. It lands in the same place for the volatile names and higher for the index ETFs, where other bounds take over.
 {% endhint %}
 
 Crypto (tolerance 1%/day, $$\xi$$ as shown):

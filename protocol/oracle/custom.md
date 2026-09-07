@@ -13,11 +13,11 @@ interface IFetcher {
 
 `ORACLE` is the pool's config word, which the fetcher interprets however it likes. The convention is to keep the source or asset address in the low 160 bits: the pool emits that address as the `index` topic of every Position event, so indexers can group markets by it.
 
-`data` is the caller's `oracleData`, forwarded verbatim. It is empty on pokes, quotes, and initialization. A read-only source ignores it. A pull oracle applies or parses it before reading. The fetcher must make sure that caller-supplied data can only make the price fresher: verify signatures, bound the publish time, and never let a caller choose among stale values.
+`data` is the caller's `oracleData`, forwarded verbatim. It is empty on initialization, and on pokes and quotes unless the caller passes some. A read-only source ignores it. A pull oracle applies or parses it before reading. The fetcher must make sure that caller-supplied data can only make the price fresher: verify signatures, bound the publish time, and never let a caller choose among stale values.
 
 Both returned prices are Q128 fixed point in the same convention, and that convention decides how `K` and `MARK` are read: square-root prices give $$k = K/2$$ and a square-root `MARK`; plain prices give $$k = K$$ and a plain `MARK`. A source with a single price returns it as both TWAP and spot.
 
-`fetch` is payable so a paid update can be funded. The pool forwards native value only when `data` is non-empty. A fetcher that charges must spend at most what the update costs and refund the remainder to `msg.sender` in the same call; the pool recovers the refund for the reserve leg or returns it to the caller. A fee-less fetcher receives nothing and refunds nothing. Pokes, quotes, and view paths are not payable and forward nothing, so a fee-charging source must accept empty data there.
+`fetch` is payable so a paid update can be funded. The pool forwards native value only when `data` is non-empty. A fetcher that charges must spend at most what the update costs and refund the remainder to `msg.sender` in the same call; the pool recovers the refund for the reserve leg or returns it to the caller. The pool forwards value whenever `data` is non-empty, whether or not the fetcher charges, so a fee-less fetcher must refund the whole forward; anything it keeps is charged to the caller as the oracle fee. Pokes, quotes, and view paths are not payable and forward nothing, so a fee-charging source must accept empty data there.
 
 ### spot
 
@@ -25,7 +25,7 @@ The seeding price for `init`. It should be the local spot alone, with no externa
 
 ### Failing closed
 
-A fetcher revert halts the pool's trades and quotes until the condition clears. That is the intended shape: fail closed, never return a wrong price. A pool whose fetcher breaks permanently is stuck with positions that cannot be closed, which is one reason the config, and therefore the fetcher, is part of the pool's address and cannot be swapped.
+A fetcher revert halts the pool's trades, quotes, and pokes until the condition clears. That is the intended shape: fail closed, never return a wrong price. A pool whose fetcher breaks permanently is stuck with positions that cannot be closed, which is one reason the config, and therefore the fetcher, is part of the pool's address and cannot be swapped.
 
 ### Containment
 

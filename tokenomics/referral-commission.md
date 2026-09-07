@@ -1,5 +1,9 @@
 # Referral Commission
 
+{% hint style="warning" %}
+Designed for the v3 deployment; not yet re-published for the current protocol version.
+{% endhint %}
+
 Referring your friends to earn DER, either from [liquidity-mining.md](liquidity-mining.md "mention") or [trader-incentive.md](trader-incentive.md "mention"), will also be rewarded with up to half (for direct referrer) and a quarter (for the second-level referrer) of their referred DER reward.
 
 To earn the maximum referral incentive, the referrer needs to participate in [liquidity-mining.md](liquidity-mining.md "mention")themselves with at least half of the liquidity referred by them.

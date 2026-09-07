@@ -12,7 +12,7 @@ Derion is an open-market protocol: anyone can create a pool for any asset with a
 * **Leverage** (`K`) and **Mark Price** (`MARK`): the pay-off power and the price the power is centered on. Both are read in the fetcher's price convention. With a square-root-price fetcher (Uniswap v3) `K` is twice the pay-off power and `MARK` is the square root of the mark price; with a plain-price fetcher (Chainlink, stock tokens) `K` is the power itself and `MARK` the price. `MARK` should be close to the current market price and is best shared between pools on the same oracle. Practical range for `K` is 1 to 32; the contract does not bound it, but far from the mark a very large `K` falls back to a slow power loop and can exhaust gas, and high-power pools are the ones sensitive to the saturated-and-diverged liveness corner.
 * **Interest Half-Life** (`INTEREST_HL`): [interest](../protocol/funding-rate.md) as the half-life of each side's reserve, in seconds. Zero disables it.
 * **Premium Half-Life** (`PREMIUM_HL`): the decay half-life of the side imbalance, charged to the crowded side, in seconds. Zero disables it.
-* **Opening Rate** (`OPEN_RATE`): the optional [opening fee](../protocol/opening-fee.md), as the fraction of the gross payment that becomes position, x128. `2^128` is no fee.
+* **Opening Rate** (`OPEN_RATE`): the optional [opening fee](../protocol/opening-fee.md), as the fraction of the gross payment that becomes position, x128. `2^128` is no fee, and so is `0`.
 
 There is no provider field. Liquidity is the pool's own [LP class](../liquidity/lp-class.md), which anyone, the Vault included, holds by depositing.
 
@@ -22,7 +22,7 @@ A deployed pool cannot be used until `init` seeds it with a state $$\langle R, \
 
 All three seeds are minted to an address nobody controls. They protect the pool against share-inflation attacks and are the permanent supplies the per-share gates divide by, and they are never returned. Keep the seed small.
 
-The Factory's `deploy` runs deployment and `init` in one transaction, and `deployWithStrategy` additionally writes a Vault strategy that extends an existing one with the new pool, ready to be voted for ([Strategy Governance](../liquidity/governance.md)). See the [Pool API](../contracts/api.md).
+The Factory's `deploy` runs deployment and `init` in one transaction, and `deployWithStrategy` additionally writes a Vault strategy that extends an existing one with the new pool, or a fresh single-pool strategy, ready to be voted for ([Strategy Governance](../liquidity/governance.md)). See the [Pool API](../contracts/api.md).
 
 ## Choosing the parameters
 

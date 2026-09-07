@@ -12,7 +12,7 @@ A deposit pays reserve in and mints $$\text{amount} \cdot s_C / r_C$$ shares at 
 
 The residual is not monotone in price (it peaks at the center), so unlike the sides its dear and cheap bounds are found by comparing the two realized residuals rather than by picking the higher or lower price. The pool's `getAmountOut` quote does the same.
 
-On a deposit the Helper aims both side coefficients so that each side's reserve is preserved at both bases and the residual takes the whole reserve leg; on a withdrawal the residual gives it. Below the inflection this is exact. Under a diverged oracle with a saturated side, a deposit may be resized down to what the realized residual backs at both bases, bounded by the depositor's own slippage floor.
+On a deposit the Helper aims both side coefficients so that each side's reserve is preserved at both bases and the residual takes the whole reserve leg; on a withdrawal the residual gives it. Below the inflection this is exact. Under a diverged oracle with a saturated side, a deposit may be resized down to what the realized residual backs at both bases, bounded by the depositor's own slippage floor. A withdrawal has no mint to resize; if the squeezed residual cannot hold its floor, the call reverts cleanly.
 
 ### What a share is
 
